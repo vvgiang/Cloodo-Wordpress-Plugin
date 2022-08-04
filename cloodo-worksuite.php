@@ -17,6 +17,6 @@
 function addIframe(){
     $url= get_site_url();   
     $newurl = (explode("/",trim($url,"/")))[2] ;
-    echo '<iframe src="https://cloodo.com/trustscore/' . $newurl . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
+    return '<iframe src="https://cloodo.com/trustscore/' . $newurl . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
-add_action( 'wp_footer', 'addIframe' );
+add_shortcode( 'cloodoBadge', 'addIframe' );
