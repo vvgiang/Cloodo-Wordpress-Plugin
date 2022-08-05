@@ -63,7 +63,7 @@ function add_submenu_options()
     add_submenu_page(
             'themes.php', // Menu cha
             'hoanle 123', // Tiêu đề của menu
-            'hoanle 456', // Tên của menu
+            'Đăng nhập', // Tên của menu
             'manage_options',// Vùng truy cập, giá trị này có ý nghĩa chỉ có supper admin và admin đc dùng
             'theme-options', // Slug của menu
             'access_menu_options' // Hàm callback hiển thị nội dung của menu
@@ -98,11 +98,9 @@ function access_menu_options(){
            $res = json_decode($res['body'],true);
             $id_token = $res['data']['token'];
              $_SESSION['success'] = 'Get token ';
-             print_r($id_token);
-             var_dump($_SESSION);
-            
-        }
-        
+            //  print_r($id_token);
+            //  var_dump($_SESSION);
+        }       
         }        
     }
     require_once ('theme.php');
@@ -114,7 +112,7 @@ function add_submenu_options2()
     add_submenu_page(
             'themes.php', // Menu cha
             'hoanle 4', // Tiêu đề của menu
-            'hoanle GET', // Tên của menu
+            'CRUD project', // Tên của menu
             'manage_options',// Vùng truy cập, giá trị này có ý nghĩa chỉ có supper admin và admin đc dùng
             'theme-options1', // Slug của menu
             'access_getAll' // Hàm callback hiển thị nội dung của menu
@@ -124,10 +122,9 @@ function add_submenu_options2()
 add_action('admin_menu', 'add_submenu_options2');
 function headerlocation(){
     function access_getAll(){ 
-    require_once ('thongbao.php');
+    require_once ('showresults.php');
     if(isset( $_SESSION['token']))//////////////////////////////////
-    {   $pageSize = 10;
-       
+    {   $pageSize = 10;   
             // add them project 
         if(isset($_GET['view']) && $_GET['view']=='post')
         {

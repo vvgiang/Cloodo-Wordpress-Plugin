@@ -52,9 +52,9 @@ require_once ('showresults.php');
                                       <li class="page-item"><a class="page-link" href="http://localhost/hoanle/wp-admin/themes.php?page=theme-options1&pageNum=<?php echo $pageNum - 1 ?>">
                                                           < </a>
                                       </li>
-                            <?php } ?>
+                            <?php } 
 
-                            <?php for ($i = $pre; $i <= $next; $i++) { ?>
+                             	for ($i = $pre; $i <= $next; $i++) { ?>
                                       <?php if ($i == $pageNum) { ?>
                                                 <li class="page-item"><a class="page-link bg-warning" href="http://localhost/hoanle/wp-admin/themes.php?page=theme-options1&pageNum=<?php echo $i; ?>"><?php echo $i; ?></a></li>
                                       <?php } else { ?>
@@ -62,15 +62,12 @@ require_once ('showresults.php');
                                       <?php } ?>
 
 
-                            <?php } ?>
-                            <?php if ($pageNum < $pageSum) { ?>
+                            <?php }
+                            	if ($pageNum < $pageSum) { ?>
                                 
                                       <li class="page-item"><a class="page-link" href="http://localhost/hoanle/wp-admin/themes.php?page=theme-options1&pageNum=<?php echo $pageNum + 1 ?>"> > </a></li>
                                       <li class="page-item"><a class="page-link" href="http://localhost/hoanle/wp-admin/themes.php?page=theme-options1&pageNum=<?php echo $pageSum ?>"> >> </a></li>
                             <?php } ?>
-
-
-                           
                   </ul>
         </nav>
 	</div>
