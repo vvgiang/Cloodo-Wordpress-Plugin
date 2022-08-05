@@ -63,7 +63,7 @@ function add_submenu_options()
     add_submenu_page(
             'themes.php', // Menu cha
             'hoanle 123', // Tiêu đề của menu
-            'Đăng nhập', // Tên của menu
+            'Login get API', // Tên của menu
             'manage_options',// Vùng truy cập, giá trị này có ý nghĩa chỉ có supper admin và admin đc dùng
             'theme-options', // Slug của menu
             'access_menu_options' // Hàm callback hiển thị nội dung của menu
