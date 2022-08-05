@@ -235,6 +235,10 @@ function headerlocation(){
                     $_SESSION['success'] = 'view project ';
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
+                    if($totalSum == '0'){
+                        require_once('addnew.php');
+                        exit;
+                    }
                     $pageSum = ceil($totalSum/$pageSize);
                     $around = 3;
                     $next = $pageNum + $around;
