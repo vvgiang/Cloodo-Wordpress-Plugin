@@ -9,10 +9,9 @@ if(isset($_SESSION['success'])){
 elseif(isset($_SESSION['error'])){
     $message = $_SESSION['error'];
     unset($_SESSION['error']);
-    $class ="danger";
-    
+    $class ="danger"; 
 }
+if($message) {
 ?>
-<?php if($message) {?>
-    <div class="mt-3 alert alert-<?= $class?>"> <?= $message ?><?= $id_token ?? ""; ?></div>
-    <?php } ?>
+    <div class="mt-3 alert alert-<?php echo $class?>"> <?php echo $message ?><?php echo $id_token ?? ""; ?></div>
+<?php } ?>

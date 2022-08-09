@@ -1,31 +1,18 @@
-<?php 
-require_once ('showresults.php');
-?>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-<h1>GET TOKEN</h1>
+<?php 
+require_once ('css.php');
+?>
 <form method="post" action="">
-    <table>
-        <tr>
-            <td>Email</td>
-            <td>
-            <!-- [shortcodeTs tttv='100'] -->
-                <input type="text" name="email" value="<?= $email ?? ""; ?>"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td>
-                <input type="pasword" name="password" value="<?= $password ?? ""; ?>"/>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <input type="submit" name="save" value="Lay token"/>
-            </td>
-        </tr>
-     
-    </table>
+  <h3>LOGIN GET TOKEN FORM</h3>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="text" name="email" id="email" value="<?php echo $email ?? ""; ?>"/>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" name="password" id="password" value="<?php echo $password ?? ""; ?>"/>
+  </div>
+  <button type="submit"  name="save" class="btn btn-primary">LOGIN</button>
 </form>
 
 

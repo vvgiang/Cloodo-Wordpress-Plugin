@@ -1,12 +1,8 @@
-<?php
-require_once ('showresults.php');
-?>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
-   <form action="http://localhost/hoanle/wp-admin/themes.php?page=theme-options1&idadd=post" method="POST">
+   <form action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&idadd=post" method="POST">
           <div class="container ">
                     <div class="row">
-
                               <div class="col-md-5">
                                 <h2>ADD PROJECT</h2>
 
