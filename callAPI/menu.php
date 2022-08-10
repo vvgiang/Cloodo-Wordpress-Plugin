@@ -3,7 +3,7 @@ session_start();
 /**
  * Plugin Name:       Call API Wordpress
  * Plugin URI:        https://example.com/plugins/the-basics/
- * Description:       CRUD call api test
+ * Description:       CRUD call api
  * Version:           1.10.3
  * Requires at least: 5.2
  * Requires PHP:      7.2
@@ -51,14 +51,13 @@ function access_menu(){
                     $id_token = $res['data']['token'];
                     $_SESSION['success'] = 'Get token : ';
                 }       
-                require_once ('showresults.php');
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
             }           
         }
-        require_once ('theme.php');
+        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'theme.php'));
     }
 }
 ////////////////////////////////////////////////project list///////////////////////////////////////////////////
-
 function add_submenu_project(){
     add_menu_page(
             'CURD project', // Tiêu đề của menu
@@ -73,7 +72,7 @@ function headerlocation(){
     function access_getAll(){ 
         if(isset( $_SESSION['token'])){//////////////token-not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project///////////////////////// 
-                require_once ('addnew.php');
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'addnew.php'));
                 return;
             }
             if(isset($_GET['idadd'])){/////////////add project////////////////////////
@@ -108,7 +107,7 @@ function headerlocation(){
                             $arr = json_decode($res['body'],true);
                             $row =$arr['data'];
                     }
-                    require_once ('showresults.php');
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
                 }
             }
             if(isset($_GET['view']) && $_GET['view']=='edit'&& isset($_GET['id'])){/////////////Get width id project////////////////////       
@@ -134,44 +133,8 @@ function headerlocation(){
                     $_SESSION['success'] = 'Get project successfuly ! ';
                     $arr = json_decode($res['body'],true);
                     $row =$arr['data'];
-                    require_once ('showresults.php');   
-                    // require_once ('edit.php');
-                    ?>
-                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
-                    <form action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&idput=<?php echo $row['id'] ?>" method="POST">
-                        <div class="container ">
-                                <div class="row">
-                                            <div class="col-md-5">
-                                            <h2>EDIT PROJECT</h2>
-                                                    <div class="form-group">
-                                                                <label>Projec_name</label>
-                                                                <input type="text" name="project_name" value="<?php echo $row['project_name']?>" class="form-control" placeholder="projecname" required name="project_name">
-                                                    </div>
-                                                    <div class="form-group">
-                                                                <label>start_date</label>
-                                                                <input type="date" name="start_date" value="<?php echo date('Y-m-d',strtotime($row['start_date']))?>" class="form-control" placeholder="start_date" required name="start_date">
-                                                    </div>
-                                                    <div class="form-group">
-                                                                <label>deadline</label>
-                                                                <input type="date" name="deadline" value="<?php echo date('Y-m-d',strtotime($row['deadline']))?>" class="form-control" placeholder="deadline" required name="deadline">
-                                                    </div>
-                                                    <div class="form-group">
-                                                                <label>status</label>
-                                                                <select class="form-control" id="status" name="status" required>
-                                                                        <option value="in progress" <?php echo ($row['status']=='in progress')? 'selected' : ''?>>In Progress</option>
-                                                                        <option value="on hold"<?php echo ($row['status']=='on hold')? 'selected' : ''?>>On Hold</option>
-                                                                </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                                <button class="btn btn-success" name="submit" type="submit">Save</button>
-                                                    </div>
-                                            </div>
-                                            
-                                </div>
-                        </div>
-                    </form>
-                    <?php 
+                    require_once('showresults.php');   
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'edit.php'));
                     return;
                 }
             }
@@ -206,7 +169,7 @@ function headerlocation(){
                     else{                    
                         $_SESSION['success'] = 'update successfuly ! ';
                     }
-                    require_once ('showresults.php');    
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));    
                 }
             }
             if(isset($_GET['iddel'])){////////////////delete project///////////////////////
@@ -230,7 +193,7 @@ function headerlocation(){
                 }else{
                   $_SESSION['success'] ='delete successfuly !';
                 }
-                require_once ('showresults.php');
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
             }            
             if(!isset($_GET['pageNum'])){  /////////show all project pageNum=null//////////////////              
                 $star=0;
@@ -259,7 +222,7 @@ function headerlocation(){
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
                     if($totalSum == '0'){
-                        require_once('addnew.php');
+                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'addnew.php'));
                         exit;
                     }
                     $pageSum = ceil($totalSum/$pageSize);
@@ -270,8 +233,8 @@ function headerlocation(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once ('showresults.php');
-                    require_once ('details.php');
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'details.php'));
                     return;
                 }    
             }else{//////////////show all project pageNum=$_GET///////////////////////
@@ -309,8 +272,8 @@ function headerlocation(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once ('showresults.php');
-                    require_once ('details.php');
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'details.php'));
                     return;
                 }    
             }
@@ -351,12 +314,12 @@ function headerlocation(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once ('showresults.php');
-                    require_once ('details.php');
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'details.php'));
                     return;
                 }    
             }
-            require_once ('addtoken.php');
+            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'addtoken.php'));
         }    
     }     
 } 
