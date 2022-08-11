@@ -51,7 +51,7 @@ function access_menu(){
                     $id_token = $res['data']['token'];
                     $_SESSION['success'] = 'Get token : ';
                 }       
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'show_results.php'));
             }           
         }
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'theme.php'));
@@ -68,11 +68,11 @@ function add_submenu_project(){
     );
 }
 add_action('admin_menu', 'add_submenu_project');
-function headerlocation(){
+function crud_project(){
     function access_getAll(){ 
         if(isset( $_SESSION['token'])){//////////////token-not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project///////////////////////// 
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'addnew.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'add_new.php'));
                 return;
             }
             if(isset($_GET['idadd'])){/////////////add project////////////////////////
@@ -107,7 +107,7 @@ function headerlocation(){
                             $arr = json_decode($res['body'],true);
                             $row =$arr['data'];
                     }
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'show_results.php'));
                 }
             }
             if(isset($_GET['view']) && $_GET['view']=='edit'&& isset($_GET['id'])){/////////////Get width id project////////////////////       
@@ -133,7 +133,7 @@ function headerlocation(){
                     $_SESSION['success'] = 'Get project successfuly ! ';
                     $arr = json_decode($res['body'],true);
                     $row =$arr['data'];
-                    require_once('showresults.php');   
+                    require_once('show_results.php');   
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'edit.php'));
                     return;
                 }
@@ -169,7 +169,7 @@ function headerlocation(){
                     else{                    
                         $_SESSION['success'] = 'update successfuly ! ';
                     }
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));    
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'show_results.php'));    
                 }
             }
             if(isset($_GET['iddel'])){////////////////delete project///////////////////////
@@ -193,7 +193,7 @@ function headerlocation(){
                 }else{
                   $_SESSION['success'] ='delete successfuly !';
                 }
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'show_results.php'));
             }            
             if(!isset($_GET['pageNum'])){  /////////show all project pageNum=null//////////////////              
                 $star=0;
@@ -212,8 +212,7 @@ function headerlocation(){
                     ],
                     'cookie'=>[],
                 ];
-                $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs);
-                
+                $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs); 
                 if($res['response']['code'] != 200){                   
                     $_SESSION['error'] = 'view project error!';                    
                 }    
@@ -222,7 +221,7 @@ function headerlocation(){
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
                     if($totalSum == '0'){
-                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'addnew.php'));
+                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'add_new.php'));
                         exit;
                     }
                     $pageSum = ceil($totalSum/$pageSize);
@@ -233,7 +232,7 @@ function headerlocation(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'show_results.php'));
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'details.php'));
                     return;
                 }    
@@ -272,7 +271,7 @@ function headerlocation(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'show_results.php'));
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'details.php'));
                     return;
                 }    
@@ -314,13 +313,28 @@ function headerlocation(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'showresults.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'show_results.php'));
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'details.php'));
                     return;
                 }    
             }
-            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'addtoken.php'));
+            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'add_token.php'));
         }    
-    }     
+    }  
+    if(isset($_GET['logout'])){
+        unset($_SESSION['token']);
+        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Get_token');
+        exit;
+    }       
+    function adminstyle(){
+        wp_enqueue_style( 'stylecss', plugins_url('public/css/style.css',__FILE__));
+        wp_enqueue_style( 'boostrapcss', plugins_url('public/css/bootstrap.css',__FILE__));
+        wp_enqueue_style( 'awesomecss', plugins_url('asset/fontawesome/css/fontawesome.min.css',__FILE__));
+        wp_enqueue_style( 'awesomecss1','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css');
+        wp_enqueue_script( 'jqre','https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js');
+        wp_enqueue_script( 'jqr', plugins_url('public/js/jquery.js',__FILE__));
+        wp_enqueue_script( 'script', plugins_url('public/js/script.js',__FILE__));
+    }
+    add_action('admin_enqueue_scripts', 'adminstyle');
 } 
-add_action('admin_init','headerlocation');
+add_action('init','crud_project');

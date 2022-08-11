@@ -14,9 +14,9 @@
  * Text Domain:       cloodo-worksuite
  * Domain Path:       /languages
  */
-function addIframe(){
+function add_iframe(){
     $url= get_site_url();   
     $newurl = (explode("/",trim($url,"/")))[2] ;
     return '<iframe src="https://cloodo.com/trustscore/' . $newurl . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
-add_shortcode( 'cloodoBadge', 'addIframe' );
+add_shortcode( 'cloodo-badge', 'add_iframe' );

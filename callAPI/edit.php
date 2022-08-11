@@ -1,9 +1,7 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
-                    <form action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&idput=<?php echo $row['id'] ?>" method="POST">
+                    <form class="temp" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&idput=<?php echo $row['id'] ?>" method="POST">
                         <div class="container ">
                                 <div class="row">
-                                            <div class="col-md-5">
+                                            <div class="edit col-md-8">
                                             <h2>EDIT PROJECT</h2>
                                                     <div class="form-group">
                                                                 <label>Projec_name</label>
@@ -26,7 +24,8 @@
                                                     </div>
                                                     <div class="form-group">
                                                                 <button class="btn btn-success" name="submit" type="submit">Save</button>
-                                                    </div>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="history.back()">Back</button>
+                                                        </div>
                                             </div>
                                             
                                 </div>
