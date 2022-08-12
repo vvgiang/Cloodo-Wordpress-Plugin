@@ -1,4 +1,5 @@
 <?php
+session_start();
 /**
  * Plugin Name:       Cloodo Worksuite
  * Plugin URI:        https://worksuite.cloodo.com/
