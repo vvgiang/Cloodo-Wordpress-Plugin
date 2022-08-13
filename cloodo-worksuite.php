@@ -15,70 +15,33 @@ session_start();
  * Text Domain:       cloodo-worksuite
  * Domain Path:       /languages
  */
+//////////////////////////////////////////////////require////////////////////////////////////////////////////
+require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/includes/includes.php'));
+//////////////////////////////////////////////////add_iframe///////////////////////////////////////////////// 
 function add_iframe(){
     $url= get_site_url();   
     $newurl = (explode("/",trim($url,"/")))[2] ;
     return '<iframe src="https://cloodo.com/trustscore/' . $newurl . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
 add_shortcode( 'cloodo-badge', 'add_iframe' );
-///
-add_action('admin_menu', 'add_submenu_getToken');
-function add_submenu_getToken(){
-    add_menu_page(
-        'Login', // Tiêu đề của menu
-        'Login get API', // Tên của menu
-        'manage_options',// Vùng truy cập, giá trị này có ý nghĩa chỉ có supper admin và admin đc dùng
-        'Get_token', // Slug của menu
-        'access_menu_options' // Hàm callback hiển thị nội dung của menu
-    );
-}
-add_action( 'admin_init', 'access_menu' );
-function access_menu(){
-    function access_menu_options(){
-        if(isset($_POST['save'])){
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            if($email && $password != ''){
-                $arrs =[
-                    'method'=> 'POST',
-                    'body'=>['email'=>$email,'password'=> $password],
-                    'timeout'=>5,
-                    'redirection'=>5,
-                    'blocking'=>true,
-                    'headers'=>[],
-                    'cookie'=>[],
-                ];
-                $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
-                if($res['response']['code'] != 200){
-                $_SESSION['error'] = 'User notfound !';           
-                }
-                else{
-                    $res = json_decode($res['body'],true);
-                    $id_token = $res['data']['token'];
-                    $_SESSION['success'] = 'Get token : ';
-                }       
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/show_results.php'));
-            }           
-        }
-        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/theme.php'));
-    }
-}
 ////////////////////////////////////////////////project list///////////////////////////////////////////////////
 function add_submenu_project(){
     add_menu_page(
             'CURD project', // Tiêu đề của menu
-            'CRUD project', // Tên của menu
+            'cloodo-worksuite', // Tên của menu
             'manage_options',// Vùng truy cập, giá trị này có ý nghĩa chỉ có supper admin và admin đc dùng
             'project_list', // Slug của menu
-            'access_getAll' // Hàm callback hiển thị nội dung của menu
+            'access_getAll', // Hàm callback hiển thị nội dung của menu
+            'dashicons-businessman' // icon menu
     );
 }
 add_action('admin_menu', 'add_submenu_project');
 function crud_project(){
     function access_getAll(){ 
         if(isset( $_SESSION['token'])){//////////////token-not empty////////////////////
-            if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project///////////////////////// 
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/add_new.php'));
+            if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
+                $pageSum=$_GET['pageSum']; 
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add_new.php'));
                 return;
             }
             if(isset($_GET['idadd'])){/////////////add project////////////////////////
@@ -113,11 +76,12 @@ function crud_project(){
                             $arr = json_decode($res['body'],true);
                             $row =$arr['data'];
                     }
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/show_results.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
                 }
             }
             if(isset($_GET['view']) && $_GET['view']=='edit'&& isset($_GET['id'])){/////////////Get width id project////////////////////       
                 $id = $_GET['id'];
+                $pageNum=$_GET['pageNum']; 
                 $arrs =[
                     'method'=> 'GET',
                     'body'=>[],
@@ -139,8 +103,8 @@ function crud_project(){
                     $_SESSION['success'] = 'Get project successfuly ! ';
                     $arr = json_decode($res['body'],true);
                     $row =$arr['data'];
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/show_results.php'));   
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/edit.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));   
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/edit.php'));
                     return;
                 }
             }
@@ -175,7 +139,7 @@ function crud_project(){
                     else{                    
                         $_SESSION['success'] = 'update successfuly ! ';
                     }
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/show_results.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
                 }
             }
             if(isset($_GET['iddel'])){////////////////delete project///////////////////////
@@ -199,7 +163,7 @@ function crud_project(){
                 }else{
                   $_SESSION['success'] ='delete successfuly !';
                 }
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/show_results.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));              
             }            
             if(!isset($_GET['pageNum'])){  /////////show all project pageNum=null//////////////////              
                 $star=0;
@@ -227,7 +191,7 @@ function crud_project(){
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
                     if($totalSum == '0'){
-                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/add_new.php'));
+                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add_new.php'));
                         exit;
                     }
                     $pageSum = ceil($totalSum/$pageSize);
@@ -238,10 +202,10 @@ function crud_project(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/show_results.php'));
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/details.php'));
-                    return;
                 }    
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details.php'));
+                return;
             }else{//////////////show all project pageNum=$_GET///////////////////////
                 $pageNum =1;
                 $pageSize = 10;                   
@@ -277,70 +241,86 @@ function crud_project(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/show_results.php'));
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/details.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details.php'));
                     return;
                 }    
             }
-        }else{           
-            if(isset($_POST['savetoken'])){ ///////token empty show all project when submit ////////////////    
-                $token = $_POST['token'];
-                $_SESSION['token']= $token;
-                $pageSize = 10;
-                $pageNum =1;
-                $pageNum = $_GET['pageNum'] ?? '1';
-                $star = ($pageNum-1)* $pageSize;
-                $arrs =[
-                    'method'=> 'GET',
-                    'body'=>[],
-                    'timeout'=>5,
-                    'redirection'=>5,
-                    'blocking'=>true,
-                    'headers'=>[
-                        'X-requested-Width'=>'XMLHttpRequest',
-                        'Authorization'=>'Bearer '.$_SESSION['token'],
-                        'Content-Type'=>'application/json',
-                    ],
-                    'cookie'=>[],
-                ];
-                $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs);
-                if($res['response']['code'] != 200){  
-                    $_SESSION['error'] = 'add token error !';                                
-                }    
-                else{                
-                    $_SESSION['success'] = 'add token successfuly ! ';
-                    $arr = json_decode($res['body'],true);
-                    $totalSum = $arr['meta']['paging']['total'];
-                    $pageSum = ceil($totalSum/$pageSize);
-                    $around = 3;
-                    $next = $pageNum + $around;
-                    if ($next > $pageSum) {
-                            $next = $pageSum;
+            
+        }else{ /////////////////not token - show login form/////////////////////////////
+            if(isset($_POST['save'])){
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+                if($email && $password != ''){
+                    $arrs =[
+                        'method'=> 'POST',
+                        'body'=>['email'=>$email,'password'=> $password],
+                        'timeout'=>5,
+                        'redirection'=>5,
+                        'blocking'=>true,
+                        'headers'=>[],
+                        'cookie'=>[],
+                    ];
+                    $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
+                    if($res['response']['code'] != 200){
+                    $_SESSION['error'] = 'User notfound !';           
                     }
-                    $pre = $pageNum - $around;
-                    if ($pre <= 1) $pre = 1;
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/show_results.php'));
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/details.php'));
-                    return;
-                }    
+                    else{
+                        $res = json_decode($res['body'],true);
+                        $id_token = $res['data']['token'];
+                        update_option( 'token', $id_token);                              
+                        $token = get_option('token');
+                        $_SESSION['token']= $token;
+                        $pageSize = 10;
+                        $pageNum =1;
+                        $pageNum = $_GET['pageNum'] ?? '1';
+                        $star = ($pageNum-1)* $pageSize;
+                        $arrs =[
+                            'method'=> 'GET',
+                            'body'=>[],
+                            'timeout'=>5,
+                            'redirection'=>5,
+                            'blocking'=>true,
+                            'headers'=>[
+                                'X-requested-Width'=>'XMLHttpRequest',
+                                'Authorization'=>'Bearer '.$_SESSION['token'],
+                                'Content-Type'=>'application/json',
+                            ],
+                            'cookie'=>[],
+                        ];
+                        $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs);
+                        if($res['response']['code'] != 200){  
+                            $_SESSION['error'] = 'add token error !';                                
+                        }    
+                        else{                
+                            $_SESSION['success'] = 'Login successfuly ! ';
+                            $arr = json_decode($res['body'],true);
+                            $totalSum = $arr['meta']['paging']['total'];
+                            $pageSum = ceil($totalSum/$pageSize);
+                            $around = 3;
+                            $next = $pageNum + $around;
+                            if ($next > $pageSum) {
+                                    $next = $pageSum;
+                            }
+                            $pre = $pageNum - $around;
+                            if ($pre <= 1) $pre = 1;
+                            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
+                            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details.php'));
+                            return;
+                        }
+                    } 
+                }     
             }
-            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/views_project/add_token.php'));
+            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
+            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/login.php'));
         }    
     }  
     if(isset($_GET['logout'])){
         unset($_SESSION['token']);
-        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Get_token');
+        $_SESSION['success'] = 'Logout successfuly ! ';
+        wp_redirect(get_site_url().'/wp-admin/admin.php?page=project_list');
         exit;
-    }       
-    function adminstyle(){
-        wp_enqueue_style( 'stylecss', plugins_url('call-api/public/css/style.css',__FILE__));
-        wp_enqueue_style( 'boostrapcss', plugins_url('call-api/public/css/bootstrap.css',__FILE__));
-        wp_enqueue_style( 'awesomecss', plugins_url('call-api/public/fontawesome/css/fontawesome.min.css',__FILE__));
-        wp_enqueue_style( 'awesomecss1','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css');
-        wp_enqueue_script( 'jqre','https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js');
-        wp_enqueue_script( 'jqr', plugins_url('call-api/public/js/jquery.js',__FILE__));
-        wp_enqueue_script( 'script', plugins_url('call-api/public/js/script.js',__FILE__));
     }
-    add_action('admin_enqueue_scripts', 'adminstyle');
 } 
 add_action('init','crud_project');
+  

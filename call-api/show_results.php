@@ -13,5 +13,5 @@ elseif(isset($_SESSION['error'])){
 }
 if($message) {
 ?>
-    <div class="mt-3 alert alert-<?php echo $class?>"> <?php echo $message ?><?php echo $id_token ?? ""; ?></div>
+    <div class="mt-3 alert alert-<?php echo $class?>"> <?php echo $message ?></div>
 <?php } ?>

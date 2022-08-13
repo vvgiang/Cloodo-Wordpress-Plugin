@@ -1,9 +1,8 @@
-  <form class="temp" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&idadd=post" method="POST">
+  <form class="temp" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&idadd=post&pageNum=<?php echo $pageSum?>" method="POST">
           <div class="container ">
                     <div class="row">
                               <div class="add_new col-md-8">
                                 <h2>ADD PROJECT</h2>
-
                                         <div class="form-group">
                                                   <label>Projec_name</label>
                                                   <input type="text" name="project_name" class="form-control" placeholder="projecname" required name="project_name">

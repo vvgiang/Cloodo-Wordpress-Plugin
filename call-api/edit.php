@@ -1,4 +1,4 @@
-                    <form class="temp" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&idput=<?php echo $row['id'] ?>" method="POST">
+                    <form class="temp" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&idput=<?php echo $row['id'] ?>&pageNum=<?php echo $pageNum ?>" method="POST">
                         <div class="container ">
                                 <div class="row">
                                             <div class="edit col-md-8">

@@ -1,5 +1,5 @@
 <form class="temp" method="post" action="">
-  <h2>LOGIN GET TOKEN FORM</h2>
+  <h2>LOGIN FORM</h2>
   <div class="mb-3">
     <label for="email" class="form-label">Email</label>
     <input type="text" name="email" id="email" value="<?php echo $email ?? ""; ?>"/>

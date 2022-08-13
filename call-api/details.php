@@ -1,9 +1,8 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <div class="container">
 <table class="table table-hover">
 			<thead>
                         <h2>LIST PROJECT</h2>
-                        <a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post" class="btn btn-info">Add</a>
+                        <a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo $pageSum?>" class="btn btn-info">Add</a>
 						<tr>
                             <th>STT</th>
 							<th>Id</th>
@@ -24,9 +23,8 @@
 							<td><?php echo date('d-m-Y',strtotime($row['deadline']))?></td>
 							<td><?php echo $row['status'] ?></td>
 							<td>
-								<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=edit&id=<?php echo $row['id'] ?>" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-								<!-- <a class="delete btn btn-danger p-2"  href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&iddel=<?php echo $row['id'] ?>" onclick="return confirm('bạn có chắc muốn xoá ?')" ><i class="fa-solid fa-trash-can"></i></a> -->
-								<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 aaa" data-href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&iddel=<?php echo $row['id'] ?>"><i class="fa-solid fa-trash-can"></i></button>
+								<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=edit&id=<?php echo $row['id'] ?>&pageNum=<?php echo $pageNum ?>" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
+								<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 aaa" data-href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&iddel=<?php echo $row['id'] ?>&pageNum=<?php echo $pageNum ?>"><i class="fa-solid fa-trash-can"></i></button>
 							</td>
 						</tr>
 					<?php } ?>
@@ -79,7 +77,6 @@
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<!-- <button type="button" class="btn btn-primary">Delete</button> -->
 			<a class="delete btn btn-danger p-2 bbb"  href="" >Delete</a>
 		  </div>
 		</div>
