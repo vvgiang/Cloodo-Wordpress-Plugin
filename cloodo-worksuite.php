@@ -195,6 +195,14 @@ function crud_project(){
                         exit;
                     }
                     $pageSum = ceil($totalSum/$pageSize);
+                    $ofsetPageMax = ($pageSum-1) * $pageSize;
+                    $resPageMax = wp_remote_get("https://erp.cloodo.com/api/v1/project?fields=id%2Cproject_name%2Cproject_summary%2Cnotes%2Cstart_date%2Cdeadline%2Cstatus%2Ccategory%2Cclient%7Bid%2Cname%7D&offset=".$ofsetPageMax, $arrs);
+                    $arr2 = json_decode($resPageMax['body'],true);
+                    if(count($arr2['data'])=='10'){
+                        $addpage = $pageSum + 1;
+                    }else{
+                    $addpage = $pageSum;
+                    }
                     $around = 3;
                     $next = $pageNum + $around;
                     if ($next > $pageSum) {
@@ -225,15 +233,22 @@ function crud_project(){
                     'cookie'=>[],
                 ];
                 $res = wp_remote_get("https://erp.cloodo.com/api/v1/project?fields=id%2Cproject_name%2Cproject_summary%2Cnotes%2Cstart_date%2Cdeadline%2Cstatus%2Ccategory%2Cclient%7Bid%2Cname%7D&offset=".$star, $arrs);
-                
                 if($res['response']['code'] != 200){                       
-                    $_SESSION['error'] = 'view project error'; 
+                    $_SESSION['error'] = 'view project error';
                 }
                 else{
                     $_SESSION['success'] = 'view project';
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
                     $pageSum = ceil($totalSum/$pageSize);
+                    $ofsetPageMax = ($pageSum-1) * $pageSize;
+                    $resPageMax = wp_remote_get("https://erp.cloodo.com/api/v1/project?fields=id%2Cproject_name%2Cproject_summary%2Cnotes%2Cstart_date%2Cdeadline%2Cstatus%2Ccategory%2Cclient%7Bid%2Cname%7D&offset=".$ofsetPageMax, $arrs);
+                    $arr2 = json_decode($resPageMax['body'],true);
+                    if(count($arr2['data'])=='10'){
+                        $addpage = $pageSum + 1;
+                    }else{
+                       $addpage = $pageSum; 
+                    }
                     $around = 3;
                     $next = $pageNum + $around;
                     if ($next > $pageSum) {
@@ -243,9 +258,11 @@ function crud_project(){
                     if ($pre <= 1) $pre = 1;
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details.php'));
-                    return;
                 }    
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
+                return;
             }
+            
             
         }else{ /////////////////not token - show login form/////////////////////////////
             if(isset($_POST['save'])){
@@ -323,4 +340,5 @@ function crud_project(){
     }
 } 
 add_action('init','crud_project');
-  
+/////////////////////////////////////////////
+

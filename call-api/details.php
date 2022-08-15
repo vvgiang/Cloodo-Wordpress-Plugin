@@ -2,7 +2,7 @@
 <table class="table table-hover">
 			<thead>
                         <h2>LIST PROJECT</h2>
-                        <a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo $pageSum?>" class="btn btn-info">Add</a>
+                        <a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo $addpage ?>" class="btn btn-info">Add</a>
 						<tr>
                             <th>STT</th>
 							<th>Id</th>
@@ -28,7 +28,6 @@
 							</td>
 						</tr>
 					<?php } ?>
-
 					</tbody>
 				</table>
 	<div class="container ">        
