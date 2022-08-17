@@ -1,7 +1,7 @@
-$(document).ready(function() {
-    $('button.aaa').click(function(){
+jQuery(document).ready(function($) {
+    $('button.gethref').click(function(){
        var dataHref = $(this).attr('data-href');
        console.log(dataHref);
-        $('.bbb').attr('href',dataHref);
+        $('.posthref').attr('href',dataHref);
     })
 });

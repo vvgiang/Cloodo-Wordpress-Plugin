@@ -24,7 +24,7 @@
 							<td><?php echo esc_attr($row['status']) ?></td>
 							<td>
 								<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=edit&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-								<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 aaa" data-href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&iddel=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
+								<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 gethref" data-href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&iddel=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
 							</td>
 						</tr>
 					<?php } ?>
@@ -76,7 +76,7 @@
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<a class="delete btn btn-danger p-2 bbb"  href="" >Delete</a>
+			<a class="delete btn btn-danger p-2 posthref"  href="" >Delete</a>
 		  </div>
 		</div>
 	  </div>
