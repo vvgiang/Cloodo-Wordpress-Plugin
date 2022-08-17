@@ -40,16 +40,16 @@ function crud_project(){
     function access_getAll(){ 
         if(isset( $_SESSION['token'])){//////////////token-not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
-                $pageSum=$_GET['pageSum']; 
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add_new.php'));
+                $pageSum=sanitize_text_field($_GET['pageSum']); 
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add-project.php'));
                 return;
             }
             if(isset($_GET['idadd'])){/////////////add project////////////////////////
                 if(isset($_POST['submit'])){
-                    $project_name = $_POST['project_name'];
-                    $start_date = $_POST['start_date'];
-                    $deadline = $_POST['deadline'];
-                    $status = $_POST['status'];
+                    $project_name = sanitize_text_field($_POST['project_name']);
+                    $start_date = sanitize_text_field($_POST['start_date']);
+                    $deadline = sanitize_text_field($_POST['deadline']);
+                    $status = sanitize_text_field($_POST['status']);
                     $arrs =[
                         'method'=> 'POST',
                         'body'=>[
@@ -76,12 +76,12 @@ function crud_project(){
                             $arr = json_decode($res['body'],true);
                             $row =$arr['data'];
                     }
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));
                 }
             }
             if(isset($_GET['view']) && $_GET['view']=='edit'&& isset($_GET['id'])){/////////////Get width id project////////////////////       
-                $id = $_GET['id'];
-                $pageNum=$_GET['pageNum']; 
+                $id = sanitize_text_field($_GET['id']);
+                $pageNum= isset($_GET['pageNum']) ? sanitize_text_field($_GET['pageNum']) : "1"; 
                 $arrs =[
                     'method'=> 'GET',
                     'body'=>[],
@@ -103,18 +103,18 @@ function crud_project(){
                     $_SESSION['success'] = 'Get project successfuly ! ';
                     $arr = json_decode($res['body'],true);
                     $row =$arr['data'];
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));   
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/edit.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));   
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/edit-project.php'));
                     return;
                 }
             }
             if(isset($_GET['idput'])){  /////////////update project///////////////////
                 if(isset($_POST['submit'])){           
-                    $project_name = $_POST['project_name'];
-                    $start_date = $_POST['start_date'];
-                    $deadline = $_POST['deadline'];
-                    $status = $_POST['status'];
-                    $id = $_GET['idput'];
+                    $project_name = sanitize_text_field($_POST['project_name']);
+                    $start_date = sanitize_text_field($_POST['start_date']);
+                    $deadline = sanitize_text_field($_POST['deadline']);
+                    $status = sanitize_text_field($_POST['status']);
+                    $id = sanitize_text_field($_GET['idput']);
                     $arrs =[
                         'method'=> 'PUT',
                         'body'=>[
@@ -139,11 +139,11 @@ function crud_project(){
                     else{                    
                         $_SESSION['success'] = 'update successfuly ! ';
                     }
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));
                 }
             }
             if(isset($_GET['iddel'])){////////////////delete project///////////////////////
-                $id = $_GET['iddel'];
+                $id = sanitize_text_field($_GET['iddel']);
                 $arr =[
                     'method'=>'DELETE',
                     'headers'=>[
@@ -163,7 +163,7 @@ function crud_project(){
                 }else{
                   $_SESSION['success'] ='delete successfuly !';
                 }
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));              
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));              
             }            
             if(!isset($_GET['pageNum'])){  /////////show all project pageNum=null//////////////////              
                 $star=0;
@@ -191,7 +191,7 @@ function crud_project(){
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
                     if($totalSum == '0'){
-                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add_new.php'));
+                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add-project.php'));
                         exit;
                     }
                     $pageSum = ceil($totalSum/$pageSize);
@@ -199,9 +199,9 @@ function crud_project(){
                     $resPageMax = wp_remote_get("https://erp.cloodo.com/api/v1/project?fields=id%2Cproject_name%2Cproject_summary%2Cnotes%2Cstart_date%2Cdeadline%2Cstatus%2Ccategory%2Cclient%7Bid%2Cname%7D&offset=".$ofsetPageMax, $arrs);
                     $arr2 = json_decode($resPageMax['body'],true);
                     if(count($arr2['data'])=='10'){
-                        $addpage = $pageSum + 1;
+                        $nextpage = $pageSum + 1;
                     }else{
-                    $addpage = $pageSum;
+                    $nextpage = $pageSum;
                     }
                     $around = 3;
                     $next = $pageNum + $around;
@@ -211,13 +211,12 @@ function crud_project(){
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
                 }    
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details-project.php'));
                 return;
             }else{//////////////show all project pageNum=$_GET///////////////////////
-                $pageNum =1;
                 $pageSize = 10;                   
-                $pageNum = $_GET['pageNum'];
+                $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : "1";
                 $star = ($pageNum-1)* $pageSize;
                 $arrs =[
                     'method'=> 'GET',
@@ -245,9 +244,9 @@ function crud_project(){
                     $resPageMax = wp_remote_get("https://erp.cloodo.com/api/v1/project?fields=id%2Cproject_name%2Cproject_summary%2Cnotes%2Cstart_date%2Cdeadline%2Cstatus%2Ccategory%2Cclient%7Bid%2Cname%7D&offset=".$ofsetPageMax, $arrs);
                     $arr2 = json_decode($resPageMax['body'],true);
                     if(count($arr2['data'])=='10'){
-                        $addpage = $pageSum + 1;
+                        $nextpage = $pageSum + 1;
                     }else{
-                       $addpage = $pageSum; 
+                       $nextpage = $pageSum; 
                     }
                     $around = 3;
                     $next = $pageNum + $around;
@@ -256,18 +255,18 @@ function crud_project(){
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details-project.php'));
                 }    
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));
                 return;
             }
             
             
         }else{ /////////////////not token - show login form/////////////////////////////
             if(isset($_POST['save'])){
-                $email = $_POST['email'];
-                $password = $_POST['password'];
+                $email = sanitize_email($_POST['email']);
+                $password = sanitize_text_field($_POST['password']);
                 if($email && $password != ''){
                     $arrs =[
                         'method'=> 'POST',
@@ -289,8 +288,7 @@ function crud_project(){
                         $token = get_option('token');
                         $_SESSION['token']= $token;
                         $pageSize = 10;
-                        $pageNum =1;
-                        $pageNum = $_GET['pageNum'] ?? '1';
+                        $pageNum = isset($_GET['pageNum']) ? sanitize_text_field($_GET['pageNum']) : '1';
                         $star = ($pageNum-1)* $pageSize;
                         $arrs =[
                             'method'=> 'GET',
@@ -321,15 +319,17 @@ function crud_project(){
                             }
                             $pre = $pageNum - $around;
                             if ($pre <= 1) $pre = 1;
-                            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
-                            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details.php'));
+                            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));
+                            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details-project.php'));
                             return;
                         }
                     } 
-                }     
+                }else{
+                    $_SESSION['success'] = 'User and Password do not empty !';
+                }    
             }
-            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show_results.php'));
-            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/login.php'));
+            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));
+            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/login-project.php'));
         }    
     }  
     if(isset($_GET['logout'])){

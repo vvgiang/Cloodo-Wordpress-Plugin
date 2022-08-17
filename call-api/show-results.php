@@ -13,5 +13,5 @@ elseif(isset($_SESSION['error'])){
 }
 if($message) {
 ?>
-    <div class="mt-3 alert alert-<?php echo $class?>"> <?php echo $message ?></div>
+    <div class="mt-3 alert alert-<?php echo esc_attr($class)?>"> <?php echo esc_attr($message) ?></div>
 <?php } ?>

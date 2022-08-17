@@ -2,7 +2,7 @@
 <table class="table table-hover">
 			<thead>
                         <h2>LIST PROJECT</h2>
-                        <a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo $addpage ?>" class="btn btn-info">Add</a>
+                        <a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) :"" ?>" class="btn btn-info">Add</a>
 						<tr>
                             <th>STT</th>
 							<th>Id</th>
@@ -16,15 +16,15 @@
 					<tbody>
 						<?php $star; foreach($arr['data'] as $row) { $star++; ?>
 						<tr>		
-							<td><?php echo $star;  ?></td>
-							<td><?php echo $row['id'] ?></td>
-							<td><?php echo $row['project_name'] ?> </td>
-							<td><?php echo date('d-m-Y',strtotime($row['start_date']))?></td>
-							<td><?php echo date('d-m-Y',strtotime($row['deadline']))?></td>
-							<td><?php echo $row['status'] ?></td>
+							<td><?php echo esc_attr($star);  ?></td>
+							<td><?php echo esc_attr($row['id']) ?></td>
+							<td><?php echo esc_attr($row['project_name']) ?> </td>
+							<td><?php echo esc_attr(date('d-m-Y',strtotime($row['start_date'])))?></td>
+							<td><?php echo esc_attr(date('d-m-Y',strtotime($row['deadline'])))?></td>
+							<td><?php echo esc_attr($row['status']) ?></td>
 							<td>
-								<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=edit&id=<?php echo $row['id'] ?>&pageNum=<?php echo $pageNum ?>" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-								<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 aaa" data-href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&iddel=<?php echo $row['id'] ?>&pageNum=<?php echo $pageNum ?>"><i class="fa-solid fa-trash-can"></i></button>
+								<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=edit&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
+								<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 aaa" data-href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&iddel=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
 							</td>
 						</tr>
 					<?php } ?>
@@ -39,24 +39,24 @@
                                       <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=1">
                                                 << </a>
                                       </li>
-                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo $pageNum - 1 ?>">
+                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($pageNum) - 1 ?>">
                                                           < </a>
                                       </li>
                             <?php } 
 
                              	for ($i = $pre; $i <= $next; $i++) { ?>
                                       <?php if ($i == $pageNum) { ?>
-                                                <li class="page-item"><a class="page-link bg-warning" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                                <li class="page-item"><a class="page-link bg-warning" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
                                       <?php } else { ?>
-                                                <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                                                <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
                                       <?php } ?>
 
 
                             <?php }
                             	if ($pageNum < $pageSum) { ?>
                                 
-                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo $pageNum + 1 ?>"> > </a></li>
-                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo $pageSum ?>"> >> </a></li>
+                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($pageNum) + 1 ?>"> > </a></li>
+                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($pageSum) ?>"> >> </a></li>
                             <?php } ?>
                   </ul>
         </nav>
@@ -69,7 +69,7 @@
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn xóa ?</h5>
+			<h5 class="modal-title" id="exampleModalLabel">you are sure <b>delete</b> ?</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">&times;</span>
 			</button>
