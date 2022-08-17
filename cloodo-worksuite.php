@@ -211,7 +211,7 @@ function cw_crud_project(){
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
                 }    
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));      
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/details-project.php'));
                 return;
             }else{//////////////show all project pageNum=$_GET///////////////////////
