@@ -17,28 +17,28 @@ session_start();
  */
 //////////////////////////////////////////////////require////////////////////////////////////////////////////
 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/includes/includes.php'));
-//////////////////////////////////////////////////add_iframe///////////////////////////////////////////////// 
-function add_iframe(){
+//////////////////////////////////////////////////cw_add_iframe///////////////////////////////////////////////// 
+function cw_add_iframe(){
     $url= get_site_url();   
     $newurl = (explode("/",trim($url,"/")))[2] ;
     return '<iframe src="https://cloodo.com/trustscore/' . $newurl . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
-add_shortcode( 'cloodo-badge', 'add_iframe' );
+add_shortcode( 'cloodo-badge', 'cw_add_iframe' );
 ////////////////////////////////////////////////project list///////////////////////////////////////////////////
-function add_submenu_project(){
+function cw_add_menu_project(){
     add_menu_page(
-            'CURD project', // Tiêu đề của menu
-            'cloodo-worksuite', // Tên của menu
-            'manage_options',// Vùng truy cập, giá trị này có ý nghĩa chỉ có supper admin và admin đc dùng
-            'project_list', // Slug của menu
-            'access_getAll', // Hàm callback hiển thị nội dung của menu
+            'CURD project', // title menu
+            'cloodo-worksuite', // name menu
+            'manage_options',// area supper admin and admin 
+            'project_list', // Slug menu
+            'cw_access_getall_project', // display function 
             'dashicons-businessman' // icon menu
     );
 }
-add_action('admin_menu', 'add_submenu_project');
-function crud_project(){
-    function access_getAll(){ 
-        if(isset( $_SESSION['token'])){//////////////token-not empty////////////////////
+add_action('admin_menu', 'cw_add_menu_project');
+function cw_crud_project(){
+    function cw_access_getall_project(){ 
+        if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
                 $pageSum=sanitize_text_field($_GET['pageSum']); 
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add-project.php'));
@@ -166,9 +166,9 @@ function crud_project(){
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/show-results.php'));              
             }            
             if(!isset($_GET['pageNum'])){  /////////show all project pageNum=null//////////////////              
-                $star=0;
+                $star = 0;
                 $pageSize = 10;                   
-                $pageNum =1;
+                $pageNum = 1;
                 $arrs =[
                     'method'=> 'GET',
                     'body'=>[],
@@ -192,7 +192,7 @@ function crud_project(){
                     $totalSum = $arr['meta']['paging']['total'];
                     if($totalSum == '0'){
                         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add-project.php'));
-                        exit;
+                        return;
                     }
                     $pageSum = ceil($totalSum/$pageSize);
                     $ofsetPageMax = ($pageSum-1) * $pageSize;
@@ -216,8 +216,8 @@ function crud_project(){
                 return;
             }else{//////////////show all project pageNum=$_GET///////////////////////
                 $pageSize = 10;                   
-                $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : "1";
-                $star = ($pageNum-1)* $pageSize;
+                $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : '1';
+                $star = ($pageNum -1) * $pageSize;
                 $arrs =[
                     'method'=> 'GET',
                     'body'=>[],
@@ -239,6 +239,10 @@ function crud_project(){
                     $_SESSION['success'] = 'view project';
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
+                    if($totalSum == '0'){
+                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api/add-project.php'));
+                        return;
+                    }
                     $pageSum = ceil($totalSum/$pageSize);
                     $ofsetPageMax = ($pageSum-1) * $pageSize;
                     $resPageMax = wp_remote_get("https://erp.cloodo.com/api/v1/project?fields=id%2Cproject_name%2Cproject_summary%2Cnotes%2Cstart_date%2Cdeadline%2Cstatus%2Ccategory%2Cclient%7Bid%2Cname%7D&offset=".$ofsetPageMax, $arrs);
@@ -339,6 +343,6 @@ function crud_project(){
         exit;
     }
 } 
-add_action('init','crud_project');
+add_action('init','cw_crud_project');
 /////////////////////////////////////////////
 
