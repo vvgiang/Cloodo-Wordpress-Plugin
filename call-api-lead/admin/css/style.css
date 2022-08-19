@@ -32,6 +32,3 @@ input {
 .logout{
     float: right;
 }
-label.show{
-    display: flex;
-}

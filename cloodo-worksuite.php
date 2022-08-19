@@ -16,7 +16,11 @@ session_start();
  * Domain Path:       /languages
  */
 //////////////////////////////////////////////////require////////////////////////////////////////////////////
-// require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
+if(isset($_GET['page'])&& $_GET['page']== 'project_list'){
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
+}else if(isset($_GET['page'])&& $_GET['page']== 'lead'){
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/includes/includes.php'));
+}
 //////////////////////////////////////////////////cw_add_iframe///////////////////////////////////////////////// 
 function cw_add_iframe(){
     $url= get_site_url();   

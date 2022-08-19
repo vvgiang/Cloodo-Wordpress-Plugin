@@ -2,7 +2,9 @@
 <table class="table table-hover">
 			<thead>
                         <h2>LIST PROJECT</h2>
-                        <a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info">Add</a>
+						<div>
+						<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info">Add</a>
+						</div>
 						<tr>
                             <th>STT</th>
 							<th>Id</th>
