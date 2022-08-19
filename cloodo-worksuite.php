@@ -20,6 +20,7 @@ if(isset($_GET['page'])&& $_GET['page']== 'project_list'){
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
 }else if(isset($_GET['page'])&& $_GET['page']== 'lead'){
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/includes/includes.php'));
+    echo 'haha';
 }
 //////////////////////////////////////////////////cw_add_iframe///////////////////////////////////////////////// 
 function cw_add_iframe(){
@@ -347,7 +348,7 @@ function cw_crud_project(){
             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/login-project.php'));
         }     
     }
-    if(isset($_GET['logout']) && $_GET['logout']='project'){
+    if(isset($_GET['logout']) && $_GET['logout']=='project'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Logout successfuly ! ';
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=project_list');
@@ -506,7 +507,15 @@ function cw_crud_lead(){
                     ],
                     'cookie'=>[],
                 ];
-                $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs); 
+                var_dump($_GET);
+                // exit;
+                if(isset($_GET['val']))
+                {      $datajax = $_GET['val'];
+                    echo $datajax;
+                    $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offet=0&limit='.$datajax, $arrs);   
+                }else{
+                $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
+                }
                 if($res['response']['code'] != 200){                   
                     $_SESSION['error'] = 'view lead error!';                    
                 }    
@@ -658,7 +667,7 @@ function cw_crud_lead(){
             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/login-lead.php'));
         }     
     }
-    if(isset($_GET['logout']) && $_GET['logout']='lead'){
+    if(isset($_GET['logout']) && $_GET['logout']=='lead'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Logout successfuly ! ';
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=lead');

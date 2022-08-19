@@ -2,7 +2,7 @@
           <div class="container ">
                     <div class="row">
                               <div class="add_new col-md-8">
-                                <h2>ADD LEAD</h2>
+                                <h2 class="projecttitle">ADD LEAD</h2>
                                         <div class="form-group">
                                                   <label>company name</label>
                                                   <input type="text" name="company_name" class="form-control" placeholder="company name" required name="company_name">

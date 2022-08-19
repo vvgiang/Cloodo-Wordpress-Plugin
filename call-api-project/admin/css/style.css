@@ -14,7 +14,7 @@ form.temp{
     flex-direction: column;
     padding: 15px;
     border-radius: 4px;
-    border: 1px solid #333;
+    border: 1px solid #bfbaba;
     margin-top: 30px;
 }
 label {
@@ -24,7 +24,7 @@ input {
     flex: 1;
     outline: none;
     border-radius: 4px;
-    border: 1px solid #333;
+    border: 1px solid #bfbaba;
 }
 .add_new,.edit{
     margin: 0px auto;
@@ -32,3 +32,18 @@ input {
 .logout{
     float: right;
 }
+button.btn.btn-primary {
+    font-weight: 600;
+}
+p{
+    padding-top: 10px;
+}
+p:hover .signup{
+    text-decoration: underline;
+}
+.projecttitle{
+    background: -webkit-linear-gradient(rgb(151, 135, 135), rgb(10, 180, 138));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+

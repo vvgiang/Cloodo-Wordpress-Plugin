@@ -2,7 +2,7 @@
           <div class="container ">
                     <div class="row">
                               <div class="add_new col-md-8">
-                                <h2>ADD PROJECT</h2>
+                                <h2 class="projecttitle">ADD PROJECT</h2>
                                         <div class="form-group">
                                                   <label>Projec_name</label>
                                                   <input type="text" name="project_name" class="form-control" placeholder="projecname" required name="project_name">

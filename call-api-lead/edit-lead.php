@@ -2,7 +2,7 @@
                         <div class="container ">
                                 <div class="row">
                                             <div class="edit col-md-8">
-                                            <h2>EDIT LEAD</h2>
+                                            <h2 class="projecttitle">EDIT LEAD</h2>
                                                     <div class="form-group">
                                                                 <label>COMPANY NAME</label>
                                                                 <input type="text" name="company_name" value="<?php echo esc_attr($row['company_name'])?>" class="form-control" placeholder="company name" required >
