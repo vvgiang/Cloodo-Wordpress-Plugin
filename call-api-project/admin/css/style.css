@@ -18,7 +18,8 @@ form.temp{
     margin-top: 30px;
 }
 label {
-    width: 100px;
+    min-width: 100px;
+    font-weight: bold;
 }
 input {
     flex: 1;
@@ -45,5 +46,9 @@ p:hover .signup{
     background: -webkit-linear-gradient(rgb(151, 135, 135), rgb(10, 180, 138));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+.table td, .table th {
+    padding: 0.5rem !important;
+    vertical-align: none !important;
 }
 

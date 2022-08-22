@@ -507,11 +507,11 @@ function cw_crud_lead(){
                     ],
                     'cookie'=>[],
                 ];
-                var_dump($_GET);
+                // var_dump($_GET);
                 // exit;
                 if(isset($_GET['val']))
                 {      $datajax = $_GET['val'];
-                    echo $datajax;
+                    // echo $datajax;
                     $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offet=0&limit='.$datajax, $arrs);   
                 }else{
                 $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
