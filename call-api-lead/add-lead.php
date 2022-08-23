@@ -4,23 +4,23 @@
                               <div class="add_new col-md-8">
                                 <h2 class="projecttitle">ADD LEAD</h2>
                                         <div class="form-group">
-                                                  <label>company name</label>
+                                                  <label>COMPANY_NAME</label>
                                                   <input type="text" name="company_name" class="form-control" placeholder="company name" required name="company_name">
                                         </div>
                                         <div class="form-group">
-                                                  <label>value</label>
+                                                  <label>VALUE</label>
                                                   <input type="number" min="0" name="value" class="form-control" placeholder="value" required name="value">
                                         </div>
                                         <div class="form-group">
-                                                  <label>client name</label>
+                                                  <label>CLIENT NAME</label>
                                                   <input type="text" name="client_name" class="form-control" placeholder="client name" required name="client_name">
                                         </div>
                                         <div class="form-group">
-                                                  <label>client email</label>
+                                                  <label>CLIENT EMAIL</label>
                                                   <input type="email" name="client_email" class="form-control" placeholder="client email" required name="client_email">
                                         </div>
                                         <div class="form-group">
-                                                  <label>next follow up</label>
+                                                  <label>NEXT FOLLOW UP</label>
                                                   <select class="form-control" id="next_follow_up" name="next_follow_up" required>
                                                             <option value="yes">Yes</option>
                                                             <option value="no">No</option>

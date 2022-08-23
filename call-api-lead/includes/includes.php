@@ -11,6 +11,14 @@ function cw_addstyle(){
     wp_enqueue_script('jQuery');
     wp_register_script( 'cw-script',plugin_dir_url(__DIR__).'admin/js/script.js');
     wp_enqueue_script('cw-script');
+    wp_register_script( 'filter-ajax',plugin_dir_url(__DIR__).'admin/js/script.js');
+    wp_localize_script( 'filter-ajax', 'filter_ajax_object',
+        array( 
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'getsiteurl' => get_site_url(),
+        )
+    );
+    wp_enqueue_script( 'filter-ajax' );
 }
 add_action('admin_enqueue_scripts', 'cw_addstyle');
 

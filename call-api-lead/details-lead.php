@@ -1,17 +1,17 @@
 <div class="container">
-<table class="table table-hover">
+	<table class="table table-hover">
 			<thead>
                         <h2 class="projecttitle">LIST LEADS</h2>
                         <div>
 						<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info">Add</a>
 						</div>
-						<div>
+						<div >
 						<label for="show" class="show">
 							Show
 						<select class="form-control" id="show" name="show" required>
-								<option value="5">5</option>
 								<option value="10">10</option>
-								<option value="20">20</option>
+								<option value="25">25</option>
+								<option value="50">50</option>
 						</select>
 						</label>
 						</div>     
@@ -26,7 +26,7 @@
 							<th>ACTION</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="filter_result">
 						<?php $star; foreach($arr['data'] as $row) { $star++; ?>
 						<tr>		
 							<td><?php echo esc_attr($star);  ?></td>
@@ -43,7 +43,7 @@
 						</tr>
 					<?php } ?>
 					</tbody>
-				</table>
+	</table>
 	<div class="container ">        
         <nav aria-label="Page navigation example">
                   <ul class="pagination">
