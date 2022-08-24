@@ -51,4 +51,11 @@ p:hover .signup{
     padding: 0.5rem !important;
     vertical-align: none !important;
 }
+#error{
+    text-align: center;
+    background: -webkit-linear-gradient(rgb(240, 233, 233), rgb(245, 36, 9));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 

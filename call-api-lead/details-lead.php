@@ -1,4 +1,5 @@
 <div class="container">
+<?php if(isset($arr)){ ?>
 	<table class="table table-hover">
 			<thead>
                         <h2 class="projecttitle">LIST LEADS</h2>
@@ -6,14 +7,14 @@
 						<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info">Add</a>
 						</div>
 						<div >
-						<label for="show" class="show">
-							Show
-						<select class="form-control" id="show" name="show" required>
-								<option value="10">10</option>
-								<option value="25">25</option>
-								<option value="50">50</option>
-						</select>
-						</label>
+							<label for="show" class="show">
+								Show
+								<select class="form-control" id="show" name="show" required>
+										<option value="10">10</option>
+										<option value="25">25</option>
+										<option value="50">50</option>
+								</select>
+							</label>
 						</div>     
 						<tr>
                             <th>STT</th>
@@ -44,8 +45,13 @@
 					<?php } ?>
 					</tbody>
 	</table>
+<?php }else{ ?>
+	<div id="error">
+		<h1>Error : API not found</h1>
+	</div>
+<?php die(); } ?>
 	<div class="container ">        
-        <nav aria-label="Page navigation example">
+        <nav class="pagina" aria-label="Page navigation example">
                   <ul class="pagination">
                            
                             <?php if ($pageNum > 1) { ?>

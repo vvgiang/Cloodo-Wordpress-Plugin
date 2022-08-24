@@ -672,25 +672,7 @@ add_action('init','cw_crud_lead');
 add_action( 'wp_ajax_ajax_demo','wp_ajax_ajax_demo_func' );
 add_action( 'wp_ajax_nopriv_ajax_demo','wp_ajax_ajax_demo_func' );
 function wp_ajax_ajax_demo_func(){
-    if(!isset($_GET['pageNum'])){  /////////show all lead pageNum=null////////////////// 
-        $star = 0;
-        $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                   
-        $pageNum = 1;
-        $arrs =[
-            'method'=> 'GET',
-            'body'=>[],
-            'timeout'=>5,
-            'redirection'=>5,
-            'blocking'=>true,
-            'headers'=>[
-                'X-requested-Width'=>'XMLHttpRequest',
-                'Authorization'=>'Bearer '.$_SESSION['token'],
-                'Content-Type'=>'application/json',
-            ],
-            'cookie'=>[],
-        ];
-        $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offet='.$star.'&limit='.$pageSize, $arrs);
-    }else{//////////////show all lead pageNum=$_GET///////////////////////
+    if(isset($_GET['pageNum'])){//////////////show all lead pageNum=$_GET///////////////////////
         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                      
         $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : 1;
         $star = ($pageNum -1) * $pageSize;
@@ -707,8 +689,29 @@ function wp_ajax_ajax_demo_func(){
             ],
             'cookie'=>[],
         ];
-        $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offet='.$star.'&limit='.$pageSize, $arrs);    
+        $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset='.$star.'&limit='.$pageSize, $arrs);
+    }
+    else{ /////////show all lead pageNum=null////////////////// 
+        $star = 0;
+        $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                   
+        $pageNum = 1;
+        $arrs =[
+            'method'=> 'GET',
+            'body'=>[],
+            'timeout'=>5,
+            'redirection'=>5,
+            'blocking'=>true,
+            'headers'=>[
+                'X-requested-Width'=>'XMLHttpRequest',
+                'Authorization'=>'Bearer '.$_SESSION['token'],
+                'Content-Type'=>'application/json',
+            ],
+            'cookie'=>[],
+        ];
+        $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset='.$star.'&limit='.$pageSize, $arrs);
+        
     }
     wp_send_json_success($res); // trả về giá trị dạng json
-    die();//bắt buộc phải có khi kết thúc  
+    die();//bắt buộc phải có khi kết thúc     
+    
 }

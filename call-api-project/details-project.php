@@ -1,4 +1,5 @@
 <div class="container">
+<?php if(isset($arr)){ ?>
 <table class="table table-hover">
 			<thead>
                         <h2 class="projecttitle">LIST PROJECT</h2>
@@ -32,6 +33,11 @@
 					<?php } ?>
 					</tbody>
 				</table>
+<?php }else{ ?>
+	<div id="error">
+		<h1>Error : API not found</h1>
+	</div>
+<?php die(); } ?>
 	<div class="container ">        
         <nav aria-label="Page navigation example">
                   <ul class="pagination">

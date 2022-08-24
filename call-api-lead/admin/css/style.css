@@ -48,6 +48,34 @@ p:hover .signup{
     -webkit-text-fill-color: transparent;
 }
 .table td, .table th {
-    padding: 0.5rem !important;
+    padding: 0.4rem !important;
     vertical-align: none !important;
+}#loading {
+    margin: auto;
+    width: 5rem;
+    height: 5rem;
+    background-color: transparent;
+    border-radius: 5rem;
+    border-left: 0.3rem solid rgb(255, 4, 4);
+    position: relative;
+    transform: rotate(0deg);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    animation: spinning 1s linear infinite;
+}
+
+@keyframes spinning {
+	0% {
+		transform: rotate(0deg);
+	}
+	0% {
+		transform: rotate(-360deg);
+	}
+}
+#error{
+    text-align: center;
+    background: -webkit-linear-gradient(rgb(240, 233, 233), rgb(245, 36, 9));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
