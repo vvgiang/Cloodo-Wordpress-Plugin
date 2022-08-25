@@ -17,9 +17,9 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $star; foreach($arr['data'] as $row) { $star++; ?>
+						<?php $start; foreach($arr['data'] as $row) { $start++; ?>
 						<tr>		
-							<td><?php echo esc_attr($star);  ?></td>
+							<td><?php echo esc_attr($start);  ?></td>
 							<td><?php echo esc_attr($row['id']) ?></td>
 							<td><?php echo esc_attr($row['project_name']) ?> </td>
 							<td><?php echo esc_attr(date('d-m-Y',strtotime($row['start_date'])))?></td>

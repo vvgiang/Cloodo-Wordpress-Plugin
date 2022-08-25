@@ -65,14 +65,14 @@ function cw_crud_project()
             if(isset($_GET['idadd'])){/////////////add project////////////////////////
                 if(isset($_POST['submit'])){
                     $project_name = sanitize_text_field($_POST['project_name']);
-                    $startt_date = sanitize_text_field($_POST['start_date']);
+                    $start_date = sanitize_text_field($_POST['start_date']);
                     $deadline = sanitize_text_field($_POST['deadline']);
                     $status = sanitize_text_field($_POST['status']);
                     $arrs =[
                         'method'=> 'POST',
                         'body'=>[
                             'project_name'=> $project_name,
-                            'start_date'=> $startt_date,
+                            'start_date'=> $start_date,
                             'deadline'=> $deadline,
                             'status'=> $status
                         ],
@@ -129,7 +129,7 @@ function cw_crud_project()
             if(isset($_GET['idput'])){  /////////////update project///////////////////
                 if(isset($_POST['submit'])){           
                     $project_name = sanitize_text_field($_POST['project_name']);
-                    $startt_date = sanitize_text_field($_POST['start_date']);
+                    $start_date = sanitize_text_field($_POST['start_date']);
                     $deadline = sanitize_text_field($_POST['deadline']);
                     $status = sanitize_text_field($_POST['status']);
                     $id = sanitize_text_field($_GET['idput']);
@@ -137,7 +137,7 @@ function cw_crud_project()
                         'method'=> 'PUT',
                         'body'=>[
                         'project_name'=>$project_name,
-                        'start_date'=> $startt_date,
+                        'start_date'=> $start_date,
                         'deadline'=> $deadline,
                         'status'=> $status,
                         ],
@@ -511,7 +511,6 @@ function cw_crud_lead()
                     ],
                     'cookie'=>[],
                 ];
-                // $limit = wp_ajax_ajax_demo_func();
                 $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);               
                 if($res['response']['code'] != 200){                   
                     $_SESSION['error'] = 'view lead error!';                    
@@ -675,25 +674,24 @@ add_action( 'wp_ajax_ajax_demo','wp_ajax_ajax_demo_func' );
 add_action( 'wp_ajax_nopriv_ajax_demo','wp_ajax_ajax_demo_func' );
 function wp_ajax_ajax_demo_func()
 {
-    if(isset($_GET['pageNum'])){//////////////show all lead pageNum=$_GET///////////////////////////////////////////////
-        $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                      
-        $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : 1;
-        $start = ($pageNum -1) * $pageSize;
-        $arrs =[
-            'method'=> 'GET',
-            'body'=>[],
-            'timeout'=>5,
-            'redirection'=>5,
-            'blocking'=>true,
+    if(isset($_GET['iddel'])){////////////////////////////////////////delete lead////////////////////////////////////
+        $id = sanitize_text_field($_GET['iddel']);
+        $arr =[
+            'method'=>'DELETE',
             'headers'=>[
                 'X-requested-Width'=>'XMLHttpRequest',
                 'Authorization'=>'Bearer '.$_SESSION['token'],
-                'Content-Type'=>'application/json',
+                'Content-Type'=>'application/json'
             ],
+            'body'=>[],
+            'timeout'=>'5',
+            'redirection'=>'5',
+            'blocking'=>true,
             'cookie'=>[],
         ];
-        $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset='.$start.'&limit='.$pageSize, $arrs);
-    }else{ ///////////////////////////////////////////////show all lead pageNum=null///////////////////////////
+        $res = wp_remote_request('https://erp.cloodo.com/api/v1/lead/'.$id,$arr);             
+    } 
+    if(!isset($_GET['pageNum'])){//////////////////////////////////show all lead pageNum=null///////////////////////////
         $start = 0;
         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                   
         $pageNum = 1;
@@ -711,9 +709,25 @@ function wp_ajax_ajax_demo_func()
             'cookie'=>[],
         ];
         $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset='.$start.'&limit='.$pageSize, $arrs);
-        
+    }else{//////////////show all lead pageNum=$_GET///////////////////////////////////////////////
+        $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                      
+        $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : 1;
+        $start = ($pageNum -1) * $pageSize;
+        $arrs =[
+            'method'=> 'GET',
+            'body'=>[],
+            'timeout'=>5,
+            'redirection'=>5,
+            'blocking'=>true,
+            'headers'=>[
+                'X-requested-Width'=>'XMLHttpRequest',
+                'Authorization'=>'Bearer '.$_SESSION['token'],
+                'Content-Type'=>'application/json',
+            ],
+            'cookie'=>[],
+        ];
+        $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset='.$start.'&limit='.$pageSize, $arrs);
     }
     wp_send_json_success($res); // response json
     die();// required   
-    
 }
