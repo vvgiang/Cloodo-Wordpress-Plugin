@@ -28,9 +28,9 @@
 						</tr>
 					</thead>
 					<tbody class="filter_result">
-						<?php $star; foreach($arr['data'] as $row) { $star++; ?>
+						<?php $start; foreach($arr['data'] as $row) { $start++; ?>
 						<tr>		
-							<td><?php echo esc_attr($star);  ?></td>
+							<td><?php echo esc_attr($start);  ?></td>
 							<td><?php echo esc_attr($row['client_name']) ?> </td>
 							<td><?php echo esc_attr($row['company_name']) ?> </td>
 							<td><?php echo esc_attr($row['value']) ?> </td>
@@ -56,27 +56,27 @@
                            
                             <?php if ($pageNum > 1) { ?>
                         
-                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=1">
+                                      <li class="page-item"><a class="page-link" data-Num="<?php echo 1; ?>" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=1">
                                                 << </a>
                                       </li>
-                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($pageNum) - 1 ?>">
+                                      <li class="page-item"><a class="page-link" data-Num="<?php echo esc_attr($pageNum) - 1 ?>" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($pageNum) - 1 ?>">
                                                           < </a>
                                       </li>
                             <?php } 
 
                              	for ($i = $pre; $i <= $next; $i++) { ?>
                                       <?php if ($i == $pageNum) { ?>
-                                                <li class="page-item"><a class="page-link bg-warning" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
+                                                <li class="page-item"><a class="page-link bg-warning" data-Num="<?php echo esc_attr($i) ?>" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
                                       <?php } else { ?>
-                                                <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
+                                                <li class="page-item"><a class="page-link" data-Num="<?php echo esc_attr($i) ?>" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
                                       <?php } ?>
 
 
                             <?php }
                             	if ($pageNum < $pageSum) { ?>
                                 
-                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($pageNum) + 1 ?>"> > </a></li>
-                                      <li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($pageSum) ?>"> >> </a></li>
+                                      <li class="page-item"><a class="page-link" data-Num="<?php echo esc_attr($pageNum) + 1 ?>" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($pageNum) + 1 ?>"> > </a></li>
+                                      <li class="page-item"><a class="page-link" data-Num="<?php echo esc_attr($pageSum) ?>" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&pageNum=<?php echo esc_attr($pageSum) ?>"> >> </a></li>
                             <?php } ?>
                   </ul>
         </nav>
