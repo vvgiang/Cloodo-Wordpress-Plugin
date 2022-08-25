@@ -1,11 +1,11 @@
 jQuery(document).ready(function($) {
     $('button.gethref').click(function(){
-       var dataHref = $(this).attr('data-href');
-       console.log(dataHref);
+        var dataHref = $(this).attr('data-href');
+        console.log(dataHref);
         $('.posthref').attr('href',dataHref);
     });
     $('#show').change(function(){
-         flag = false;
+        flag = false;
         var val = $(this).val() ? $(this).val() : 10;
         $.ajax({
 			url: filter_ajax_object.ajaxUrl+'?pageNum='+filter_ajax_object.pageNum,
@@ -15,13 +15,15 @@ jQuery(document).ready(function($) {
                 action: 'ajax_demo',
                 value : val,
             },
-            beforeSend: function() {
+            beforeSend: function() 
+            {
 				$( '.filter_result tr').remove();
 				$( '.filter_result' ).scrollTop(0);
                 $( '.pagina ul' ).remove();
 				$( '.filter_result' ).append( '<div id="loading"></div>' );
 			},
-			success: function( response ) {
+			success: function( response ) 
+            {
                 console.log(response);
                 if(response.success) {
                     $( '.filter_result' ).find( '#loading' ).remove();
@@ -36,7 +38,7 @@ jQuery(document).ready(function($) {
                         around = 3;
                         next = pageNum + around;
                         if (next > pageSum) {
-                             next = pageSum;
+                            next = pageSum;
                         }
                         pre = pageNum - around;
                         if (pre <= 1) pre = 1;
@@ -74,15 +76,15 @@ jQuery(document).ready(function($) {
                     $('.pagina').append(`
                     <ul class="pagination">       
                             ${pageNum > 1 ?
-                                    (`<li class="page-item"><a class="page-link" data-Num="1" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=1"> << </a></li>
-                                      <li class="page-item"><a class="page-link" data-Num="${pageNum-1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum-1}"> < </a></li>`) : ""
+                                (`<li class="page-item"><a class="page-link" data-Num="1" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=1"> << </a></li>
+                                <li class="page-item"><a class="page-link" data-Num="${pageNum-1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum-1}"> < </a></li>`) : ""
                             }
                             ${fname()}
                             ${pageNum < pageSum ?               
-                                    (`<li class="page-item"><a class="page-link" data-Num="${pageNum+1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum+1}"> > </a></li>
-                                    <li class="page-item"><a class="page-link" data-Num="${pageSum}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageSum}"> >> </a></li>`) : ""
+                                (`<li class="page-item"><a class="page-link" data-Num="${pageNum+1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum+1}"> > </a></li>
+                                <li class="page-item"><a class="page-link" data-Num="${pageSum}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageSum}"> >> </a></li>`) : ""
                             }
-                  </ul>`);
+                    </ul>`);
                     if((arr.length) >0){
                         swal({
                             title: "Filter compete !",
@@ -108,7 +110,8 @@ jQuery(document).ready(function($) {
 			}
 		});
         setTimeout(messageError, 5000);
-        function messageError() {            
+        function messageError() 
+        {            
             if(flag == false){
                 console.log(flag)
                 $( '.filter_result' ).find( '#loading' ).remove();
@@ -120,7 +123,8 @@ jQuery(document).ready(function($) {
             }
         }
     });
-    $(document).on('click','.page-link',function(e){
+    $(document).on('click','.page-link',function(e)
+    {
         e.preventDefault();
         var pageNum = $(this).attr('data-Num') ? $(this).attr('data-Num'): 1;
         var pageNum = Number(pageNum);
@@ -155,7 +159,7 @@ jQuery(document).ready(function($) {
                         around = 3;
                         next = pageNum + around;
                         if (next > pageSum) {
-                             next = pageSum;
+                            next = pageSum;
                         }
                         pre = pageNum - around;
                         if (pre <= 1) pre = 1;
@@ -196,14 +200,14 @@ jQuery(document).ready(function($) {
                     <ul class="pagination">       
                             ${pageNum > 1 ?
                                     (`<li class="page-item"><a class="page-link" data-Num="1" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=1"> << </a></li>
-                                      <li class="page-item"><a class="page-link" data-Num="${pageNum-1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum-1}"> < </a></li>`) : ""
+                                    <li class="page-item"><a class="page-link" data-Num="${pageNum-1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum-1}"> < </a></li>`) : ""
                             }
                             ${fname()}
                             ${pageNum < pageSum ?               
                                     (`<li class="page-item"><a class="page-link" data-Num="${pageNum+1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum+1}"> > </a></li>
                                     <li class="page-item"><a class="page-link" data-Num="${pageSum}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageSum}"> >> </a></li>`) : ""
                             }
-                  </ul>`);
+                    </ul>`);
                     if((arr.length) >0){
                         swal({
                             title: "Filter compete !",

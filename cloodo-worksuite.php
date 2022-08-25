@@ -23,21 +23,23 @@ if(isset($_GET['page'])&& $_GET['page']== 'project_list'){
 }
 // require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/ajax.php'));
 //////////////////////////////////////////////////cw_add_iframe///////////////////////////////////////////////// 
-function cw_add_iframe(){
+function cw_add_iframe()
+{
     $url= get_site_url();   
     $newurl = (explode("/",trim($url,"/")))[2] ;
     return '<iframe src="https://cloodo.com/trustscore/' . $newurl . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
 add_shortcode( 'cloodo-badge', 'cw_add_iframe' );
 ////////////////////////////////////////////////process project///////////////////////////////////////////////////
-function cw_add_menu_projects(){
+function cw_add_menu_projects()
+{
     add_menu_page(
-            'CURD', // title menu
-            'Cloodo Worksuite', // name menu
-            'manage_options',// area supper admin and admin 
-            'project_list', // Slug menu
-            'cw_access_getall_project', // display function 
-            'dashicons-businessman' // icon menu
+        'CURD', // title menu
+        'Cloodo Worksuite', // name menu
+        'manage_options',// area supper admin and admin 
+        'project_list', // Slug menu
+        'cw_access_getall_project', // display function 
+        'dashicons-businessman' // icon menu
     );
     add_submenu_page( 
         'project_list', // Slug menu parent
@@ -49,9 +51,11 @@ function cw_add_menu_projects(){
     );
 }
 add_action('admin_menu', 'cw_add_menu_projects');
-function cw_crud_project(){
+function cw_crud_project()
+{
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
-    function cw_access_getall_project(){ 
+    function cw_access_getall_project()
+    { 
         if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
@@ -83,12 +87,12 @@ function cw_crud_project(){
                     ];
                     $res = wp_remote_request('https://erp.cloodo.com/api/v1/project', $arrs);
                     if($res['response']['code'] != 200){
-                            $_SESSION['error'] = 'add project error';  
+                        $_SESSION['error'] = 'add project error';  
                         }
                     else{                 
-                            $_SESSION['success'] = 'add project successfuly ! ';
-                            $arr = json_decode($res['body'],true);
-                            $row =$arr['data'];
+                        $_SESSION['success'] = 'add project successfuly ! ';
+                        $arr = json_decode($res['body'],true);
+                        $row =$arr['data'];
                     }
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/show-results.php'));
                 }
@@ -173,9 +177,9 @@ function cw_crud_project(){
                 ];
                 $res = wp_remote_request('https://erp.cloodo.com/api/v1/project/'.$id,$arr);
                 if($res['response']['code'] != 200){
-                  $_SESSION['error'] ='delete error !';
+                    $_SESSION['error'] ='delete error !';
                 }else{
-                  $_SESSION['success'] ='delete successfuly !';
+                    $_SESSION['success'] ='delete successfuly !';
                 }
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/show-results.php'));              
             }            
@@ -199,8 +203,7 @@ function cw_crud_project(){
                 $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs); 
                 if($res['response']['code'] != 200){                   
                     $_SESSION['error'] = 'view project error!';                    
-                }    
-                else{                    
+                }else{                    
                     $_SESSION['success'] = 'view project ';
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
@@ -248,8 +251,7 @@ function cw_crud_project(){
                 $res = wp_remote_get("https://erp.cloodo.com/api/v1/project?fields=id%2Cproject_name%2Cproject_summary%2Cnotes%2Cstart_date%2Cdeadline%2Cstatus%2Ccategory%2Cclient%7Bid%2Cname%7D&offset=".$start, $arrs);
                 if($res['response']['code'] != 200){                       
                     $_SESSION['error'] = 'view project error';
-                }
-                else{
+                }else{
                     $_SESSION['success'] = 'view project';
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
@@ -264,12 +266,12 @@ function cw_crud_project(){
                     if(count($arr2['data'])=='10'){
                         $nextpage = $pageSum + 1;
                     }else{
-                       $nextpage = $pageSum; 
+                        $nextpage = $pageSum; 
                     }
                     $around = 3;
                     $next = $pageNum + $around;
                     if ($next > $pageSum) {
-                            $next = $pageSum;
+                        $next = $pageSum;
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
@@ -331,7 +333,7 @@ function cw_crud_project(){
                             $around = 3;
                             $next = $pageNum + $around;
                             if ($next > $pageSum) {
-                                    $next = $pageSum;
+                                $next = $pageSum;
                             }
                             $pre = $pageNum - $around;
                             if ($pre <= 1) $pre = 1;
@@ -357,8 +359,10 @@ function cw_crud_project(){
 } 
 add_action('init','cw_crud_project');
 ///////////////////////////////////////////// process Lead////////////////////////////////////////////
-function cw_crud_lead(){
-    function cw_access_getall_leads(){ 
+function cw_crud_lead()
+{
+    function cw_access_getall_leads()
+    { 
         if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view lead/////////////////////////
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
@@ -375,29 +379,29 @@ function cw_crud_lead(){
                     $arrs =[
                         'method'=> 'POST',
                         'body'=>[
-                            'company_name'=> $company_name,
-                            'value'=> $value,
-                            'client_name'=> $client_name,
-                            'client_email'=> $client_email,
-                            'next_follow_up'=> $next_follow_up
+                        'company_name'=> $company_name,
+                        'value'=> $value,
+                        'client_name'=> $client_name,
+                        'client_email'=> $client_email,
+                        'next_follow_up'=> $next_follow_up
                         ],
                         'timeout'=>5,
                         'redirection'=>5,
                         'blocking'=>true,
                         'headers'=>[
-                            'X-requested-Width'=>'XMLHttpRequest',
-                            'Authorization'=>'Bearer '.$_SESSION['token'],
+                        'X-requested-Width'=>'XMLHttpRequest',
+                        'Authorization'=>'Bearer '.$_SESSION['token'],
                         ],
                         'cookie'=>[],
                     ];
                     $res = wp_remote_request('https://erp.cloodo.com/api/v1/lead', $arrs);
                     if($res['response']['code'] != 200){
-                            $_SESSION['error'] = 'add lead error';  
+                        $_SESSION['error'] = 'add lead error';  
                         }
                     else{                 
-                            $_SESSION['success'] = 'add lead successfuly ! ';
-                            $arr = json_decode($res['body'],true);
-                            $row =$arr['data'];
+                        $_SESSION['success'] = 'add lead successfuly ! ';
+                        $arr = json_decode($res['body'],true);
+                        $row =$arr['data'];
                     }
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
                 }
@@ -484,9 +488,9 @@ function cw_crud_lead(){
                 ];
                 $res = wp_remote_request('https://erp.cloodo.com/api/v1/lead/'.$id,$arr);
                 if($res['response']['code'] != 200){
-                  $_SESSION['error'] ='delete error !';
+                    $_SESSION['error'] ='delete error !';
                 }else{
-                  $_SESSION['success'] ='delete successfuly !';
+                    $_SESSION['success'] ='delete successfuly !';
                 }
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));              
             }            
@@ -576,7 +580,7 @@ function cw_crud_lead(){
                     if(count($arr2['data'])=='10'){
                         $nextpage = $pageSum + 1;
                     }else{
-                       $nextpage = $pageSum; 
+                        $nextpage = $pageSum; 
                     }
                     $around = 3;
                     $next = $pageNum + $around;
@@ -608,8 +612,7 @@ function cw_crud_lead(){
                     $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
                     if($res['response']['code'] != 200){
                     $_SESSION['error'] = 'User notfound !';           
-                    }
-                    else{
+                    }else{
                         $res = json_decode($res['body'],true);
                         $id_token = $res['data']['token'];
                         update_option( 'token', $id_token);                              
@@ -634,8 +637,7 @@ function cw_crud_lead(){
                         $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
                         if($res['response']['code'] != 200){  
                             $_SESSION['error'] = 'add token error !';                                
-                        }    
-                        else{                
+                        }else{                
                             $_SESSION['success'] = 'Login successfuly ! ';
                             $arr = json_decode($res['body'],true);
                             $totalSum = $arr['meta']['paging']['total'];
@@ -643,7 +645,7 @@ function cw_crud_lead(){
                             $around = 3;
                             $next = $pageNum + $around;
                             if ($next > $pageSum) {
-                                    $next = $pageSum;
+                                $next = $pageSum;
                             }
                             $pre = $pageNum - $around;
                             if ($pre <= 1) $pre = 1;
@@ -671,7 +673,8 @@ add_action('init','cw_crud_lead');
 ////////////////////////////////////////////////ajax/////////////////////////////////////////////////////////////////
 add_action( 'wp_ajax_ajax_demo','wp_ajax_ajax_demo_func' );
 add_action( 'wp_ajax_nopriv_ajax_demo','wp_ajax_ajax_demo_func' );
-function wp_ajax_ajax_demo_func(){
+function wp_ajax_ajax_demo_func()
+{
     if(isset($_GET['pageNum'])){//////////////show all lead pageNum=$_GET///////////////////////////////////////////////
         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                      
         $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : 1;
@@ -690,8 +693,7 @@ function wp_ajax_ajax_demo_func(){
             'cookie'=>[],
         ];
         $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset='.$start.'&limit='.$pageSize, $arrs);
-    }
-    else{ ///////////////////////////////////////////////show all lead pageNum=null///////////////////////////
+    }else{ ///////////////////////////////////////////////show all lead pageNum=null///////////////////////////
         $start = 0;
         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                   
         $pageNum = 1;

@@ -92,7 +92,7 @@ function wp_ajax_ajax_demo_func(){
             if(count($arr2['data'])=='10'){
                 $nextpage = $pageSum + 1;
             }else{
-               $nextpage = $pageSum; 
+                $nextpage = $pageSum; 
             }
             $around = 3;
             $next = $pageNum + $around;
