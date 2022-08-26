@@ -20,6 +20,8 @@ if(isset($_GET['page'])&& $_GET['page']== 'project_list'){
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
 }else if(isset($_GET['page'])&& $_GET['page']== 'lead'){
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/includes/includes.php'));
+}else{
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/includes/includes.php'));
 }
 // require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/ajax.php'));
 //////////////////////////////////////////////////cw_add_iframe///////////////////////////////////////////////// 
@@ -44,16 +46,24 @@ function cw_add_menu_projects()
     add_submenu_page( 
         'project_list', // Slug menu parent
         'CURD lead', // title page
-        'CW lead', // name menu
+        'Lead', // name menu
         'manage_options',// area supper admin and admin 
         'lead', // Slug menu
-        'cw_access_getall_leads', // display function  
+        'cw_access_getall_leads', // display function 
+    );
+    add_submenu_page( 
+        'project_list', // Slug menu parent
+        'Setting Login', // title page
+        'Setting', // name menu
+        'manage_options',// area supper admin and admin 
+        'Setting', // Slug menu
+        'cw_access_propretie_loggin', // display function 
     );
 }
 add_action('admin_menu', 'cw_add_menu_projects');
 function cw_crud_project()
 {
-    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
+    // require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
     function cw_access_getall_project()
     { 
         if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
@@ -731,3 +741,10 @@ function wp_ajax_ajax_demo_func()
     wp_send_json_success($res); // response json
     die();// required   
 }
+/////////////////////////////////////////////////setting - send email//////////////////////////////////////////////////////
+function wp_setting_loggin_access(){
+    function cw_access_propretie_loggin(){
+        
+    }
+}
+add_action('init', 'wp_setting_loggin_access');

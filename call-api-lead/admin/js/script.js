@@ -145,7 +145,7 @@ jQuery(document).ready(function($) {
                         icon: "warning",
                     });
                 }
-			}
+			},
 		});
         setTimeout(messageError, 10000);
         function messageError() 
@@ -231,22 +231,23 @@ jQuery(document).ready(function($) {
                     $('.pagina').append(`
                     <ul class="pagination">       
                         ${pageNum > 1 ?
-                                (`<li class="page-item"><a class="page-link" data-Num="1" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=1"> << </a></li>
-                                <li class="page-item"><a class="page-link" data-Num="${pageNum-1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum-1}"> < </a></li>`) : ""
+                            (`<li class="page-item"><a class="page-link" data-Num="1" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=1"> << </a></li>
+                            <li class="page-item"><a class="page-link" data-Num="${pageNum-1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum-1}"> < </a></li>`) : ""
                         }
                         ${fname()}
                         ${pageNum < pageSum ?               
-                                (`<li class="page-item"><a class="page-link" data-Num="${pageNum+1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum+1}"> > </a></li>
-                                <li class="page-item"><a class="page-link" data-Num="${pageSum}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageSum}"> >> </a></li>`) : ""
+                            (`<li class="page-item"><a class="page-link" data-Num="${pageNum+1}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageNum+1}"> > </a></li>
+                            <li class="page-item"><a class="page-link" data-Num="${pageSum}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${pageSum}"> >> </a></li>`) : ""
                         }
                     </ul>`);
-                    if((arr.length) >0){
-                    }else{
+                    if((arr.length) <= 0){
                         swal({
                             title: "lead empty!",
                             text: "You clicked the button!",
                             icon: "success",
                         })
+                    }else{
+                        
                     }
                     flag = true;
                     }
