@@ -6,14 +6,14 @@
     <form class="login_form" method="POST" action="">
       <button type="submit"  name="connect" class="btn btn-primary">Connect Now!</button>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-          Show Form Login And Reset Token !
+      Login and transfer Account !
       </button>
     </form>
     <?php }else{ ?>
       <form class="login_form" method="POST" action="http://localhost/svtest/wp-admin/admin.php?page=Setting">
       <button type="submit"  name="setting" class="btn btn-primary">Auto Create User account !</button>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Show Form Login And Reset Token !
+      Custom create Account !
       </button>                       
   </form>
     <?php } ?>

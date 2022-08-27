@@ -42,7 +42,7 @@ function cw_add_menu_projects()
         'project_list', // Slug menu
         'cw_access_getall_project', // display function 
         'dashicons-businessman', // icon menu
-        '2'
+        '5'
     );
     add_submenu_page( 
         'project_list', // Slug menu parent
@@ -374,7 +374,6 @@ function cw_crud_lead()
 {
     function cw_access_getall_leads()
     { 
-        unset( $_SESSION['token']);
         if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view lead/////////////////////////
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
@@ -624,9 +623,9 @@ function cw_crud_lead()
                     ];
                     $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
                     if($res['response']['code'] == 403 && ($email ==  get_option('user_register') && $password == get_option('password'))){
-                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' Your account is not activated !';
+                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' - Your account is not activated !';
                     }elseif($res['response']['code'] == 403 && ($email !=  get_option('user_register') || $password != get_option('password')) ){
-                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' Incorrect email or password !'; 
+                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' - Incorrect email or password !'; 
                     }else{
                         $res = json_decode($res['body'],true);
                         $id_token = $res['data']['token'];
@@ -651,7 +650,7 @@ function cw_crud_lead()
                         ];
                         $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
                         if($res['response']['code'] != 200){  
-                            $_SESSION['error'] = 'add token error !';                                
+                            $_SESSION['error'] = 'Add token error !';                                
                         }else{                
                             $_SESSION['success'] = 'Login successfuly ! ';
                             $arr = json_decode($res['body'],true);
@@ -809,8 +808,6 @@ function wp_ajax_ajax_demo_func()
 /////////////////////////////////////////////////setting - send email//////////////////////////////////////////////////////
 function wp_setting_loggin_access(){
     function cw_access_propretie_loggin(){
-            // delete_option('user_register');   
-            // delete_option('password');
             $emailtest=get_option( 'admin_email');
             $id = get_current_user_id();
             $user = get_userdata($id);
@@ -848,6 +845,10 @@ function wp_setting_loggin_access(){
                 $error = $_SESSION['error'];
                 unset( $_SESSION['error']);
             }
+        }
+        if(isset($_POST['Custom_registration'])){
+            delete_option('user_register');   
+            delete_option('password');
         }
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/setting.php'));
     }

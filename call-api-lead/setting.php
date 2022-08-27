@@ -12,7 +12,7 @@
             echo '<p style="color:red;font-size: 16px;font-weight: 400;">'.$error.' - The account already exists or has not activated email !</p>';
         }
         elseif(isset($success)){
-            echo '<p style="color:green;font-size: 16px;font-weight: 400;">Register Successfully - '.$success. '!';
+            echo '<p style="color:green;font-size: 16px;font-weight: 400;">Register Successfully - '.$success;
         }else{ ?>
         <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;">Chúc an lành ! hôm nay là : <?php date_default_timezone_set('Asia/Ho_Chi_Minh'); echo date('d/m/Y - H:i:s'); ?></p>
         <button type="submit"  name="Custom_registration" class="btn btn-primary">Another account !</button>
