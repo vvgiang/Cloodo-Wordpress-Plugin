@@ -41,7 +41,8 @@ function cw_add_menu_projects()
         'manage_options',// area supper admin and admin 
         'project_list', // Slug menu
         'cw_access_getall_project', // display function 
-        'dashicons-businessman' // icon menu
+        'dashicons-businessman', // icon menu
+        '2'
     );
     add_submenu_page( 
         'project_list', // Slug menu parent
@@ -373,6 +374,7 @@ function cw_crud_lead()
 {
     function cw_access_getall_leads()
     { 
+        unset( $_SESSION['token']);
         if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view lead/////////////////////////
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
@@ -608,6 +610,8 @@ function cw_crud_lead()
             if(isset($_POST['save'])){
                 $email = sanitize_email($_POST['email']);
                 $password = sanitize_text_field($_POST['password']);
+                update_option('user_register',$email );
+                update_option('password',$password );
                 if($email && $password != ''){
                     $arrs =[
                         'method'=> 'POST',
@@ -619,8 +623,10 @@ function cw_crud_lead()
                         'cookie'=>[],
                     ];
                     $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
-                    if($res['response']['code'] != 200){
-                    $_SESSION['error'] = 'User notfound !';           
+                    if($res['response']['code'] == 403 && ($email ==  get_option('user_register') && $password == get_option('password'))){
+                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' Your account is not activated !';
+                    }elseif($res['response']['code'] == 403 && ($email !=  get_option('user_register') || $password != get_option('password')) ){
+                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' Incorrect email or password !'; 
                     }else{
                         $res = json_decode($res['body'],true);
                         $id_token = $res['data']['token'];
@@ -638,7 +644,7 @@ function cw_crud_lead()
                             'blocking'=>true,
                             'headers'=>[
                                 'X-requested-Width'=>'XMLHttpRequest',
-                                'Authorization'=>'Bearer '.$_SESSION['token'],
+                                'Authorization'=>'Bearer '.$token,
                                 'Content-Type'=>'application/json',
                             ],
                             'cookie'=>[],
@@ -667,9 +673,68 @@ function cw_crud_lead()
                     $_SESSION['error'] = 'User and Password do not empty !';
                 }    
             }
+            if(isset($_POST['connect'])){
+                    $email =  get_option('user_register');
+                    $password = get_option('password');
+                        $arrs =[
+                            'method'=> 'POST',
+                            'body'=>['email'=>$email,'password'=> $password],
+                            'timeout'=>5,
+                            'redirection'=>5,
+                            'blocking'=>true,
+                            'headers'=>[],
+                            'cookie'=>[],
+                        ];
+                        $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
+                        if($res['response']['code'] != 200){
+                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' - Please check your email and activate your account ! !';
+                        }else{
+                            $res = json_decode($res['body'],true);
+                            $id_token = $res['data']['token'];
+                            update_option( 'token', $id_token);                              
+                            $token = get_option('token');
+                            $pageSize = 10;
+                            $pageNum = isset($_GET['pageNum']) ? sanitize_text_field($_GET['pageNum']) : '1';
+                            $start = ($pageNum-1)* $pageSize;
+                            $arrs =[
+                                'method'=> 'GET',
+                                'body'=>[],
+                                'timeout'=>5,
+                                'redirection'=>5,
+                                'blocking'=>true,
+                                'headers'=>[
+                                    'X-requested-Width'=>'XMLHttpRequest',
+                                    'Authorization'=>'Bearer '.$token,
+                                    'Content-Type'=>'application/json',
+                                ],
+                                'cookie'=>[],
+                            ];
+                            $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
+                            if($res['response']['code'] != 200){  
+                                $_SESSION['error'] = 'add token error !';                                
+                            }else{                
+                                $_SESSION['success'] = 'Login successfuly ! ';
+                                $_SESSION['token']= $token;
+                                $arr = json_decode($res['body'],true);
+                                $totalSum = $arr['meta']['paging']['total'];
+                                $pageSum = ceil($totalSum/$pageSize);
+                                $around = 3;
+                                $next = $pageNum + $around;
+                                if ($next > $pageSum) {
+                                    $next = $pageSum;
+                                }
+                                $pre = $pageNum - $around;
+                                if ($pre <= 1) $pre = 1;
+                                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
+                                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/details-lead.php'));
+                                return;
+                            }
+                        } 
+            }  
             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/login-lead.php'));
-        }     
+        }
+        
     }
     if(isset($_GET['logout']) && $_GET['logout']=='lead'){
         unset($_SESSION['token']);
@@ -744,7 +809,47 @@ function wp_ajax_ajax_demo_func()
 /////////////////////////////////////////////////setting - send email//////////////////////////////////////////////////////
 function wp_setting_loggin_access(){
     function cw_access_propretie_loggin(){
-        
+            // delete_option('user_register');   
+            // delete_option('password');
+            $emailtest=get_option( 'admin_email');
+            $id = get_current_user_id();
+            $user = get_userdata($id);
+            $namesite = get_bloginfo();
+            $user_login = sanitize_text_field($user->user_login);
+            $user_email = sanitize_email($user->user_email);
+            $company_name = (explode('.',$namesite))[0];
+        if(isset($_POST['Register_quickly'])){
+            $pw = substr(md5(rand(0, 99999)), 0, 6);
+            update_option( 'password', $pw);
+            $password = get_option('password');
+            update_option( 'user_register', $emailtest);
+            $arrs =[
+                'method'=> 'POST',
+                'body'=>[
+                'company_name'=>$company_name,
+                'email'=> $emailtest,
+                'password'=>$password,
+                'password_confirmation'=>$password
+                ],
+                'timeout'=>5,
+                'redirection'=>5,
+                'blocking'=>true,
+                'headers'=>[],
+                'cookie'=>[],
+            ];
+            $res = wp_remote_request('https://erp.cloodo.com/api/v1/create-user',$arrs);
+            if(isset($res['body'])){
+                $arr = json_decode($res['body'],true);
+                $_SESSION['success'] = $arr['message'].'!';
+                $success = $_SESSION['success'];
+                unset( $_SESSION['success']);
+            }else{
+                $_SESSION['error'] = ' Undefined error';
+                $error = $_SESSION['error'];
+                unset( $_SESSION['error']);
+            }
+        }
+        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/setting.php'));
     }
 }
 add_action('init', 'wp_setting_loggin_access');

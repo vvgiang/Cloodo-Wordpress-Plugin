@@ -1,5 +1,5 @@
 <div class="container">
-	<?php if(isset($arr)){ ?>
+	<?php if(isset($arr['data'])){ ?>
 		<table class="table table-hover">
 			<thead>
 				<h2 class="projecttitle">LIST LEADS</h2>
