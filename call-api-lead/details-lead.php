@@ -4,7 +4,7 @@
 			<thead>
 				<h2 class="projecttitle">LIST LEADS</h2>
 				<div>
-					<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info">Add</a>
+					<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&view=post&pageSum=<?php echo isset($nextpage) && $nextpage >0 ? esc_attr( $nextpage ) : 1 ?>" class="btn btn-info">Add</a>
 				</div>
 				<div >
 					<label for="show" class="show">

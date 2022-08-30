@@ -1,4 +1,4 @@
-<form class="temp" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&idadd=post&pageNum=<?php echo isset($pageSum)? esc_attr($pageSum): '1' ?>" method="POST">
+<form class="temp" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&idadd=post&pageNum=<?php echo isset($pageSum ) ? esc_attr($pageSum): '1' ?>" method="POST">
   <div class="container ">
     <div class="row">
       <div class="add_new col-md-8">

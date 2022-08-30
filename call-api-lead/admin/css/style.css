@@ -18,7 +18,8 @@ form.temp{
     margin-top: 30px;
 }
 label {
-    min-width: 100px;
+    min-width: 120px;
+    /* max-width: 120px; */
     font-weight: bold;
 }
 input {
@@ -86,7 +87,14 @@ p:hover .signup{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-image: url(""); */
     background-color: #cccccc;
     flex-direction: column;
 }
+input[type=checkbox]{
+    margin: 0;
+}
+select.swap {
+    font-size: 18px;
+    font-weight: 600;
+}
+
