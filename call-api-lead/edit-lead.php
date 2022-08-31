@@ -1,5 +1,5 @@
-<form class="temp" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&idput=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" method="POST">
-        <div class="container ">
+<div class="temp ">
+        <form class="addnew" action="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&idput=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" method="POST">
                 <div class="row">
                         <div class="edit col-md-8">
                                 <h2 class="projecttitle">EDIT LEAD</h2>
@@ -31,7 +31,6 @@
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="history.back()">Back</button>
                                 </div>
                         </div>
-                                
-                </div> 
-        </div>
-</form>
+                </div>
+        </form>
+</div>

@@ -3,13 +3,13 @@
 		<table class="table table-hover">
 			<thead>
 				<h2 class="projecttitle">LIST LEADS</h2>
-				<div>
+				<div class="addlead">
 					<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&view=post&pageSum=<?php echo isset($nextpage) && $nextpage >0 ? esc_attr( $nextpage ) : 1 ?>" class="btn btn-info">Add</a>
 				</div>
 				<div >
 					<label for="show" class="show">
 						Show
-						<select class="form-control" id="show" name="show" required>
+						<select id="show" name="show" required>
 							<option value="10">10</option>
 							<option value="25">25</option>
 							<option value="50">50</option>

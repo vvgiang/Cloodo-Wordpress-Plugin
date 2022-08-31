@@ -5,7 +5,7 @@
     display: flex;
     width: 100%;
 }
-form.temp{
+.temp{
     width: 600px;
     margin: auto;
     display: flex;
@@ -16,6 +16,9 @@ form.temp{
     border-radius: 4px;
     border: 1px solid #bfbaba;
     margin-top: 30px;
+}
+.addnew {
+    width: 100%;
 }
 label {
     min-width: 120px;
@@ -90,11 +93,18 @@ p:hover .signup{
     background-color: #cccccc;
     flex-direction: column;
 }
+.create_form {
+    max-width: 600px;
+}
 input[type=checkbox]{
     margin: 0;
 }
 select.swap {
     font-size: 18px;
     font-weight: 600;
+    min-width: 300px;
+}
+.addlead{
+    margin-bottom: 15px;
 }
 

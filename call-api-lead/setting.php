@@ -22,7 +22,7 @@
                     $tokenId = get_option( 'token' );
                     $dataoption = maybe_unserialize( $result );
                     foreach ( $dataoption as $row ) { ?>
-                    <option value="<?php echo $row['token']?>"<?php echo ($tokenId == $row['token'])? 'selected' : '' ?>><?php echo $row['email'] ?  $row['email'] : '-------------- Select Account -----------' ?></option>
+                    <option value="<?php echo $row['token'] ? esc_attr($row['token']) :"" ?>"<?php echo ($tokenId == $row['token'])? 'selected' : '' ?>><?php echo isset($row['email']) ?  $row['email'] : '-------------- Select Account -----------' ?></option>
                 <?php } ?>
             </select>
         <button type="submit"  name="Custom_registration" class="btn btn-primary">Swap Account !</button>

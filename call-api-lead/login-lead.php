@@ -23,7 +23,6 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
         <h2 class="projecttitle">LOGIN LEAD FORM</h2>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -39,11 +38,9 @@
               <label for="password" class="form-label">Password</label>
               <input type="password" name="password" id="password" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
               </div>
-              <!-- <p>Don't have an account? <a href="https://erp.cloodo.com/signup" class="text-primary m-l-5 signup"><b>Sign Up</b></a></p> -->
               <p data-toggle="modal" data-target="#exampleModal1">
               Don't have an account? <a href="#" class="text-primary m-l-5 signup"><b>Sign Up</b></a> !
               </p>
-              
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -58,7 +55,6 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <!-- <h5 class="modal-title" id="exampleModalLabel">Modal title</h5> -->
         <h2 class="projecttitle">REGISTER LEAD FORM</h2>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -71,12 +67,12 @@
                 <input type="text" name="company_name" id="company_name" value="<?php echo isset($_POST['company_name']) ? esc_attr($_POST['company_name']): ""; ?>"/>
               </div>
               <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="text" name="email" id="email" value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']): ""; ?>"/>
+                <label for="registerEmail" class="form-label">Email</label>
+                <input type="text" name="email" id="registerEmail" value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']): ""; ?>"/>
               </div>
               <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" id="password" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
+                <label for="registerPass" class="form-label">Password</label>
+                <input type="password" name="password" id="registerPass" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
               </div>
               <div class="mb-1">
                 <input name="checkbox" id="terms" type="checkbox" class="checkbox" value="true">

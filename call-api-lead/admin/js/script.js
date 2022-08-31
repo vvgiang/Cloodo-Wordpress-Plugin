@@ -26,9 +26,17 @@ jQuery(document).ready(function($) {
                         if(response.success){
                             $('.filter_result').find('#loading').remove();
                             $('#id-'+iddel).remove();
+                            let data = response.data.body;
+                            let obj =JSON.parse(data);
+                            const total = obj.meta.paging.total;
                             swal("Poof! Your imaginary file has been deleted!", {
                                 icon: "success",
                             });
+                            $(document).on('click','.swal-button--confirm',function() {
+                                if(total == 0){
+                                    window.location.reload();
+                                }
+                            })
                         }else {
                             swal({
                                 title: "Delete fail !",
