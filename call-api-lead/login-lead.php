@@ -10,7 +10,7 @@
       </button>
     </form>
     <?php }else{ ?>
-      <form class="login_form" method="POST" action="<?php echo get_site_url()?>/wp-admin/admin.php?page=Setting">
+      <form class="login_form" method="POST" action="">
       <button type="submit"  name="setting" class="btn btn-primary">Auto Create User account !</button>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1">
       Custom create Account !

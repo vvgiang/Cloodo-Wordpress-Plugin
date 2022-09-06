@@ -107,4 +107,7 @@ select.swap {
 .addlead{
     margin-bottom: 15px;
 }
-
+.accountselect {
+    display: flex;
+    gap: 10px;
+}
