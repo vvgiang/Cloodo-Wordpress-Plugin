@@ -71,8 +71,9 @@
 			</ul>
 		</nav>
 	</div>
-	<form action="" method="GET">
-		<button type="submit" name="logout" value="lead" class="logout btn btn-danger">Delete Accout !</button>
+	<form class="logout" action="" method="GET">
+		<button type="submit" name="logout" value="lead" class="logout btn btn-danger">Logout</button>
+		<button type="submit" name="DeleteAcc" value="lead" class="logout btn btn-danger">Delete Accout</button>
 	</form>
 	<!-- Modal -->
 	<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -5,15 +5,15 @@
         </a>
         <h4>Hello: <b><?php echo $user_login; ?></b>, welcome to Worksuite</h4>
         <?php if(!empty(get_option('token'))){ 
-            if(isset($error) && $res['response']['code'] == '404') {
-                echo '<p style="color:red;font-size: 16px;font-weight: 400;">'.$error.' - not found!</p>';
-            }
-            elseif(isset($error) && $res['response']['code'] == '405'){ 
-                echo '<p style="color:red;font-size: 16px;font-weight: 400;">'.$error.' - The account already exists or has not activated email !</p>';
-            }
-            elseif(isset($success)){
-                echo '<p style="color:green;font-size: 16px;font-weight: 400;">Register Successfully  '.$success.' Thank you for signing up. Please verify your email to get started !';
-            }else{ ?>
+            // if(isset($error) && isset($res['response']['code']) == '404') {
+            //     echo '<p style="color:red;font-size: 16px;font-weight: 400;">'.$error.' - The Accounts already exists or has not activated email, please try again !</p>';
+            // }
+            // elseif(isset($error) && isset($res['response']['code']) == '405'){ 
+            //     echo '<p style="color:red;font-size: 16px;font-weight: 400;">'.$error.' - The account already exists or has not activated email !</p>';
+            // }
+            // else{
+            //     echo '<p style="color:green;font-size: 16px;font-weight: 400;">Register Successfully  '.$success.' !';
+            // }else{ ?>
             <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;">Chúc an lành ! hôm nay là : <?php date_default_timezone_set('Asia/Ho_Chi_Minh'); echo date('d/m/Y - H:i:s'); ?></p>
         <div class="accountselect">
                     <select name="accountselect" class="swap">
@@ -28,6 +28,7 @@
                         <button type="submit"  name="Custom_registration" class="btn btn-primary">Account Switch</button>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Account</button>
         </div>
+    </form>
                 <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -38,7 +39,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form class="temple" method="post" action="<?php echo get_site_url()?>/wp-admin/admin.php?page=lead">
+                    <form class="temple" method="post" action="">
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -67,7 +68,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
                         </div>
-                        <form class="temple" method="post" action="<?php echo get_site_url()?>/wp-admin/admin.php?page=lead">
+                        <form class="temple" method="post" action="">
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="company_name" class="form-label">Company name</label>
@@ -95,10 +96,11 @@
                 </div>
             </div>
             </div>
-            <?php } ?> 
+            <!-- <//?php } ?>  -->
         <?php }else{ ?>
+            <form class="create_form" method="POST" action="">
             <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;" class="card-text">We are helping you to connect your website <b><?php echo get_bloginfo();?></b> with your Account in Wordpress to sign up for WorkSuite and send Email for You!</p>
             <button type="submit"  name="Register_quickly" class="btn btn-primary">Register quickly !</button>
+        </form>
         <?php } ?>
-    </form>
 </div>

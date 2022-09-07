@@ -69,8 +69,8 @@
                   </ul>
         </nav>
 	</div>
-	<form action="" method="GET">
-		<button type="submit" name="logout" value="project" class="logout btn btn-danger">Logout</button>
+	<form class="logout" action="" method="GET">
+		<button type="submit" name="logout" value="project" class="logout btn btn-danger">logout</button>
 	</form>
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
