@@ -461,10 +461,11 @@ function cw_crud_lead() {
                     'cookie'=>[],
                 ];
                 $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/'.$id.'/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
-                if($res['response']['code'] != 200){
+                if(is_wp_error($res)){
+                    $_SESSION['error'] =  $res->get_error_message();
+                }elseif($res['response']['code'] != 200){
                     $_SESSION['error'] = ' Get lead error !';                       
-                }    
-                else{                       
+                }else{                       
                     $_SESSION['success'] = 'Get lead successfuly ! ';
                     $arr = json_decode($res['body'],true);
                     $row = $arr['data'];
@@ -757,8 +758,8 @@ function wp_setting_loggin_access() {
         if(isset($_POST['save'])){
             $email = sanitize_email($_POST['email']);
             $password = sanitize_text_field($_POST['password']);
-            $result = get_option( 'info' );
             $tokenId = get_option( 'token' );
+            $result = get_option( 'info' );
             $dataoption = maybe_unserialize( $result );
             foreach($dataoption as $arr){
                 if($email == $arr['email']){
@@ -845,6 +846,15 @@ function wp_setting_loggin_access() {
             }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)) {
                 $_SESSION['error'] = 'Incorrect email format !';
                 $error = $_SESSION['error'];
+            }else{
+                $result = get_option('info');
+                $dataoption = maybe_unserialize($result);
+                foreach ($dataoption as $arr) {
+                    if ($email == $arr['email']) {
+                        $_SESSION['error'] = 'This account has been there !';
+                        $error = $_SESSION['error'];
+                    }
+                }
             }
             if(empty($error)) {
                 if(isset($_POST['checkbox'])) {
@@ -863,36 +873,41 @@ function wp_setting_loggin_access() {
                         'cookie'=>[],
                     ];
                     $res = wp_remote_request('https://erp.cloodo.com/api/v1/create-user',$arrs);
-                    if(isset($res['response']['code']) && $res['response']['code'] == 200){
-                        $arrs = [
-                            'method'=> 'POST',
-                            'body'=>['email'=>$email,'password'=> $password],
-                            'timeout'=>5,
-                            'redirection'=>5,
-                            'blocking'=>true,
-                            'headers'=>[],
-                            'cookie'=>[],
-                        ];
-                        $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
-                        if($res['response']['code'] != 200){
-                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].'- The Accounts already exists or has not activated email, please try again !';
-                        $error = $_SESSION['error'];
-                        }else{
-                            $res = json_decode($res['body'],true);
-                            $id_token = $res['data']['token'];
-                            $_SESSION['token'] = $id_token;
-                            update_option( 'token', $id_token);
-                            $result = get_option( 'info' );
-                            $dataoption = maybe_unserialize( $result );
-                            $dataoption[] = ["token"=> $id_token,
-                            "email"=> $email];
-                            $dataoption = maybe_serialize( $dataoption );
-                            update_option( 'info', $dataoption);
-                            $_SESSION['success'] ='Thank you for signing up !';
-                            $success = $_SESSION['success'];
-                        }
+                    if( is_wp_error( $res ) ) {
+                        $_SESSION['error'] = $res->get_error_message();
                     }else{
-                        $_SESSION['error'] = ' Undefined error';
+                        $result = isset($res['body'])? json_decode($res['body'],true) : 0;
+                        if(isset($result['status']) == 'success'){
+                            $arrs = [
+                                'method'=> 'POST',
+                                'body'=>['email'=>$email,'password'=> $password],
+                                'timeout'=>5,
+                                'redirection'=>5,
+                                'blocking'=>true,
+                                'headers'=>[],
+                                'cookie'=>[],
+                            ];
+                            $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
+                            if($res['response']['code'] != 200){
+                            $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].'- The Accounts already exists or has not activated email, please try again !';
+                            $error = $_SESSION['error'];
+                            }else{
+                                $res = json_decode($res['body'],true);
+                                $id_token = $res['data']['token'];
+                                $_SESSION['token'] = $id_token;
+                                update_option( 'token', $id_token);
+                                $result = get_option( 'info' );
+                                $dataoption = maybe_unserialize( $result );
+                                $dataoption[] = ["token"=> $id_token,
+                                "email"=> $email];
+                                $dataoption = maybe_serialize( $dataoption );
+                                update_option( 'info', $dataoption);
+                                $_SESSION['success'] ='Thank you for signing up !';
+                                $success = $_SESSION['success'];
+                            }
+                        }else{
+                            $_SESSION['error'] = ' Undefined error';
+                        }
                     }
                 }else{
                     $_SESSION['error'] = 'Check Box do not empty ! ';
