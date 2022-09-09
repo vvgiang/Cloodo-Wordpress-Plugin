@@ -55,6 +55,7 @@ p:hover .signup{
     padding: 0.4rem !important;
     vertical-align: none !important;
 }#loading {
+    display: block;
     margin: auto;
     width: 5rem;
     height: 5rem;
@@ -116,4 +117,7 @@ select.swap {
     gap: 10px;
     justify-content: flex-end;
     
+}
+li.wp-first-item {
+    display: none;
 }

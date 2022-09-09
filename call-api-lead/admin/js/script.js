@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
                         value:value
                     },
                     beforeSend:function(){
-                        $('.filter_result' ).append( '<div id="loading"></div>' );
+                        $('.filter_result' ).append( '<div style="display:block;" id="loading"></div>' );
                     },
                     success:function(response){
                         if(response.success){
@@ -69,7 +69,7 @@ jQuery(document).ready(function($) {
 				$( '.filter_result tr').remove();
 				$( '.filter_result' ).scrollTop(0);
                 $( '.pagina ul' ).remove();
-				$( '.filter_result' ).append( '<div id="loading"></div>' );
+				$( '.filter_result' ).append( '<div style="display:block;" id="loading"></div>' );
 			},
 			success: function( response ) 
             {
@@ -88,8 +88,17 @@ jQuery(document).ready(function($) {
                     }
                     let pre = pageNum - around;
                     if (pre <= 1) pre = 1;
+                    const dn = new Date(2022,8,10,16,00,00);
                     const d = new Date();
-                    console.log(typeof(pageNum));
+                    var dayset =(dn.getTime());
+                    var currentday = (d.getTime());
+                    var khoangcach =  dayset - currentday;
+                    console.log(dn);
+                    console.log(d);
+                    console.log(Math.floor(khoangcach / (1000 * 60 * 60 * 24))+'d');
+                    console.log(Math.floor((khoangcach % (1000 * 60 * 60 * 24))/(1000*60*60))+'h');
+                    console.log(Math.floor((khoangcach % (1000 * 60 * 60))/(1000*60))+'m');
+                    console.log(Math.floor((khoangcach % (1000 * 60 ))/1000)+'s');
                     var start = (pageNum -1) * val;
                     for(element of arr){
                         start++;
@@ -171,6 +180,10 @@ jQuery(document).ready(function($) {
     $(document).on('click','.page-link',function(e)
     {
         e.preventDefault();
+        const loadEl =$(document).find( '.loadingshow' );
+        if(loadEl.length != 0){
+            return;
+        }
         flag = false;
         const pageN = $(this).attr('data-Num') ? $(this).attr('data-Num'): 1;
         const pageNum = Number(pageN);
@@ -186,7 +199,7 @@ jQuery(document).ready(function($) {
             },
             beforeSend: function() {		
 				$( '.filter_result' ).scrollTop(0);
-				$( '.filter_result' ).append( '<div id="loading"></div>' );
+				$( '.filter_result' ).append( '<div style="display:block;" class="loadingshow" id="loading"></div>' );
 			},
 			success: function( response ) {
                 if(response.success) {

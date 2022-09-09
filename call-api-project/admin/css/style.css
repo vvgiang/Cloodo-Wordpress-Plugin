@@ -57,5 +57,30 @@ p:hover .signup{
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+#loading {
+    display: block;
+    margin: auto;
+    width: 5rem;
+    height: 5rem;
+    background-color: transparent;
+    border-radius: 5rem;
+    border-left: 0.3rem solid rgb(255, 4, 4);
+    position: relative;
+    transform: rotate(0deg);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    animation: spinning 1s linear infinite;
+}
 
-
+@keyframes spinning {
+	0% {
+		transform: rotate(0deg);
+	}
+	0% {
+		transform: rotate(-360deg);
+	}
+}
+li.wp-first-item {
+    display: none;
+}

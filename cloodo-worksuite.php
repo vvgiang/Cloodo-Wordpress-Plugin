@@ -35,34 +35,9 @@ add_shortcode( 'cloodo-badge', 'cw_add_iframe' );
 ////////////////////////////////////////////////process project///////////////////////////////////////////////////
 function cw_add_menu_projects()
 {
-    // add_menu_page(
-    //     'CURD', // title menu
-    //     'Cloodo Worksuite', // name menu
-    //     'manage_options',// area supper admin and admin 
-    //     'project_list', // Slug menu
-    //     'cw_access_getall_project', // display function 
-    //     'dashicons-businessman', // icon menu
-    //     '7'
-    // );
-    // add_submenu_page( 
-    //     'project_list', // Slug menu parent
-    //     'CURD lead', // title page
-    //     'Lead', // name menu
-    //     'manage_options',// area supper admin and admin 
-    //     'lead', // Slug menu
-    //     'cw_access_getall_leads', // display function 
-    // );
-    // add_submenu_page( 
-    //     'project_list', // Slug menu parent
-    //     'Setting Login', // title page
-    //     'Setting', // name menu
-    //     'manage_options',// area supper admin and admin 
-    //     'Setting', // Slug menu
-    //     'cw_access_properties_loggin', // display function 
-    // );
     add_menu_page(
         'Setting', // title menu
-        'Cloodo Worksuite', // name menu
+        'Worksuite', // name menu
         'manage_options',// area supper admin and admin 
         'Setting', // Slug menu
         'cw_access_properties_loggin', // display function 
@@ -71,29 +46,34 @@ function cw_add_menu_projects()
     );
     if(!empty($_SESSION['token'])){
         add_submenu_page( 
-                'Setting', // Slug menu parent
-                'Crud Project', // title page
-                'Project', // name menu
-                'manage_options',// area supper admin and admin 
-                'project_list', // Slug menu
-                'cw_access_getall_project', // display function 
+            'Setting', // Slug menu parent
+            'Crud Lead', // title page
+            'Lead', // name menu
+            'manage_options',// area supper admin and admin 
+            'lead', // Slug menu
+            'cw_access_getall_leads', // display function 
         );
         add_submenu_page( 
-                'Setting', // Slug menu parent
-                'Crud Lead', // title page
-                'Lead', // name menu
-                'manage_options',// area supper admin and admin 
-                'lead', // Slug menu
-                'cw_access_getall_leads', // display function 
+            'Setting', // Slug menu parent
+            'Crud Project', // title page
+            'Project', // name menu
+            'manage_options',// area supper admin and admin 
+            'project_list', // Slug menu
+            'cw_access_getall_project', // display function 
         );
+    }
+    if ( !wp_doing_ajax() ) {
+        $extension = isset($_GET['page'])? $_GET['page'] : "";
+        $allows = ['Setting', 'lead', 'project_list'];
+        if(in_array($extension, $allows)) {
+            echo '<div id="loading"></div>';             
+        }
     }
 }
 add_action('admin_menu', 'cw_add_menu_projects');
-function cw_crud_project()
-{
-    // require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
-    function cw_access_getall_project()
-    { 
+
+function cw_crud_project() {
+    function cw_access_getall_project() { 
         if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
@@ -155,7 +135,11 @@ function cw_crud_project()
                 if($res['response']['code'] != 200){
                     $_SESSION['error'] = ' Get project error !';                       
                 }    
-                else{                       
+                else{
+                    echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';                        
                     $_SESSION['success'] = 'Get project successfuly ! ';
                     $arr = json_decode($res['body'],true);
                     $row =$arr['data'];
@@ -192,7 +176,11 @@ function cw_crud_project()
                     if($res['response']['code'] != 200){
                         $_SESSION['error'] = 'update error ! ';          
                     }    
-                    else{                    
+                    else{
+                        echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';                    
                         $_SESSION['success'] = 'update successfuly ! ';
                     }
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/show-results.php'));
@@ -217,11 +205,15 @@ function cw_crud_project()
                 if($res['response']['code'] != 200){
                     $_SESSION['error'] ='delete error !';
                 }else{
+                    echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>'; 
                     $_SESSION['success'] ='delete successfuly !';
                 }
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/show-results.php'));              
             }
-            if(!isset($_GET['pageNum'])){  /////////show all project pageNum=null//////////////////              
+            if(!isset($_GET['pageNum'])){  /////////show all project pageNum=null//////////////////
                 $start = 0;
                 $pageSize = 10;                   
                 $pageNum = 1;
@@ -241,7 +233,11 @@ function cw_crud_project()
                 $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs); 
                 if($res['response']['code'] != 200){                   
                     $_SESSION['error'] = 'view project error!';                    
-                }else{                    
+                }else{
+                    echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';                    
                     $_SESSION['success'] = 'view project ';
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
@@ -290,6 +286,10 @@ function cw_crud_project()
                 if($res['response']['code'] != 200){                       
                     $_SESSION['error'] = 'view project error';
                 }else{
+                    echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>'; 
                     $_SESSION['success'] = 'view project';
                     $arr = json_decode($res['body'],true);
                     $totalSum = $arr['meta']['paging']['total'];
@@ -363,7 +363,11 @@ function cw_crud_project()
                         if($res['response']['code'] != 200){  
                             $_SESSION['error'] = 'add token error !';                                
                         }    
-                        else{                
+                        else{
+                            echo'<style>
+                            #loading {
+                            display: none;}
+                            </style>';                
                             $_SESSION['success'] = 'Login successfuly ! ';
                             $arr = json_decode($res['body'],true);
                             $totalSum = $arr['meta']['paging']['total'];
@@ -399,7 +403,7 @@ function cw_crud_project()
 add_action('init','cw_crud_project');
 ///////////////////////////////////////////// process Lead////////////////////////////////////////////
 function cw_crud_lead() {
-    function cw_access_getall_leads() { 
+    function cw_access_getall_leads() {
         if(isset($_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view lead/////////////////////////
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
@@ -435,8 +439,11 @@ function cw_crud_lead() {
                     $res = wp_remote_request('https://erp.cloodo.com/api/v1/lead', $arrs);
                     if($res['response']['code'] != 200){
                         $_SESSION['error'] = 'add lead error';  
-                        }
-                    else{                 
+                    }else{ 
+                        echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';                 
                         $_SESSION['success'] = 'add lead successfuly ! ';
                         $arr = json_decode($res['body'],true);
                         $row =$arr['data'];
@@ -465,7 +472,11 @@ function cw_crud_lead() {
                     $_SESSION['error'] =  $res->get_error_message();
                 }elseif($res['response']['code'] != 200){
                     $_SESSION['error'] = ' Get lead error !';                       
-                }else{                       
+                }else{
+                    echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';                      
                     $_SESSION['success'] = 'Get lead successfuly ! ';
                     $arr = json_decode($res['body'],true);
                     $row = $arr['data'];
@@ -504,7 +515,11 @@ function cw_crud_lead() {
                     if($res['response']['code'] != 200){
                         $_SESSION['error'] = 'update error ! ';          
                     }    
-                    else{                    
+                    else{
+                        echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';                    
                         $_SESSION['success'] = 'update successfuly ! ';
                     }
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
@@ -529,11 +544,16 @@ function cw_crud_lead() {
                 if($res['response']['code'] != 200){
                     $_SESSION['error'] ='delete error !';
                 }else{
+                    echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>'; 
                     $_SESSION['success'] ='delete successfuly !';
                 }
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));              
             }           
-            if(!isset($_GET['pageNum'])){  /////////show all lead pageNum=null//////////////////              
+            if(!isset($_GET['pageNum'])){  /////////show all lead pageNum=null//////////////////
+                
                 $start = 0;
                 $pageSize = 10;                   
                 $pageNum = 1;
@@ -551,11 +571,15 @@ function cw_crud_lead() {
                     ],
                     'cookie'=>[],
                 ];
-                $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);               
+                $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
                 if($res['response']['code'] != 200){                   
                     $_SESSION['error'] = 'view lead error!';                    
                 }    
-                else{                    
+                else{
+                    echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';                    
                     $_SESSION['success'] = 'view lead successfuly ';
                     $_SESSION['token']= $token;
                     $arr = json_decode($res['body'],true);
@@ -611,6 +635,10 @@ function cw_crud_lead() {
                     $_SESSION['error'] = 'view lead error';
                 }
                 else{
+                    echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>'; 
                     $_SESSION['success'] = 'view lead successfuly ';
                     $_SESSION['token']= $token;
                     $arr = json_decode($res['body'],true);
@@ -652,12 +680,20 @@ function cw_crud_lead() {
     }
     if(isset($_GET['logout']) && $_GET['logout']=='lead'){
         unset($_SESSION['token']);
+        echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>'; 
         $_SESSION['success'] = 'Logout successfuly ! ';
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
         exit;
     }
     if(isset($_GET['DeleteAcc']) && $_GET['DeleteAcc']=='lead'){
         unset($_SESSION['token']);
+        echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>'; 
         $_SESSION['success'] = 'Delete account successfuly ! ';
         $id_token = get_option('token');
         $result = get_option('info');
@@ -747,7 +783,7 @@ function wp_setting_loggin_access() {
 // delete_option( 'info' );
 // delete_option( 'token' );
 // unset( $_SESSION['token'] );
-    function cw_access_properties_loggin() {
+function cw_access_properties_loggin() {
         $emailtest = get_option( 'admin_email');
         $id = get_current_user_id();
         $user = get_userdata($id);
@@ -814,7 +850,11 @@ function wp_setting_loggin_access() {
                     if($res['response']['code'] != 200 && !empty($error)){  
                         $_SESSION['error'] = 'Add token error !';
                         $error = $_SESSION['error'];                               
-                    }else{             
+                    }else{
+                        echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';            
                         $_SESSION['success'] = 'Login successfuly ! ';
                         $arr = json_decode($res['body'],true);
                         $totalSum = $arr['meta']['paging']['total'];
@@ -932,8 +972,12 @@ function wp_setting_loggin_access() {
                 'cookie'=>[],
             ];
             $res = wp_remote_request('https://erp.cloodo.com/api/v1/create-user',$arrs);
-            if(isset($res['response']['code']) && $res['response']['code'] == 200){
-                //////////////////// demo////////////// register and login get token !
+            if( is_wp_error( $res ) ) {
+                $_SESSION['error'] = $res->get_error_message();
+            }else{
+                $result = isset($res['body']) ? json_decode($res['body'], true) : 0;
+                if(isset($result['status']) == 'success') {
+                    //////////////////// demo////////////// register and login get token !
                     $arrs = [
                         'method'=> 'POST',
                         'body'=>['email'=>$emailtest,'password'=> $pw],
@@ -943,30 +987,30 @@ function wp_setting_loggin_access() {
                         'headers'=>[],
                         'cookie'=>[],
                     ];
-                    $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
-                    if(isset($res['response']['code']) != 200){
-                    $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'];
-                    }else{
+                    $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login', $arrs);
+                    if (isset($res['response']['code']) != 200) {
+                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'];
+                    } else {
                         $resp = sendEmail($user_login, $emailtest, $pw);
                         if ($resp) {
                             $_SESSION['success'] = 'Please check your email and activate your account !';
                         } else {
                             $_SESSION['error'] = "Send Mail fail";
                         }
-                        $res = json_decode($res['body'],true);
+                        $res = json_decode($res['body'], true);
                         $id_token = $res['data']['token'];
                         $_SESSION['token']= $id_token;
-                        update_option( 'token', $id_token);
-                        $result = get_option( 'info' );
-                        $dataoption = maybe_unserialize( $result );
+                        update_option('token', $id_token);
+                        $result = get_option('info');
+                        $dataoption = maybe_unserialize($result);
                         $dataoption[] = ["token"=> $id_token,
                         "email"=> $emailtest];
-                        $dataoption = maybe_serialize( $dataoption );
-                        update_option( 'info', $dataoption);
-                        
+                        $dataoption = maybe_serialize($dataoption);
+                        update_option('info', $dataoption);
                     }
-            }else{
-                $_SESSION['error'] = 'The Accounts already exists or has not activated email, please try again !';
+                } else {
+                    $_SESSION['error'] = 'The Accounts already exists or has not activated email, please try again !';
+                }
             }
         }
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
