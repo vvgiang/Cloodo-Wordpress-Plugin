@@ -605,10 +605,9 @@ function cw_crud_lead() {
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
                 }
-                
-                $id = get_current_user_id();
-                $user = get_userdata($id);
-                $user_login = sanitize_text_field($user->user_login);
+                // $id = get_current_user_id();
+                // $user = get_userdata($id);
+                // $user_login = sanitize_text_field($user->user_login);
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));      
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/details-lead.php'));
                 return;
@@ -1005,6 +1004,67 @@ function cw_access_properties_loggin() {
                         $dataoption = maybe_unserialize($result);
                         $dataoption[] = ["token"=> $id_token,
                         "email"=> $emailtest];
+                        if(count($dataoption) == 1){
+                            $dataoption = maybe_serialize($dataoption);
+                            update_option('info', $dataoption);
+                            ////////////////////
+                            $start = 0;
+                            $pageSize = 10;                   
+                            $pageNum = 1;
+                            $token = get_option('token');
+                            $arrs =[
+                                'method'=> 'GET',
+                                'body'=>[],
+                                'timeout'=>5,
+                                'redirection'=>5,
+                                'blocking'=>true,
+                                'headers'=>[
+                                    'X-requested-Width'=>'XMLHttpRequest',
+                                    'Authorization'=>'Bearer '.$token,
+                                    'Content-Type'=>'application/json',
+                                ],
+                                'cookie'=>[],
+                            ];
+                            $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
+                            if($res['response']['code'] != 200){                   
+                                $_SESSION['error'] = 'view lead error!';                    
+                            }    
+                            else{
+                                echo'<style>
+                                    #loading {
+                                    display: none;}
+                                    </style>';                    
+                                $_SESSION['success'] = 'view lead successfuly ';
+                                $_SESSION['token']= $token;
+                                $arr = json_decode($res['body'],true);
+                                $totalSum = $arr['meta']['paging']['total'];
+                                if($totalSum == '0'){
+                                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/add-lead.php'));
+                                    return;
+                                }
+                                $pageSum = (ceil($totalSum/$pageSize)) > 0 ? ceil($totalSum/$pageSize): 1;
+                                $ofsetPageMax = ($pageSum-1) * $pageSize;
+                                $resPageMax = wp_remote_get("https://erp.cloodo.com/api/v1/lead?offset=".$ofsetPageMax, $arrs);
+                                $arr2 = json_decode($resPageMax['body'],true);
+                                if(count($arr2['data'])=='10'){
+                                    $nextpage = $pageSum + 1;
+                                }else{
+                                    $nextpage = $pageSum;
+                                }
+                                $around = 3;
+                                $next = $pageNum + $around;
+                                if ($next > $pageSum) {
+                                        $next = $pageSum;
+                                }
+                                $pre = $pageNum - $around;
+                                if ($pre <= 1) $pre = 1;
+                            }
+                            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));      
+                            require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/details-lead.php'));
+                            return;
+                        }
+                        // $dataoption[] = ["token"=> $id_token,
+                        // "email"=> $emailtest];
                         $dataoption = maybe_serialize($dataoption);
                         update_option('info', $dataoption);
                     }
