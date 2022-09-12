@@ -1,19 +1,10 @@
 <div class="login_element">
     <form class="create_form" method="POST" action="">
         <a href="https://erp.cloodo.com/">
-            <img src="<?php echo plugin_dir_url(__DIR__).'call-api-lead/admin/image/worksuite-logo.png'?>" class="worksuite-logo">
+            <img src="<?php echo plugins_url( 'admin/image/worksuite-logo.png', __DIR__ )?>" class="worksuite-logo">
         </a>
         <h4>Hello: <b><?php echo $user_login; ?></b>, welcome to Worksuite</h4>
-        <?php if(!empty(get_option('token'))){ 
-            // if(isset($error) && isset($res['response']['code']) == '404') {
-            //     echo '<p style="color:red;font-size: 16px;font-weight: 400;">'.$error.' - The Accounts already exists or has not activated email, please try again !</p>';
-            // }
-            // elseif(isset($error) && isset($res['response']['code']) == '405'){ 
-            //     echo '<p style="color:red;font-size: 16px;font-weight: 400;">'.$error.' - The account already exists or has not activated email !</p>';
-            // }
-            // else{
-            //     echo '<p style="color:green;font-size: 16px;font-weight: 400;">Register Successfully  '.$success.' !';
-            // }else{ ?>
+        <?php if(!empty(get_option('token'))){ ?>
             <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;">Chúc an lành ! hôm nay là : <?php date_default_timezone_set('Asia/Ho_Chi_Minh'); echo date('d/m/Y - H:i:s'); ?></p>
         <div class="accountselect">
                     <select name="accountselect" class="swap">
