@@ -17,13 +17,12 @@ session_start();
  */
 //////////////////////////////////////////////////require////////////////////////////////////////////////////
 if(isset($_GET['page'])&& $_GET['page'] == 'project_list'){
-    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/includes/includes.php'));
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes-project.php'));
 }else if(isset($_GET['page'])&& $_GET['page']== 'lead'){
-    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/includes/includes.php'));
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes-lead.php'));
 }else{
-    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/includes/includes.php'));
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes-lead.php'));
 }
-// require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/ajax.php'));
 //////////////////////////////////////////////////cw_add_iframe///////////////////////////////////////////////// 
 function cw_add_iframe()
 {
@@ -394,7 +393,6 @@ function cw_crud_project() {
     }
     if(isset($_GET['logout']) && $_GET['logout']=='project'){
         unset($_SESSION['token']);
-        // delete_option( 'token' );
         $_SESSION['success'] = 'Logout successfuly ! ';
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
         exit;
@@ -605,9 +603,6 @@ function cw_crud_lead() {
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
                 }
-                // $id = get_current_user_id();
-                // $user = get_userdata($id);
-                // $user_login = sanitize_text_field($user->user_login);
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));      
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/details-lead.php'));
                 return;
@@ -779,7 +774,6 @@ function wp_ajax_ajax_demo_func()
 }
 /////////////////////////////////////////////////setting - swap account//////////////////////////////////////////////////////
 function wp_setting_loggin_access() {
-
 function cw_access_properties_loggin() {
         $emailtest = get_option( 'admin_email');
         $id = get_current_user_id();
