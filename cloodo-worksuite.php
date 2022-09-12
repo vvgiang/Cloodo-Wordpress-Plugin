@@ -75,6 +75,10 @@ function cw_crud_project() {
     function cw_access_getall_project() { 
         if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
+                echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/add-project.php'));
                 return;
@@ -107,6 +111,10 @@ function cw_crud_project() {
                         $_SESSION['error'] = 'add project error';  
                         }
                     else{                 
+                        echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';     
                         $_SESSION['success'] = 'add project successfuly ! ';
                         $arr = json_decode($res['body'],true);
                         $row =$arr['data'];
@@ -404,6 +412,10 @@ function cw_crud_lead() {
     function cw_access_getall_leads() {
         if(isset($_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view lead/////////////////////////
+                echo'<style>
+                        #loading {
+                        display: none;}
+                        </style>';
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/add-lead.php'));
                 return;
