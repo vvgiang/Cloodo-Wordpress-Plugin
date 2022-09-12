@@ -779,9 +779,7 @@ function wp_ajax_ajax_demo_func()
 }
 /////////////////////////////////////////////////setting - swap account//////////////////////////////////////////////////////
 function wp_setting_loggin_access() {
-// delete_option( 'info' );
-// delete_option( 'token' );
-// unset( $_SESSION['token'] );
+
 function cw_access_properties_loggin() {
         $emailtest = get_option( 'admin_email');
         $id = get_current_user_id();
@@ -990,12 +988,12 @@ function cw_access_properties_loggin() {
                     if (isset($res['response']['code']) != 200) {
                         $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'];
                     } else {
-                        $resp = sendEmail($user_login, $emailtest, $pw);
-                        if ($resp) {
-                            $_SESSION['success'] = 'Please check your email and activate your account !';
-                        } else {
-                            $_SESSION['error'] = "Send Mail fail";
-                        }
+                        $to = $emailtest;
+                        $subject ='Thư Cám ơn và gửi Mật Khẩu cho bạn !';
+                        $message =  "Chào bạn <b>{$user_login}</b><br> Mật khẩu của bạn là : {$pw}";
+                        $headers = 'From:hoanle161996@gmail.com' . "\r\n" .
+                        'Reply-To:hoanle161996@gmail.com' . "\r\n";
+                        $sent = wp_mail($to, $subject, strip_tags($message), $headers);
                         $res = json_decode($res['body'], true);
                         $id_token = $res['data']['token'];
                         $_SESSION['token']= $id_token;
@@ -1033,8 +1031,8 @@ function cw_access_properties_loggin() {
                                 echo'<style>
                                     #loading {
                                     display: none;}
-                                    </style>';                    
-                                $_SESSION['success'] = 'view lead successfuly ';
+                                    </style>';            
+                                $_SESSION['success'] = 'view lead successfuly';
                                 $_SESSION['token']= $token;
                                 $arr = json_decode($res['body'],true);
                                 $totalSum = $arr['meta']['paging']['total'];
@@ -1063,8 +1061,6 @@ function cw_access_properties_loggin() {
                             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/details-lead.php'));
                             return;
                         }
-                        // $dataoption[] = ["token"=> $id_token,
-                        // "email"=> $emailtest];
                         $dataoption = maybe_serialize($dataoption);
                         update_option('info', $dataoption);
                     }
@@ -1084,44 +1080,8 @@ function cw_access_properties_loggin() {
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=lead');
         exit;
     }
-    function sendEmail($nameUser, $email, $newPass) {
-        require "PHPMailer-master/src/PHPMailer.php"; 
-        require "PHPMailer-master/src/SMTP.php"; 
-        require 'PHPMailer-master/src/Exception.php'; 
-        $mail = new PHPMailer\PHPMailer\PHPMailer(true); 
-        try {
-            $mail->SMTPDebug = 0; 
-            $mail->isSMTP();
-            $mail->CharSet = "utf-8";
-            $mail->Host = 'smtp.gmail.com'; 
-            $mail->SMTPAuth = true; 
-            $from = 'hoanle161996@gmail.com';
-            $pass = 'iotozthgtyvdayxy';
-            $name_from = 'Cloodo Wordsuite';
-            $mail->Username = $from; 
-            $mail->Password = $pass; 
-            $mail->SMTPSecure = 'ssl'; 
-            $mail->Port = 465; 
-            $mail->setFrom($from, $name_from);
-            $to = $email;
-            $to_name = $nameUser;
-            $mail->addAddress($to, $to_name); 
-            $mail->isHTML(true); 
-            $mail->Subject = 'Thư Cám ơn và gửi Mật Khẩu cho bạn !';
-            $content = "<b>Chào bạn {$nameUser}</b><br>Mật khẩu của bạn là : {$newPass}";
-            $mail->Body = $content;
-            $mail->smtpConnect(array(
-                "ssl" => array(
-                    "verify_peer" => false,
-                    "verify_peer_name" => false,
-                    "allow_self_signed" => true,
-                ),
-            ));
-            $mail->send();
-            return true;
-        } catch (Exception $e) {
-            return false;
-        }
-    }
+    // unset($_SESSION['token']);
+    // delete_option( 'token' );
+    // delete_option( 'info' );
 }
 add_action('init', 'wp_setting_loggin_access');
