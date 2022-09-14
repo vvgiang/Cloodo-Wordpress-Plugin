@@ -1,7 +1,7 @@
 === Cloodo Work Suite ===
 Contributors: cloodoteam
 Donate link: https://cloodo.com/
-Tags: cloodo, work suite, work, suite
+Tags: cloodo, work suite, work, suite, cloodo worksuite, cloodo work suite
 Requires at least: 4.7
 Tested up to: 6.0
 Stable tag: 1.0.0
