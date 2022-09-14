@@ -121,3 +121,6 @@ select.swap {
 li.wp-first-item {
     display: none;
 }
+.form-group {
+    margin-bottom: 10px;
+}
