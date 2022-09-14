@@ -229,7 +229,7 @@ jQuery(document).ready(function($) {
                             <td>${element.client_name}</td>
                             <td>${element.company_name} </td>
                             <td>${element.value} </td>
-                            <td>${d.getDate()}</td>
+                            <td>${d.toLocaleDateString()}</td>
                             <td>${element.next_follow_up} </td>
                             <td>${element.client_email} </td>
                             <td>

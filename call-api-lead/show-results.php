@@ -2,12 +2,12 @@
 $message ="";
 $class="";
 if(isset($_SESSION['success'])){
-    $message = $_SESSION['success'];
+    $message = sanitize_text_field($_SESSION['success']);
     unset($_SESSION['success']);
     $class ="success";
 }
 elseif(isset($_SESSION['error'])){
-    $message = $_SESSION['error'];
+    $message = sanitize_text_field($_SESSION['error']);
     unset($_SESSION['error']);
     $class ="danger"; 
 }
