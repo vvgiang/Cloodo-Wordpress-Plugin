@@ -2,7 +2,7 @@
 	<?php if(isset($arr['data'])){ ?>
 		<table class="table table-hover">
 			<thead>
-				<h2 class="projecttitle">LIST LEADS</h2>
+				<h2 class="projecttitle">SHOW LEADS</h2>
 				<div class="addlead">
 					<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=lead&view=post&pageSum=<?php echo isset($nextpage) && $nextpage >0 ? esc_attr( $nextpage ) : 1 ?>" class="btn btn-info">Add</a>
 				</div>

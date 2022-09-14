@@ -2,7 +2,7 @@
 	<?php if(isset($arr)){ ?>
 		<table class="table table-hover">
 			<thead>
-				<h2 class="projecttitle">LIST PROJECT</h2>
+				<h2 class="projecttitle">SHOW PROJECTS</h2>
 				<div>
 					<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info">Add</a>
 				</div>
@@ -69,7 +69,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 		<div class="modal-header">
-			<h5 class="modal-title" id="staticBackdropLabel">you are sure <b>delete</b> ?</h5>
+			<h5 class="modal-title" id="staticBackdropLabel">you are sure <b>Delete</b> ?</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		</div>
 		<div class="modal-footer">

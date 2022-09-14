@@ -1,5 +1,4 @@
 <?php
-function clws_add_style(){
     function clws_addstyle(){
         wp_register_style( 'clws-boostrap',plugins_url('admin/css/bootstrap.css',__DIR__));
         wp_enqueue_style('clws-boostrap');
@@ -18,7 +17,5 @@ function clws_add_style(){
         wp_enqueue_script('clws-script');
     }
     add_action('admin_enqueue_scripts', 'clws_addstyle');
-}
-add_action('init','clws_add_style');
 
 
