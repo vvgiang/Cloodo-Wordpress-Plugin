@@ -1,5 +1,4 @@
 <?php
-session_start();
 /**
  * Plugin Name:       Cloodo Worksuite
  * Plugin URI:        https://worksuite.cloodo.com/
@@ -23,23 +22,24 @@ if(isset($_GET['page'])&& $_GET['page'] == 'project_list'){
 }else{
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes-lead.php'));
 }
-//////////////////////////////////////////////////cw_add_iframe///////////////////////////////////////////////// 
-function cw_add_iframe()
+//////////////////////////////////////////////////clws_add_iframe///////////////////////////////////////////////// 
+function clws_add_iframe()
 {
     $url= get_site_url();   
     $newurl = (explode("/",trim($url,"/")))[2] ;
     return '<iframe src="https://cloodo.com/trustscore/' . $newurl . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
-add_shortcode( 'cloodo-badge', 'cw_add_iframe' );
+add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
 ////////////////////////////////////////////////process project///////////////////////////////////////////////////
-function cw_add_menu_projects()
+function clws_add_menu_projects()
 {
+session_start();
     add_menu_page(
         'Setting', // title menu
         'Worksuite', // name menu
         'manage_options',// area supper admin and admin 
         'Setting', // Slug menu
-        'cw_access_properties_loggin', // display function 
+        'clws_access_properties_loggin', // display function 
         'dashicons-businessman', // icon menu
         '7'
     );
@@ -50,7 +50,7 @@ function cw_add_menu_projects()
             'Lead', // name menu
             'manage_options',// area supper admin and admin 
             'lead', // Slug menu
-            'cw_access_getall_leads', // display function 
+            'clws_access_getall_leads', // display function 
         );
         add_submenu_page( 
             'Setting', // Slug menu parent
@@ -58,21 +58,21 @@ function cw_add_menu_projects()
             'Project', // name menu
             'manage_options',// area supper admin and admin 
             'project_list', // Slug menu
-            'cw_access_getall_project', // display function 
+            'clws_access_getall_project', // display function 
         );
     }
     if ( !wp_doing_ajax() ) {
-        $extension = isset($_GET['page'])? $_GET['page'] : "";
+        $extension = isset($_GET['page'])? sanitize_text_field($_GET['page']) : "";
         $allows = ['Setting', 'lead', 'project_list'];
         if(in_array($extension, $allows)) {
             echo '<div id="loading"></div>';             
         }
     }
 }
-add_action('admin_menu', 'cw_add_menu_projects');
+add_action('admin_menu', 'clws_add_menu_projects');
 
-function cw_crud_project() {
-    function cw_access_getall_project() { 
+function clws_crud_project() {
+    function clws_access_getall_project() { 
         if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
                 echo'<style>
@@ -102,7 +102,7 @@ function cw_crud_project() {
                         'blocking'=>true,
                         'headers'=>[
                             'X-requested-Width'=>'XMLHttpRequest',
-                            'Authorization'=>'Bearer '.$_SESSION['token'],
+                            'Authorization'=>'Bearer '.sanitize_text_field($_SESSION['token']),
                         ],
                         'cookie'=>[],
                     ];
@@ -133,7 +133,7 @@ function cw_crud_project() {
                     'blocking'=>true,
                     'headers'=>[
                         'X-requested-Width'=>'XMLHttpRequest',
-                        'Authorization'=>'Bearer '.$_SESSION['token'],
+                        'Authorization'=>'Bearer '.sanitize_text_field($_SESSION['token']),
                         'Content-Type'=>'application/json',
                     ],
                     'cookie'=>[],
@@ -175,7 +175,7 @@ function cw_crud_project() {
                         'blocking'=>true,
                         'headers'=>[
                             'X-requested-Width'=>'XMLHttpRequest',
-                            'Authorization'=>'Bearer '.$_SESSION['token'],
+                            'Authorization'=>'Bearer '.sanitize_text_field($_SESSION['token']),
                         ],
                         'cookie'=>[],
                     ];
@@ -199,7 +199,7 @@ function cw_crud_project() {
                     'method'=>'DELETE',
                     'headers'=>[
                         'X-requested-Width'=>'XMLHttpRequest',
-                        'Authorization'=>'Bearer '.$_SESSION['token'],
+                        'Authorization'=>'Bearer '.sanitize_text_field($_SESSION['token']),
                         'Content-Type'=>'application/json'
                     ],
                     'body'=>[],
@@ -232,7 +232,7 @@ function cw_crud_project() {
                     'blocking'=>true,
                     'headers'=>[
                         'X-requested-Width'=>'XMLHttpRequest',
-                        'Authorization'=>'Bearer '.$_SESSION['token'],
+                        'Authorization'=>'Bearer '.sanitize_text_field($_SESSION['token']),
                         'Content-Type'=>'application/json',
                     ],
                     'cookie'=>[],
@@ -284,7 +284,7 @@ function cw_crud_project() {
                     'blocking'=>true,
                     'headers'=>[
                         'X-requested-Width'=>'XMLHttpRequest',
-                        'Authorization'=>'Bearer '.$_SESSION['token'],
+                        'Authorization'=>'Bearer '.sanitize_text_field($_SESSION['token']),
                         'Content-Type'=>'application/json',
                     ],
                     'cookie'=>[],
@@ -361,7 +361,7 @@ function cw_crud_project() {
                             'blocking'=>true,
                             'headers'=>[
                                 'X-requested-Width'=>'XMLHttpRequest',
-                                'Authorization'=>'Bearer '.$_SESSION['token'],
+                                'Authorization'=>'Bearer '.sanitize_text_field($_SESSION['token']),
                                 'Content-Type'=>'application/json',
                             ],
                             'cookie'=>[],
@@ -406,10 +406,11 @@ function cw_crud_project() {
         exit;
     }
 } 
-add_action('init','cw_crud_project');
+add_action('init','clws_crud_project');
 ///////////////////////////////////////////// process Lead////////////////////////////////////////////
-function cw_crud_lead() {
-    function cw_access_getall_leads() {
+function clws_crud_lead() {
+session_start();
+    function clws_access_getall_leads() {
         if(isset($_SESSION['token'])){//////////////token not empty////////////////////
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view lead/////////////////////////
                 echo'<style>
@@ -610,7 +611,7 @@ function cw_crud_lead() {
                     $around = 3;
                     $next = $pageNum + $around;
                     if ($next > $pageSum) {
-                            $next = $pageSum;
+                        $next = $pageSum;
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
@@ -694,7 +695,7 @@ function cw_crud_lead() {
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
         exit;
     }
-    if(isset($_GET['DeleteAcc']) && $_GET['DeleteAcc']=='lead'){
+    if(isset($_GET['DeleteAcc']) && sanitize_text_field($_GET['DeleteAcc'])=='lead'){
         unset($_SESSION['token']);
         echo'<style>
                         #loading {
@@ -721,11 +722,11 @@ function cw_crud_lead() {
         exit;
     }
 } 
-add_action('init','cw_crud_lead');
+add_action('init','clws_crud_lead');
 ////////////////////////////////////////////////ajax/////////////////////////////////////////////////////////////////
-add_action( 'wp_ajax_ajax_demo','wp_ajax_ajax_demo_func' );
-add_action( 'wp_ajax_nopriv_ajax_demo','wp_ajax_ajax_demo_func' );
-function wp_ajax_ajax_demo_func()
+add_action( 'wp_ajax_ajax_demo','clws_ajax_ajax_demo_func' );
+add_action( 'wp_ajax_nopriv_ajax_demo','clws_ajax_ajax_demo_func' );
+function clws_ajax_ajax_demo_func()
 {
     if(isset($_GET['iddel'])){////////////////////////////////////////delete lead////////////////////////////////////
         $id = sanitize_text_field($_GET['iddel']);
@@ -785,8 +786,8 @@ function wp_ajax_ajax_demo_func()
     die();// required   
 }
 /////////////////////////////////////////////////setting - swap account//////////////////////////////////////////////////////
-function wp_setting_loggin_access() {
-function cw_access_properties_loggin() {
+function clws_setting_loggin_access() {
+    function clws_access_properties_loggin() {
         $emailtest = get_option( 'admin_email');
         $id = get_current_user_id();
         $user = get_userdata($id);
@@ -881,7 +882,7 @@ function cw_access_properties_loggin() {
         }
         if(isset($_POST['register'])) {
             $company_name = sanitize_text_field($_POST['company_name']);
-            $email = $_POST['email'];
+            $email = sanitize_email($_POST['email']);
             $password = sanitize_text_field($_POST['password']);
             if(empty(trim($company_name))|| empty(trim($email))|| empty(trim($password))) {
                 $_SESSION['error'] = " Email or Password do not empty !";
@@ -1058,7 +1059,7 @@ function cw_access_properties_loggin() {
                                 $around = 3;
                                 $next = $pageNum + $around;
                                 if ($next > $pageSum) {
-                                        $next = $pageSum;
+                                    $next = $pageSum;
                                 }
                                 $pre = $pageNum - $around;
                                 if ($pre <= 1) $pre = 1;
@@ -1080,7 +1081,7 @@ function cw_access_properties_loggin() {
         
     }
     if(isset($_POST['Custom_registration'])){
-        $tokennew = $_POST['accountselect'];
+        $tokennew = sanitize_text_field($_POST['accountselect']);
         $_SESSION['token']= $tokennew;
         update_option('token',$tokennew);
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=lead');
@@ -1090,4 +1091,4 @@ function cw_access_properties_loggin() {
     // delete_option( 'token' );
     // delete_option( 'info' );
 }
-add_action('init', 'wp_setting_loggin_access');
+add_action('init', 'clws_setting_loggin_access');
