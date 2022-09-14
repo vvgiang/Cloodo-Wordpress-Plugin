@@ -3,9 +3,9 @@
         <a href="https://erp.cloodo.com/">
             <img src="<?php echo plugins_url( 'admin/image/worksuite-logo.png', __DIR__ )?>" class="worksuite-logo">
         </a>
-        <h4>Hello: <b><?php echo esc_attr($user_login); ?></b>, welcome to Worksuite</h4>
+        <h4>Hello: <b><?php echo esc_attr(strtoupper($user_login)); ?></b>, welcome to Worksuite</h4>
         <?php if(!empty(get_option('token'))){ ?>
-                <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;">Have a nice day ! Today is : <?php date_default_timezone_set('Asia/Ho_Chi_Minh'); echo date('d/m/Y - H:i:s'); ?></p>
+                <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;">Have a nice day ! today is : <?php date_default_timezone_set('Asia/Ho_Chi_Minh'); echo date('d/m/Y - H:i:s'); ?></p>
             <div class="accountselect">
                 <select name="accountselect" class="swap">
                     <?php 
@@ -20,32 +20,32 @@
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Account</button>
             </div>
     </form>
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2 class="projecttitle">LOGIN LEAD FORM</h2>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form class="temple" method="post" action="">
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="text" name="email" id="email" value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']): ""; ?>"/>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input type="password" name="password" id="password" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
-                                        </div>
-                                            <p data-bs-toggle="modal" data-bs-target="#exampleModal1">Don't have an account? <a href="#" class="text-primary m-l-5 signup"><b>Sign Up</b></a> !</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit"  name="save" class="btn btn-primary">LOGIN</button>
-                                    </div>
-                                </form>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="projecttitle">LOGIN LEAD FORM</h2>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
+                            <form class="temple" method="post" action="">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="text" name="email" id="email" value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']): ""; ?>"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" name="password" id="password" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
+                                    </div>
+                                        <p data-bs-toggle="modal" data-bs-target="#exampleModal1">Don't have an account? <a href="#" class="text-primary m-l-5 signup"><b>Sign Up</b></a> !</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit"  name="save" class="btn btn-primary">LOGIN</button>
+                                </div>
+                            </form>
                         </div>
+                    </div>
                 </div>
                 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -82,7 +82,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <//?php } ?>  -->
         <?php }else{ ?>
             <form class="create_form" method="POST" action="">
                 <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;" class="card-text">We are helping you to connect your website <b><?php echo get_bloginfo();?></b> with your Account in Wordpress to sign up for WorkSuite and send Email for You!</p>
