@@ -27,7 +27,6 @@ add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
 ////////////////////////////////////////////////process project///////////////////////////////////////////////////
 function clws_add_menu_projects()
 {
-session_start();
     add_menu_page(
         'Setting', // title menu
         'Worksuite', // name menu
@@ -65,16 +64,43 @@ session_start();
 }
 add_action('admin_menu', 'clws_add_menu_projects');
 
-function clws_crud_project() {
+function clws_project_lead() {
     session_start();
     if(isset($_GET['logout']) && $_GET['logout']=='project'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Logout successfuly ! ';
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
         exit;
+    }elseif(isset($_GET['logout']) && $_GET['logout']=='lead'){
+        unset($_SESSION['token']);
+        $_SESSION['success'] = 'Logout successfuly ! ';
+        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
+        exit;
+    }
+    if(isset($_GET['DeleteAcc']) && sanitize_text_field($_GET['DeleteAcc'])=='lead'){
+        unset($_SESSION['token']);
+        $_SESSION['success'] = 'Delete account successfuly ! ';
+        $id_token = get_option('token');
+        $result = get_option('info');
+        $dataoption = maybe_unserialize( $result );
+        foreach($dataoption as $key => $value){
+            if($id_token == $value['token'])
+            {
+                if(count($dataoption) == 1 ) {
+                    unset($_SESSION['success']);
+                    $_SESSION['error'] = 'can\'t delete last account ';
+                    continue;
+                }
+                unset($dataoption[$key]);
+            }
+        }
+        $dataoption = maybe_serialize( $dataoption );
+        update_option( 'info', $dataoption);
+        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
+        exit;
     }
 } 
-add_action('init','clws_crud_project');
+add_action('init','clws_project_lead');
 function clws_access_getall_project() {
     session_start();
     if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
@@ -410,46 +436,6 @@ function clws_access_getall_project() {
     }     
 }
 ///////////////////////////////////////////// process Lead////////////////////////////////////////////
-function clws_crud_lead() {
-    session_start();
-    if(isset($_GET['logout']) && $_GET['logout']=='lead'){
-        unset($_SESSION['token']);
-        echo'<style>
-                        #loading {
-                        display: none;}
-                        </style>'; 
-        $_SESSION['success'] = 'Logout successfuly ! ';
-        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
-        exit;
-    }
-    if(isset($_GET['DeleteAcc']) && sanitize_text_field($_GET['DeleteAcc'])=='lead'){
-        unset($_SESSION['token']);
-        echo'<style>
-                        #loading {
-                        display: none;}
-                        </style>'; 
-        $_SESSION['success'] = 'Delete account successfuly ! ';
-        $id_token = get_option('token');
-        $result = get_option('info');
-        $dataoption = maybe_unserialize( $result );
-        foreach($dataoption as $key => $value){
-            if($id_token == $value['token'])
-            {
-                if(count($dataoption) == 1 ) {
-                    unset($_SESSION['success']);
-                    $_SESSION['error'] = 'can\'t delete last account ';
-                    continue;
-                }
-                unset($dataoption[$key]);
-            }
-        }
-        $dataoption = maybe_serialize( $dataoption );
-        update_option( 'info', $dataoption);
-        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
-        exit;
-    }
-} 
-add_action('init','clws_crud_lead');
 function clws_access_getall_leads() {
     session_start();
     if(isset($_SESSION['token'])){//////////////token not empty////////////////////
@@ -731,8 +717,7 @@ function clws_access_getall_leads() {
 ////////////////////////////////////////////////ajax/////////////////////////////////////////////////////////////////
 add_action( 'wp_ajax_ajax_demo','clws_ajax_ajax_demo_func' );
 add_action( 'wp_ajax_nopriv_ajax_demo','clws_ajax_ajax_demo_func' );
-function clws_ajax_ajax_demo_func()
-{
+function clws_ajax_ajax_demo_func() {
     if(isset($_GET['iddel'])){////////////////////////////////////////delete lead////////////////////////////////////
         $id = sanitize_text_field($_GET['iddel']);
         $arr =[
@@ -792,7 +777,7 @@ function clws_ajax_ajax_demo_func()
 }
 /////////////////////////////////////////////////setting - swap account//////////////////////////////////////////////////////
 function clws_setting_loggin_access() {
-    
+    session_start();
     if(isset($_POST['Custom_registration'])){
         $tokennew = sanitize_text_field($_POST['accountselect']);
         $_SESSION['token']= $tokennew;
@@ -806,6 +791,7 @@ function clws_setting_loggin_access() {
 }
 add_action('init', 'clws_setting_loggin_access');
 function clws_access_properties_loggin() {
+    session_start();
     $emailtest = get_option( 'admin_email');
     $id = get_current_user_id();
     $user = get_userdata($id);
@@ -970,7 +956,7 @@ function clws_access_properties_loggin() {
                             $success = $_SESSION['success'];
                         }
                     }else{
-                        $_SESSION['error'] = ' Undefined error';
+                        $_SESSION['error'] = ' Undefined error, Please try again !';
                     }
                 }
             }else{
