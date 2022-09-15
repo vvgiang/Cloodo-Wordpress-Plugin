@@ -79,7 +79,7 @@ function clws_project_lead() {
     }
     if(isset($_GET['DeleteAcc']) && sanitize_text_field($_GET['DeleteAcc'])=='lead'){
         unset($_SESSION['token']);
-        $_SESSION['success'] = 'Delete account successfuly ! ';
+        $_SESSION['success'] = 'Remove account successfuly ! ';
         $id_token = get_option('token');
         $result = get_option('info');
         $dataoption = maybe_unserialize( $result );
@@ -88,7 +88,7 @@ function clws_project_lead() {
             {
                 if(count($dataoption) == 1 ) {
                     unset($_SESSION['success']);
-                    $_SESSION['error'] = 'can\'t delete last account ';
+                    $_SESSION['error'] = 'Can\'t remove last account ';
                     continue;
                 }
                 unset($dataoption[$key]);
