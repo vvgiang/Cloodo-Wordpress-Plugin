@@ -68,12 +68,12 @@ function clws_project_lead() {
     session_start();
     if(isset($_GET['logout']) && $_GET['logout']=='project'){
         unset($_SESSION['token']);
-        $_SESSION['success'] = 'Logout successfuly ! ';
+        $_SESSION['success'] = 'Disconnect successfuly ! ';
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
         exit;
     }elseif(isset($_GET['logout']) && $_GET['logout']=='lead'){
         unset($_SESSION['token']);
-        $_SESSION['success'] = 'Logout successfuly ! ';
+        $_SESSION['success'] = 'Disconnect successfuly ! ';
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
         exit;
     }
