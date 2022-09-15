@@ -1,10 +1,10 @@
 === Cloodo Work Suite ===
-Contributors: (this should be a list of wordpress.org userid's)
+Contributors: cloodoteam
 Donate link: https://cloodo.com/
-Tags: cloodo, work suite, work, suite
+Tags: cloodo, work suite, work, suite, cloodo worksuite, cloodo work suite
 Requires at least: 4.7
 Tested up to: 6.0
-Stable tag: 4.3
+Stable tag: 1.0.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -27,11 +27,14 @@ Yes. Plugin will register an account automatic after you click register button o
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
-2. This is the second screen shot
+1. Main screenshot
 
 == Changelog ==
 
 = 1.0 =
 * Init
 
+== Upgrade Notice ==
+
+= 1.0 =
+* First version

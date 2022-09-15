@@ -15,20 +15,13 @@
  * Domain Path:       /languages
  */
 //////////////////////////////////////////////////require////////////////////////////////////////////////////
-// if(isset($_GET['page'])&& $_GET['page'] == 'project_list'){
-//     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes-project.php'));
-// }else if(isset($_GET['page'])&& $_GET['page']== 'lead'){
-//     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes-lead.php'));
-// }else{
-//     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes-lead.php'));
-// }
-require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes-lead.php'));
+require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes.php'));
 //////////////////////////////////////////////////clws_add_iframe///////////////////////////////////////////////// 
 function clws_add_iframe()
 {
     $url= get_site_url();   
-    $newurl = (explode("/",trim($url,"/")))[2] ;
-    return '<iframe src="https://cloodo.com/trustscore/' . $newurl . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
+    $newurl = sanitize_text_field((explode("/",trim($url,"/")))[2]) ;
+    return '<iframe src="https://cloodo.com/trustscore/' . esc_attr($newurl) . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
 add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
 ////////////////////////////////////////////////process project///////////////////////////////////////////////////
@@ -73,7 +66,7 @@ session_start();
 add_action('admin_menu', 'clws_add_menu_projects');
 
 function clws_crud_project() {
-    
+    session_start();
     if(isset($_GET['logout']) && $_GET['logout']=='project'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Logout successfuly ! ';
@@ -82,7 +75,8 @@ function clws_crud_project() {
     }
 } 
 add_action('init','clws_crud_project');
-function clws_access_getall_project() { 
+function clws_access_getall_project() {
+    session_start();
     if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
         if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
             echo'<style>
@@ -149,10 +143,11 @@ function clws_access_getall_project() {
                 'cookie'=>[],
             ];
             $res = wp_remote_get('https://erp.cloodo.com/api/v1/project/'.$id.'/?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client%7Bid,name%7D', $arrs);
-            if($res['response']['code'] != 200){
+            if (is_wp_error($res)) {
+                $_SESSION['error'] =  $res->get_error_message();
+            }elseif($res['response']['code'] != 200){
                 $_SESSION['error'] = ' Get project error !';                       
-            }    
-            else{
+            }else{
                 echo'<style>
                     #loading {
                     display: none;}
@@ -247,8 +242,10 @@ function clws_access_getall_project() {
                 ],
                 'cookie'=>[],
             ];
-            $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs); 
-            if($res['response']['code'] != 200){                   
+            $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs);
+            if (is_wp_error($res)) {
+                $_SESSION['error'] =  $res->get_error_message();
+            }elseif($res['response']['code'] != 200){                   
                 $_SESSION['error'] = 'view project error!';                    
             }else{
                 echo'<style>
@@ -300,7 +297,9 @@ function clws_access_getall_project() {
                 'cookie'=>[],
             ];
             $res = wp_remote_get("https://erp.cloodo.com/api/v1/project?fields=id%2Cproject_name%2Cproject_summary%2Cnotes%2Cstart_date%2Cdeadline%2Cstatus%2Ccategory%2Cclient%7Bid%2Cname%7D&offset=".$start, $arrs);
-            if($res['response']['code'] != 200){                       
+            if (is_wp_error($res)) {
+                $_SESSION['error'] =  $res->get_error_message();
+            }elseif($res['response']['code'] != 200){                       
                 $_SESSION['error'] = 'view project error';
             }else{
                 echo'<style>
@@ -377,10 +376,11 @@ function clws_access_getall_project() {
                         'cookie'=>[],
                     ];
                     $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}', $arrs);
-                    if($res['response']['code'] != 200){  
+                    if (is_wp_error($res)) {
+                        $_SESSION['error'] =  $res->get_error_message();
+                    }elseif($res['response']['code'] != 200){  
                         $_SESSION['error'] = 'add token error !';                                
-                    }    
-                    else{
+                    }else{
                         echo'<style>
                         #loading {
                         display: none;}
@@ -451,6 +451,7 @@ function clws_crud_lead() {
 } 
 add_action('init','clws_crud_lead');
 function clws_access_getall_leads() {
+    session_start();
     if(isset($_SESSION['token'])){//////////////token not empty////////////////////
         if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view lead/////////////////////////
             echo'<style>
@@ -623,10 +624,11 @@ function clws_access_getall_leads() {
                 'cookie'=>[],
             ];
             $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
-            if($res['response']['code'] != 200){                   
+            if (is_wp_error($res)) {
+                $_SESSION['error'] =  $res->get_error_message();
+            }elseif($res['response']['code'] != 200){                   
                 $_SESSION['error'] = 'view lead error!';                    
-            }    
-            else{
+            }else{
                 echo'<style>
                     #loading {
                     display: none;}
@@ -678,10 +680,11 @@ function clws_access_getall_leads() {
                 'cookie'=>[],
             ];
             $res = wp_remote_get("https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset=".$start, $arrs);
-            if($res['response']['code'] != 200){                       
+            if (is_wp_error($res)) {
+                $_SESSION['error'] =  $res->get_error_message();
+            }elseif($res['response']['code'] != 200){                       
                 $_SESSION['error'] = 'view lead error';
-            }
-            else{
+            }else{
                 echo'<style>
                     #loading {
                     display: none;}
@@ -866,7 +869,9 @@ function clws_access_properties_loggin() {
                     'cookie'=>[],
                 ];
                 $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
-                if($res['response']['code'] != 200 && !empty($error)){  
+                if (is_wp_error($res)) {
+                    $_SESSION['error'] =  $res->get_error_message();
+                }elseif($res['response']['code'] != 200 && !empty($error)){  
                     $_SESSION['error'] = 'Add token error !';
                     $error = $_SESSION['error'];                               
                 }else{
@@ -1046,10 +1051,11 @@ function clws_access_properties_loggin() {
                             'cookie'=>[],
                         ];
                         $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}', $arrs);
-                        if($res['response']['code'] != 200){                   
+                        if (is_wp_error($res)) {
+                            $_SESSION['error'] =  $res->get_error_message();
+                        }elseif($res['response']['code'] != 200){                   
                             $_SESSION['error'] = 'view lead error!';                    
-                        }    
-                        else{
+                        }else{
                             echo'<style>
                                 #loading {
                                 display: none;}
