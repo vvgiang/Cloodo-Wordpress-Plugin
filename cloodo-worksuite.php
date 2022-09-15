@@ -20,8 +20,8 @@ require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/include
 function clws_add_iframe()
 {
     $url= get_site_url();   
-    $newurl = sanitize_text_field((explode("/",trim($url,"/")))[2]) ;
-    return '<iframe src="https://cloodo.com/trustscore/' . esc_attr($newurl) . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
+    $newurl = ((explode("/",trim($url,"/")))[2]) ;
+    return '<iframe src="https://cloodo.com/trustscore/' . esc_url($newurl) . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
 add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
 ////////////////////////////////////////////////process project///////////////////////////////////////////////////
