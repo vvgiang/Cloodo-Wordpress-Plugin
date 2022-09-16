@@ -42,7 +42,7 @@
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
 					<?php if ($pageNum > 1) { ?>
-								<li class="page-item"><a class="page-link" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&pageNum=1"><<</a>
+								<li class="page-item"><a class="page-link" href="<?php echo esc_url(admin_url('admin.php?page=project_list&pageNum=1')) ?>"><<</a>
 								</li>
 								<li class="page-item"><a class="page-link" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&pageNum=<?php echo esc_attr($pageNum) - 1 ?>"><</a>
 								</li>
@@ -69,7 +69,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 		<div class="modal-header">
-			<h5 class="modal-title" id="staticBackdropLabel">you are sure <b>delete</b> ?</h5>
+			<h5 class="modal-title" id="staticBackdropLabel">You are sure <b>Delete</b> ?</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		</div>
 		<div class="modal-footer">

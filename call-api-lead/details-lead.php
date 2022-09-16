@@ -54,7 +54,7 @@
 		<nav class="pagina" aria-label="Page navigation example">
 			<ul class="pagination">     
 				<?php if ($pageNum > 1) { ?>
-						<li class="page-item"><a class="page-link" data-Num="<?php echo 1; ?>" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&pageNum=1"> << </a></li>
+						<li class="page-item"><a class="page-link" data-Num="<?php echo 1; ?>" href="<?php echo esc_url(admin_url('admin.php?page=lead&pageNum=1')) ?>"> << </a></li>
 						<li class="page-item"><a class="page-link" data-Num="<?php echo esc_attr($pageNum) - 1 ?>" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&pageNum=<?php echo esc_attr($pageNum) - 1 ?>"> < </a></li>
 				<?php } 
 					for ($i = $pre; $i <= $next; $i++) { ?>

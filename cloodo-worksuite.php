@@ -69,12 +69,12 @@ function clws_project_lead() {
     if(isset($_GET['logout']) && $_GET['logout']=='project'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Disconnect successfuly ! ';
-        wp_redirect(admin_url('admin.php?').'page=Setting');
+        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
         exit;
     }elseif(isset($_GET['logout']) && $_GET['logout']=='lead'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Disconnect successfuly ! ';
-        wp_redirect(admin_url('admin.php?').'page=Setting');
+        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
         exit;
     }
     if(isset($_GET['DeleteAcc']) && sanitize_text_field($_GET['DeleteAcc'])=='lead'){
@@ -96,7 +96,7 @@ function clws_project_lead() {
         }
         $dataoption = maybe_serialize( $dataoption );
         update_option( 'info', $dataoption);
-        wp_redirect(admin_url('admin.php?').'page=Setting');
+        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
         exit;
     }
 } 
@@ -782,7 +782,7 @@ function clws_setting_loggin_access() {
         $tokennew = sanitize_text_field($_POST['accountselect']);
         $_SESSION['token']= $tokennew;
         update_option('token',$tokennew);
-        wp_redirect(admin_url('admin.php?').'page=lead');
+        wp_redirect(esc_url(admin_url('admin.php?page=lead')));
         exit;
     }
     // unset($_SESSION['token']);
