@@ -18,8 +18,8 @@ require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/include
 //////////////////////////////////////////////////clws_add_iframe///////////////////////////////////////////////// 
 function clws_add_iframe()
 {
-    $url= get_site_url();   
-    $newurl = ((explode("/",trim($url,"/")))[2]) ;
+    $url= sanitize_email(get_site_url());   
+    $newurl = sanitize_text_field((explode("/",trim($url,"/")))[2]) ;
     return '<iframe src="https://cloodo.com/trustscore/' . esc_url($newurl) . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
 add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
@@ -68,19 +68,19 @@ function clws_project_lead() {
     if(isset($_GET['logout']) && $_GET['logout']=='project'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Disconnect successfuly ! ';
-        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
+        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
         exit;
     }elseif(isset($_GET['logout']) && $_GET['logout']=='lead'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Disconnect successfuly ! ';
-        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
+        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
         exit;
     }
     if(isset($_GET['DeleteAcc']) && sanitize_text_field($_GET['DeleteAcc'])=='lead'){
         unset($_SESSION['token']);
         $_SESSION['success'] = 'Remove account successfuly ! ';
-        $id_token = get_option('token');
-        $result = get_option('info');
+        $id_token = sanitize_text_field(get_option('token'));
+        $result = sanitize_text_field(get_option('info'));
         $dataoption = maybe_unserialize( $result );
         foreach($dataoption as $key => $value){
             if($id_token == $value['token'])
@@ -95,7 +95,7 @@ function clws_project_lead() {
         }
         $dataoption = maybe_serialize( $dataoption );
         update_option( 'info', $dataoption);
-        wp_redirect(get_site_url().'/wp-admin/admin.php?page=Setting');
+        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
         exit;
     }
 } 
@@ -382,7 +382,7 @@ function clws_access_getall_project() {
                     $res = json_decode($res['body'],true);
                     $id_token = $res['data']['token'];
                     update_option( 'token', $id_token);                              
-                    $token = get_option('token');
+                    $token = sanitize_text_field(get_option('token'));
                     $_SESSION['token']= $token;
                     $pageSize = 10;
                     $pageNum = isset($_GET['pageNum']) ? sanitize_text_field($_GET['pageNum']) : '1';
@@ -454,7 +454,7 @@ function clws_access_getall_leads() {
                 $client_name = sanitize_text_field($_POST['client_name']);
                 $client_email = sanitize_text_field($_POST['client_email']);
                 $next_follow_up = sanitize_text_field($_POST['next_follow_up']);
-                $token = get_option('token');
+                $token = sanitize_text_field(get_option('token'));
                 $arrs =[
                     'method'=> 'POST',
                     'body'=>[
@@ -499,7 +499,7 @@ function clws_access_getall_leads() {
                 'blocking'=>true,
                 'headers'=>[
                     'X-requested-Width'=>'XMLHttpRequest',
-                    'Authorization'=>'Bearer '.get_option('token'),
+                    'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
                     'Content-Type'=>'application/json',
                 ],
                 'cookie'=>[],
@@ -544,7 +544,7 @@ function clws_access_getall_leads() {
                     'blocking'=>true,
                     'headers'=>[
                         'X-requested-Width'=>'XMLHttpRequest',
-                        'Authorization'=>'Bearer '.get_option('token'),
+                        'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
                     ],
                     'cookie'=>[],
                 ];
@@ -568,7 +568,7 @@ function clws_access_getall_leads() {
                 'method'=>'DELETE',
                 'headers'=>[
                     'X-requested-Width'=>'XMLHttpRequest',
-                    'Authorization'=>'Bearer '.get_option('token'),
+                    'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
                     'Content-Type'=>'application/json'
                 ],
                 'body'=>[],
@@ -594,7 +594,7 @@ function clws_access_getall_leads() {
             $start = 0;
             $pageSize = 10;                   
             $pageNum = 1;
-            $token = get_option('token');
+            $token = sanitize_text_field(get_option('token'));
             $arrs =[
                 'method'=> 'GET',
                 'body'=>[],
@@ -650,7 +650,7 @@ function clws_access_getall_leads() {
             $pageSize = 10;                   
             $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : '1';
             $start = ($pageNum -1) * $pageSize;
-            $token = get_option('token');
+            $token = sanitize_text_field(get_option('token'));
             $arrs =[
                 'method'=> 'GET',
                 'body'=>[],
@@ -723,7 +723,7 @@ function clws_ajax_ajax_demo_func() {
             'method'=>'DELETE',
             'headers'=>[
                 'X-requested-Width'=>'XMLHttpRequest',
-                'Authorization'=>'Bearer '.get_option('token'),
+                'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
                 'Content-Type'=>'application/json'
             ],
             'body'=>[],
@@ -746,7 +746,7 @@ function clws_ajax_ajax_demo_func() {
             'blocking'=>true,
             'headers'=>[
                 'X-requested-Width'=>'XMLHttpRequest',
-                'Authorization'=>'Bearer '.get_option('token'),
+                'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
                 'Content-Type'=>'application/json',
             ],
             'cookie'=>[],
@@ -764,7 +764,7 @@ function clws_ajax_ajax_demo_func() {
             'blocking'=>true,
             'headers'=>[
                 'X-requested-Width'=>'XMLHttpRequest',
-                'Authorization'=>'Bearer '.get_option('token'),
+                'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
                 'Content-Type'=>'application/json',
             ],
             'cookie'=>[],
@@ -781,7 +781,7 @@ function clws_setting_loggin_access() {
         $tokennew = sanitize_text_field($_POST['accountselect']);
         $_SESSION['token']= $tokennew;
         update_option('token',$tokennew);
-        wp_redirect(get_site_url().'/wp-admin/admin.php?page=lead');
+        wp_redirect(esc_url(admin_url('admin.php?page=lead')));
         exit;
     }
     // unset($_SESSION['token']);
@@ -791,7 +791,7 @@ function clws_setting_loggin_access() {
 add_action('init', 'clws_setting_loggin_access');
 function clws_access_properties_loggin() {
     session_start();
-    $emailtest = get_option( 'admin_email');
+    $emailtest = sanitize_text_field(get_option( 'admin_email'));
     $id = get_current_user_id();
     $user = get_userdata($id);
     $namesite = get_bloginfo();
@@ -801,8 +801,8 @@ function clws_access_properties_loggin() {
     if(isset($_POST['save'])){
         $email = sanitize_email($_POST['email']);
         $password = sanitize_text_field($_POST['password']);
-        $tokenId = get_option( 'token' );
-        $result = get_option( 'info' );
+        $tokenId = sanitize_text_field(get_option( 'token' ));
+        $result = sanitize_text_field(get_option( 'info' ));
         $dataoption = maybe_unserialize( $result );
         foreach($dataoption as $arr){
             if($email == $arr['email']){
@@ -829,9 +829,9 @@ function clws_access_properties_loggin() {
                 $res = json_decode($res['body'],true);
                 $id_token = $res['data']['token'];
                 update_option( 'token', $id_token);                              
-                $token = get_option('token');
+                $token = sanitize_text_field(get_option('token'));
                 $_SESSION['token']= $token;
-                $result = get_option( 'info' );
+                $result = sanitize_text_field(get_option( 'info' ));
                 $dataoption = maybe_unserialize( $result );
                 $dataoption[] = ["token"=> $id_token,
                 "email"=> $email];
@@ -858,7 +858,7 @@ function clws_access_properties_loggin() {
                     $_SESSION['error'] =  $res->get_error_message();
                 }elseif($res['response']['code'] != 200 && !empty($error)){  
                     $_SESSION['error'] = 'Add token error !';
-                    $error = $_SESSION['error'];                               
+                    $error = sanitize_text_field($_SESSION['error']);                               
                 }else{
                     echo'<style>
                     #loading {
@@ -891,17 +891,17 @@ function clws_access_properties_loggin() {
         $password = sanitize_text_field($_POST['password']);
         if(empty(trim($company_name))|| empty(trim($email))|| empty(trim($password))) {
             $_SESSION['error'] = " Email or Password do not empty !";
-            $error = $_SESSION['error'];
+            $error = sanitize_text_field($_SESSION['error']);
         }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = 'Incorrect email format !';
-            $error = $_SESSION['error'];
+            $error = sanitize_text_field($_SESSION['error']);
         }else{
-            $result = get_option('info');
+            $result = sanitize_text_field(get_option('info'));
             $dataoption = maybe_unserialize($result);
             foreach ($dataoption as $arr) {
                 if ($email == $arr['email']) {
                     $_SESSION['error'] = 'This account has been there !';
-                    $error = $_SESSION['error'];
+                    $error = sanitize_text_field($_SESSION['error']);
                 }
             }
         }
@@ -939,20 +939,18 @@ function clws_access_properties_loggin() {
                         $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
                         if($res['response']['code'] != 200){
                         $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].'- The Accounts already exists or has not activated email, please try again !';
-                        $error = $_SESSION['error'];
                         }else{
                             $res = json_decode($res['body'],true);
                             $id_token = $res['data']['token'];
                             $_SESSION['token'] = $id_token;
                             update_option( 'token', $id_token);
-                            $result = get_option( 'info' );
+                            $result = sanitize_text_field(get_option( 'info' ));
                             $dataoption = maybe_unserialize( $result );
                             $dataoption[] = ["token"=> $id_token,
                             "email"=> $email];
                             $dataoption = maybe_serialize( $dataoption );
                             update_option( 'info', $dataoption);
                             $_SESSION['success'] ='Thank you for signing up !';
-                            $success = $_SESSION['success'];
                         }
                     }else{
                         $_SESSION['error'] = ' Undefined error, Please try again !';
@@ -1010,7 +1008,7 @@ function clws_access_properties_loggin() {
                     $id_token = $res['data']['token'];
                     $_SESSION['token']= $id_token;
                     update_option('token', $id_token);
-                    $result = get_option('info');
+                    $result = sanitize_text_field(get_option('info'));
                     $dataoption = maybe_unserialize($result);
                     $dataoption[] = ["token"=> $id_token,
                     "email"=> $emailtest];
@@ -1021,7 +1019,7 @@ function clws_access_properties_loggin() {
                         $start = 0;
                         $pageSize = 10;                   
                         $pageNum = 1;
-                        $token = get_option('token');
+                        $token = sanitize_text_field(get_option('token'));
                         $arrs =[
                             'method'=> 'GET',
                             'body'=>[],
@@ -1084,5 +1082,5 @@ function clws_access_properties_loggin() {
     }
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/setting.php'));
-    
 }
+
