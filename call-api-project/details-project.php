@@ -4,7 +4,7 @@
 			<thead>
 				<h2 class="projecttitle">LIST PROJECT</h2>
 				<div>
-					<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info">Add</a>
+					<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info">Add</a>
 				</div>
 				<tr>
 					<th>STT</th>
@@ -26,8 +26,8 @@
 						<td><?php echo esc_attr(date('d-m-Y',strtotime($row['deadline'])))?></td>
 						<td><?php echo esc_attr($row['status']) ?></td>
 						<td>
-							<a href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&view=edit&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-							<button type="submit" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="delete btn btn-danger p-2 gethref" data-href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&iddel=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
+							<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&view=edit&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
+							<button type="submit" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="delete btn btn-danger p-2 gethref" data-href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&iddel=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
 						</td>
 					</tr>
 				<?php } ?>
@@ -42,21 +42,21 @@
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
 					<?php if ($pageNum > 1) { ?>
-								<li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=1"><<</a>
+								<li class="page-item"><a class="page-link" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&pageNum=1"><<</a>
 								</li>
-								<li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($pageNum) - 1 ?>"><</a>
+								<li class="page-item"><a class="page-link" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&pageNum=<?php echo esc_attr($pageNum) - 1 ?>"><</a>
 								</li>
 					<?php } 
 						for ($i = $pre; $i <= $next; $i++) { ?>
 								<?php if ($i == $pageNum) { ?>
-										<li class="page-item"><a class="page-link bg-warning" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
+										<li class="page-item"><a class="page-link bg-warning" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
 								<?php } else { ?>
-										<li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
+										<li class="page-item"><a class="page-link" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&pageNum=<?php echo esc_attr($i); ?>"><?php echo esc_attr($i); ?></a></li>
 								<?php } ?>
 					<?php }
 						if ($pageNum < $pageSum) { ?>
-								<li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($pageNum) + 1 ?>"> > </a></li>
-								<li class="page-item"><a class="page-link" href="<?php echo get_site_url() ?>/wp-admin/admin.php?page=project_list&pageNum=<?php echo esc_attr($pageSum) ?>"> >> </a></li>
+								<li class="page-item"><a class="page-link" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&pageNum=<?php echo esc_attr($pageNum) + 1 ?>"> > </a></li>
+								<li class="page-item"><a class="page-link" href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&pageNum=<?php echo esc_attr($pageSum) ?>"> >> </a></li>
 					<?php } ?>
 				</ul>
 			</nav>
