@@ -859,7 +859,7 @@ function clws_access_properties_loggin() {
                     $_SESSION['error'] =  $res->get_error_message();
                 }elseif($res['response']['code'] != 200 && !empty($error)){  
                     $_SESSION['error'] = 'Add token error !';
-                    $error = $_SESSION['error'];                               
+                    $error = sanitize_text_field($_SESSION['error']);                               
                 }else{
                     echo'<style>
                     #loading {
@@ -892,17 +892,17 @@ function clws_access_properties_loggin() {
         $password = sanitize_text_field($_POST['password']);
         if(empty(trim($company_name))|| empty(trim($email))|| empty(trim($password))) {
             $_SESSION['error'] = " Email or Password do not empty !";
-            $error = $_SESSION['error'];
+            $error = sanitize_text_field($_SESSION['error']);
         }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = 'Incorrect email format !';
-            $error = $_SESSION['error'];
+            $error = sanitize_text_field($_SESSION['error']);
         }else{
             $result = sanitize_text_field(get_option('info'));
             $dataoption = maybe_unserialize($result);
             foreach ($dataoption as $arr) {
                 if ($email == $arr['email']) {
                     $_SESSION['error'] = 'This account has been there !';
-                    $error = $_SESSION['error'];
+                    $error = sanitize_text_field($_SESSION['error']);
                 }
             }
         }
