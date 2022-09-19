@@ -19,9 +19,9 @@ require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/include
 //////////////////////////////////////////////////clws_add_iframe///////////////////////////////////////////////// 
 function clws_add_iframe()
 {
-    $url= sanitize_email(get_site_url());   
-    $newurl = sanitize_text_field((explode("/",trim($url,"/")))[2]) ;
-    return '<iframe src="https://cloodo.com/trustscore/' . esc_url($newurl) . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
+    $url= sanitize_url(get_site_url());   
+    $newurl = sanitize_text_field((explode("/",trim($url,"/")))[2]);
+    return '<iframe src="' . esc_url('https://cloodo.com/trustscore/'.$newurl) . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
 add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
 ////////////////////////////////////////////////process project///////////////////////////////////////////////////
