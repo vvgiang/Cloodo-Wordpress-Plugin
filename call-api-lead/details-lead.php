@@ -71,10 +71,6 @@
 			</ul>
 		</nav>
 	</div>
-	<form class="logout" action="" method="GET">
-		<button type="submit" name="logout" value="lead" class="logout btn btn-danger">Disconnect</button>
-		<button type="submit" name="DeleteAcc" value="lead" class="logout btn btn-danger">Remove Account</button>
-	</form>
 </div>
 
 

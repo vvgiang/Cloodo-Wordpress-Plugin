@@ -63,43 +63,6 @@ function clws_add_menu_projects()
 }
 add_action('admin_menu', 'clws_add_menu_projects');
 
-function clws_project_lead() {
-    session_start();
-    if(isset($_GET['logout']) && $_GET['logout']=='project'){
-        unset($_SESSION['token']);
-        $_SESSION['success'] = 'Disconnect successfuly ! ';
-        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
-        exit;
-    }elseif(isset($_GET['logout']) && $_GET['logout']=='lead'){
-        unset($_SESSION['token']);
-        $_SESSION['success'] = 'Disconnect successfuly ! ';
-        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
-        exit;
-    }
-    if(isset($_GET['DeleteAcc']) && sanitize_text_field($_GET['DeleteAcc'])=='lead'){
-        unset($_SESSION['token']);
-        $_SESSION['success'] = 'Remove account successfuly ! ';
-        $id_token = sanitize_text_field(get_option('token'));
-        $result = sanitize_text_field(get_option('info'));
-        $dataoption = maybe_unserialize( $result );
-        foreach($dataoption as $key => $value){
-            if($id_token == $value['token'])
-            {
-                if(count($dataoption) == 1 ) {
-                    unset($_SESSION['success']);
-                    $_SESSION['error'] = 'Can\'t remove last account ';
-                    continue;
-                }
-                unset($dataoption[$key]);
-            }
-        }
-        $dataoption = maybe_serialize( $dataoption );
-        update_option( 'info', $dataoption);
-        wp_redirect(esc_url(admin_url('admin.php?page=Setting')));
-        exit;
-    }
-} 
-add_action('init','clws_project_lead');
 function clws_access_getall_project() {
     session_start();
     if(isset( $_SESSION['token'])){//////////////token not empty////////////////////
