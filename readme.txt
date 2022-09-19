@@ -13,7 +13,9 @@ Manage your leads, projects, tasks
 
 == Description ==
 
-Features:
+You can add shortcode [cloodo-badge] to where you want to show a review badge.
+
+Other Features:
 * Manage customers and leads. Track client projects, invoices, proposals/estimates.
 * Add your company’s employees, track their attendance and manage their leaves.
 * Create contracts with clients with e-signatures.
@@ -27,7 +29,10 @@ Yes. Plugin will register an account automatic after you click register button o
 
 == Screenshots ==
 
-1. Main screenshot
+1. Add Project
+2. List Projects
+3. Add Lead
+4. List Leads
 
 == Changelog ==
 
