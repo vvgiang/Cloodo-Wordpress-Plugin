@@ -23,24 +23,24 @@
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h2 class="projecttitle">LOGIN LEAD FORM</h2>
+                            <div class="modal-header projecttitle">
+                                <h4>LOGIN LEAD FORM</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <form class="temple" method="post" action="">
                                 <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="text" name="email" id="email" value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']): ""; ?>"/>
+                                    <div class="mb-3 form-group">
+                                        <input type="text" required name="email" id="email" value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']): ""; ?>"/>
+                                        <label for="email" class="input">Email</label>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password" name="password" id="password" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
+                                    <div class="mb-3 form-group">
+                                        <input type="password" required name="password" id="password" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
+                                        <label for="password" class="input">Password</label>
                                     </div>
                                         <p data-bs-toggle="modal" data-bs-target="#exampleModal1">Don't have an account? <a href="#" class="text-primary m-l-5 signup"><b>Sign Up</b></a> !</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit"  name="save" class="btn btn-primary">LOGIN</button>
                                 </div>
                             </form>
@@ -50,26 +50,26 @@
                 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                            <h2 class="projecttitle">REGISTER LEAD FORM</h2>
+                            <div class="modal-header projecttitle">
+                            <h4>REGISTER LEAD FORM</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                             <form class="temple" method="post" action="">
                                 <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="company_name" class="form-label">Company name</label>
-                                        <input type="text" name="company_name" id="company_name" value="<?php echo isset($_POST['company_name']) ? esc_attr($_POST['company_name']): ""; ?>"/>
+                                    <div class="mb-3 form-group">
+                                        <input type="text" required name="company_name" id="company_name" value="<?php echo isset($_POST['company_name']) ? esc_attr($_POST['company_name']): ""; ?>"/>
+                                        <label for="company_name" class="input">Company name</label>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="registerEmail" class="form-label">Email</label>
-                                        <input type="text" name="email" id="registerEmail" value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']): ""; ?>"/>
+                                    <div class="mb-3 form-group">
+                                        <input type="text" required name="email" id="registerEmail" value="<?php echo isset($_POST['email']) ? esc_attr($_POST['email']): ""; ?>"/>
+                                        <label for="registerEmail" class="input">Email</label>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="registerPass" class="form-label">Password</label>
-                                        <input type="password" name="password" id="registerPass" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
+                                    <div class="mb-3 form-group">
+                                        <input type="password" required name="password" id="registerPass" value="<?php echo isset($_POST['password']) ? esc_attr($_POST['password']): ""; ?>"/>
+                                        <label for="registerPass" class="input">Password</label>
                                     </div>
                                     <div class="mb-1">
-                                        <input name="checkbox" id="terms" type="checkbox" class="checkbox" value="true">
+                                        <input name="checkbox" required id="terms" type="checkbox" class="checkbox" value="true">
                                         <label for="terms" class="checkbox">I agree to<a class="ms-25" href="/">privacy policy &amp; terms</a></label>
                                     </div>  
                                 </div>

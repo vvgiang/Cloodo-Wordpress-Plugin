@@ -112,8 +112,8 @@ jQuery(document).ready(function($) {
                             <td>${element.next_follow_up} </td>
                             <td>${element.client_email} </td>
                             <td>
-                                <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
+                                <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="edit btn-addlist p-2"><i class="fa-solid fa-eye-dropper"></i></a>
+                                <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                         `);
@@ -122,7 +122,7 @@ jQuery(document).ready(function($) {
                         let output ='';
                         for(let i=pre; i <= next; i++){
                             output += `${i == pageNum ? 
-                                (`<li class="page-item"><a class="page-link bg-warning" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`):
+                                (`<li class="page-item"><a class="page-link bg-warning active" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`):
                                 (`<li class="page-item"><a class="page-link" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`)
                             }`
                         }
@@ -233,8 +233,8 @@ jQuery(document).ready(function($) {
                             <td>${element.next_follow_up} </td>
                             <td>${element.client_email} </td>
                             <td>
-                                <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
+                                <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="edit btn-addlist p-2"><i class="fa-solid fa-eye-dropper"></i></a>
+                                <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-addlist p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                         `);
@@ -243,7 +243,7 @@ jQuery(document).ready(function($) {
                         let output ='';
                         for(let i=pre; i <= next; i++){
                             output += `${i == pageNum ? 
-                                (`<li class="page-item"><a class="page-link bg-warning" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`):
+                                (`<li class="page-item"><a class="page-link bg-warning active" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`):
                                 (`<li class="page-item"><a class="page-link" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`)
                             }`
                         }

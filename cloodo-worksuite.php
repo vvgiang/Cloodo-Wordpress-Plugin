@@ -52,10 +52,18 @@ function clws_add_menu_projects()
             'project_list', // Slug menu
             'clws_access_getall_project', // display function 
         );
+        add_submenu_page( 
+            'Setting', // Slug menu parent
+            'Client', // title page
+            'Client', // name menu
+            'manage_options',// area supper admin and admin 
+            'Client', // Slug menu
+            'clws_access_getall_client', // display function 
+        );
     }
     if ( !wp_doing_ajax() ) {
         $extension = isset($_GET['page'])? sanitize_text_field($_GET['page']) : "";
-        $allows = ['Setting', 'lead', 'project_list'];
+        $allows = ['Setting', 'lead', 'project_list','Client'];
         if(in_array($extension, $allows)) {
             echo '<div id="loading"></div>';             
         }
@@ -437,7 +445,9 @@ function clws_access_getall_leads() {
                     'cookie'=>[],
                 ];
                 $res = wp_remote_request('https://erp.cloodo.com/api/v1/lead', $arrs);
-                if($res['response']['code'] != 200){
+                if (is_wp_error($res)) {
+                    $_SESSION['error'] =  $res->get_error_message();
+                }elseif($res['response']['code'] != 200){
                     $_SESSION['error'] = 'add lead error';  
                 }else{ 
                     echo'<style>
@@ -512,7 +522,9 @@ function clws_access_getall_leads() {
                     'cookie'=>[],
                 ];
                 $res = wp_remote_request('https://erp.cloodo.com/api/v1/lead/'.$id, $arrs);
-                if($res['response']['code'] != 200){
+                if (is_wp_error($res)) {
+                    $_SESSION['error'] =  $res->get_error_message();
+                }elseif($res['response']['code'] != 200){
                     $_SESSION['error'] = 'update error ! ';          
                 }    
                 else{
@@ -737,6 +749,18 @@ function clws_ajax_ajax_demo_func() {
     wp_send_json_success($res); // response json
     die();// required   
 }
+///////////////////////////////////////////////// Client //////////////////////////////////////////////////////
+function clws_access_getall_client() {
+    global $wpdb;
+    $table = $wpdb->prefix;
+    echo '<pre>';
+    // echo print_r($wpdb);
+    $sql = "SELECT * FROM _hlwc_customer_lookup
+    LEFT JOIN _hlwc_order_product_lookup ON _hlwc_customer_lookup.customer_id = _hlwc_order_product_lookup.customer_id";
+    $data = $wpdb->get_results( $wpdb->prepare($sql, 10, 0));
+    print_r($data);
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Client/show-client.php'));
+}
 /////////////////////////////////////////////////setting - swap account//////////////////////////////////////////////////////
 function clws_setting_loggin_access() {
     session_start();
@@ -796,8 +820,9 @@ function clws_access_properties_loggin() {
                 $_SESSION['token']= $token;
                 $result = sanitize_text_field(get_option( 'info' ));
                 $dataoption = maybe_unserialize( $result );
-                $dataoption[] = ["token"=> $id_token,
-                "email"=> $email];
+                $dataoption[] = [
+                    "token"=> $id_token,
+                    "email"=> $email];
                 $dataoption = maybe_serialize( $dataoption );
                 update_option( 'info', $dataoption);
                 $pageSize = 10;

@@ -1,3 +1,20 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+#wpbody{
+    background-color: #f3f3f3;
+    margin-left: -18px;
+}
+.container {
+    background-color: #fff ;
+    max-width: 95%;
+    border-radius: 5px;
+    box-shadow: 2px 5px 10px 3px #d5c7c7;
+    padding: 0px;
+}
 .mt-3.alert.alert-success {
     word-break: break-word;
 }
@@ -16,26 +33,80 @@
     border-radius: 4px;
     border: 1px solid #bfbaba;
     margin-top: 30px;
+    box-shadow: 2px 5px 10px 3px #d5c7c7;
+    background-color: #fff;
 }
 .addnew {
     width: 100%;
 }
-label {
-    min-width: 120px;
-    /* max-width: 120px; */
-    font-weight: bold;
+label.input {
+    display:block;
+    width: 150px;
+    font-weight: 400;
+    color: #999;
+    position: absolute;
+    background-color: #fff;
+    left: 10px;
+    top: 50%;
+    user-select: none;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+.form-group input:focus,
+.form-group input:valid,
+.form-group select:focus,
+.form-group select:valid
+{
+    border: 1px solid #5594f3 ;
+    /* box-shadow: 1px 1px 1px #bfbaba; */
+}
+select#next_follow_up, 
+select#status{
+    max-width: 100%;
+}
+.form-group input:focus + label,
+.form-group input:valid + label,
+.form-group select:focus + label,
+.form-group select:valid + label
+{
+    width: fit-content;
+    top: 0;
+    left: 5px;
+    transition: all 0.25s ease-in-out;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0px 5px;
+    color:#5eadf8 ;
 }
 input {
     flex: 1;
     outline: none;
     border-radius: 4px;
     border: 1px solid #bfbaba;
+    transition: all 0.25s ease-in-out;
+}
+input.form-group , select.form-control{
+    padding: 5px;
+
+}
+.btn-title,
+.page-link.active {
+    font-weight: 600;
+    background:#778cec !important;
+}
+.btn-title:hover,
+.page-link.active:hover{
+    font-weight: 600;
+    background:#968ef3 !important;
+    box-shadow:1px 1px 10px #8379ee;
+
 }
 .add_new,.edit{
     margin: 0px auto;
-}
-.logout{
-    float: right;
 }
 button.btn.btn-primary {
     font-weight: 600;
@@ -47,14 +118,31 @@ p:hover .signup{
     text-decoration: underline;
 }
 .projecttitle{
-    background: -webkit-linear-gradient(rgb(151, 135, 135), rgb(10, 180, 138));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 20px;
+    letter-spacing: 2px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    color: #5e5873;
+    line-height: 50px;
+    padding: 0px;
+    margin-left: 10px;
 }
 .table td, .table th {
     padding: 0.4rem !important;
     vertical-align: none !important;
-}#loading {
+}
+.tablehead {
+    background-color: #f3f2f7;
+    border: 1px solid #f3f3f3;
+    /* text-align: center; */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+    color:#5e5873; ;
+}
+/* .filter_result {
+    text-align: center;
+} */
+#loading {
     display: block;
     margin: auto;
     width: 5rem;
@@ -107,20 +195,47 @@ select.swap {
 }
 .addlead{
     margin-bottom: 15px;
+    margin-left: 10px;
 }
 .accountselect {
     display: flex;
     gap: 10px;
 }
-.logout {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    
-}
 li.wp-first-item {
     display: none;
 }
-.form-group {
-    margin-bottom: 10px;
+nav.pagina {
+    margin: auto;
+    max-width: 80%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.btn-info.btn-addlist,
+.edit.btn-addlist,
+.delete.btn-addlist {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    letter-spacing: 2px;
+    background: -webkit-linear-gradient( #9088eb,  #a7a3d6) !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color:  #fff;
+    border-radius: 5px;
+}
+.delete.btn-addlist {
+    border: none;
+    border-radius: 5px;
+    background: -webkit-linear-gradient( #f15151,  #6f65df) !important;
+}
+.btn-info.btn-addlist:hover,
+.edit.btn-addlist:hover,
+.delete.btn-addlist:hover  {
+    box-shadow:1px 1px 10px #9b95d8;
+    opacity: 0.8;
+    
+}
+.modal-header.projecttitle {
+    padding: 10 20px;
 }

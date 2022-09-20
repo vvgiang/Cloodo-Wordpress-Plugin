@@ -1,33 +1,33 @@
-<div class="temp ">
+<div class="temp">
   <form class="addnew" action="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&idadd=post&pageNum=<?php echo isset($pageSum ) ? esc_attr($pageSum): '1' ?>" method="POST">
     <div class="row">
-      <div class="add_new col-md-8">
-        <h2 class="projecttitle">ADD LEAD</h2>
+      <div class="add_new col-md-12">
+        <p class="projecttitle ">Add New Lead</p>
         <div class="form-group">
-          <label>COMPANY_NAME</label>
-          <input type="text" name="company_name" class="form-control" placeholder="company name" required name="company_name">
+          <input id="company_name" type="text" name="company_name" class="form-control"  required name="company_name">
+          <label class="input" for="company_name">Company Name</label>
         </div>
         <div class="form-group">
-          <label>VALUE</label>
-          <input type="number" min="0" name="value" class="form-control" placeholder="value" required name="value">
+          <input id="value" type="number" min="0" name="value" class="form-control"  required name="value">
+          <label class="input" for="value"> Lead Value</label>
         </div>
         <div class="form-group">
-          <label>CLIENT NAME</label>
-          <input type="text" name="client_name" class="form-control" placeholder="client name" required name="client_name">
+          <input id="client_name" type="text" name="client_name" class="form-control"  required name="client_name">
+          <label class="input" for="client_name">Client Name</label>
         </div>
         <div class="form-group">
-          <label>CLIENT EMAIL</label>
-          <input type="email" name="client_email" class="form-control" placeholder="client email" required name="client_email">
+          <input id="client_email" type="email" name="client_email" class="form-control" required name="client_email">
+          <label class="input" for="client_email">Client Email</label>
         </div>
         <div class="form-group">
-          <label>NEXT FOLLOW UP</label>
           <select class="form-control" id="next_follow_up" name="next_follow_up" required>
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
+          <label class="input" for="next_follow_up">Next Follow Up</label>
         </div>
         <div class="form-group">
-          <button class="btn btn-success" name="submit" type="submit">Save</button>
+          <button class="btn btn-success btn-title" name="submit" type="submit">Save</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="history.back()">Back</button>
         </div>
       </div>
