@@ -12,21 +12,21 @@
 					</label>
 					<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&view=post&pageSum=<?php echo isset($nextpage) && $nextpage >0 ? esc_attr( $nextpage ) : 1 ?>" class="btn btn-info btn-addlist">Add lead <i class="fa-solid fa-plus"></i></a>
 				</div>
-		<table class="table table-hover">
-			<thead class="tablehead">
-				<tr>
-					<th>Stt</th>
-					<th>Client Name</th>
-					<th>Company Name</th>
-					<th>Lead Value</th>
-					<th>Create On</th>
-					<th>Next Follow Up</th>
-					<th>Client Email</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody class="filter_result">
-					<div id="wraper">
+		<div id="wraper">
+			<table class="table table-hover ">
+				<thead class="tablehead">
+					<tr>
+						<th>Stt</th>
+						<th>Client Name</th>
+						<th>Company Name</th>
+						<th>Lead Value</th>
+						<th>Create On</th>
+						<th>Next Follow Up</th>
+						<th>Client Email</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody class="filter_result">
 					<?php $start; foreach($arr['data'] as $row) { $start++; ?>
 						<tr id ="id-<?php echo esc_attr($row['id']) ?>">		
 							<td><?php echo esc_attr($start);  ?></td>
@@ -37,14 +37,21 @@
 							<td><?php echo $row['next_follow_up'] ? esc_attr($row['next_follow_up']):""?> </td>
 							<td><?php echo esc_attr($row['client_email']) ?></td>
 							<td>
-								<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&view=edit&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" data-id="<?php echo esc_attr($row['id']) ?>" class="edit btn-addlist p-2"><i class="fa-solid fa-eye-dropper"></i></a>
-								<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="<?php echo esc_attr($row['id']) ?>"  data-href="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&iddel=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
+								<div class="btn-action" data="<?php echo esc_attr($row['id']) ?>" >
+									<i class="fa-solid fa-ellipsis-vertical icon-action"></i>
+									<div class="wraper">
+										<div class="show-action" id="<?php echo esc_attr($row['id']) ?>">
+											<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&view=edit&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" data-id="<?php echo esc_attr($row['id']) ?>" class="btn-addlist"><i class="icon-edit fa-solid fa-eye-dropper"></i></a>
+											<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="<?php echo esc_attr($row['id']) ?>"  data-href="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&iddel=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
+										</div>
+									</div>
+								</div>
 							</td>
 						</tr>
 					<?php } ?>
-				</div>			
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	<?php }else{ ?>
 		<div id="error">
 			<h1>Error : API not found</h1>

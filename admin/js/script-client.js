@@ -13,10 +13,10 @@ jQuery(document).ready(function($) {
         .then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    url:lead_ajax_object.ajaxUrl+'?iddel='+iddel,
+                    url:client_ajax_object.ajaxUrl+'?iddel='+iddel,
                     dataType:'json',
                     data:{ 
-                        action: 'ajax_lead',
+                        action: 'ajax_client',
                         value:value
                     },
                     beforeSend:function(){
@@ -57,11 +57,11 @@ jQuery(document).ready(function($) {
         const pageN = $('bg-warning').attr('data-num') ? $('bg-warning').attr('data-num'): 1;
         const pageNum = Number(pageN);
         $.ajax({
-			url: lead_ajax_object.ajaxUrl+'?pageNum='+pageNum,
+			url: client_ajax_object.ajaxUrl+'?pageNum='+pageNum,
 			type: 'post',
             dataType : "json",
 			data: { 
-                action: 'ajax_lead',
+                action: 'ajax_client',
                 value : val,
             },
             beforeSend: function() 
@@ -75,7 +75,7 @@ jQuery(document).ready(function($) {
             {
                 if(response.success) {
                     $( '.filter_result' ).find( '#loading' ).remove();
-                    const siteUrl = lead_ajax_object.getSiteUrl;
+                    const siteUrl = client_ajax_object.getSiteUrl;
                     const data = response.data?.body;
                     const obj = JSON.parse(data);
                     const arr = obj.data;
@@ -102,21 +102,21 @@ jQuery(document).ready(function($) {
                     var start = (pageNum -1) * val;
                     for(element of arr){
                         start++;
+                        const d = new Date(element.created_at);
                         $('.filter_result' ).append(`
                         <tr id ="id-${element.id}">		
                             <td>${start}</td>
-                            <td>${element.client_name}</td>
-                            <td>${element.company_name} </td>
-                            <td>${element.value} </td>
-                            <td>${d.getDate()}</td>
-                            <td>${element.next_follow_up} </td>
-                            <td>${element.client_email} </td>
+                            <td>${element.name}</td>
+                            <td>${element.client_details != null ? element.client_details.company_name : ""} </td>
+                            <td>${element.email} </td>
+                            <td>${element.mobile} </td>
+                            <td>${d.toLocaleDateString("en-GB")}</td>
                             <td>
                                 <div class="btn-action" data="${element.id}" >
-                                    <i class="fa-solid fa-ellipsis-vertical icon-action"></i>
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
                                     <div class="wraper">
                                         <div class="show-action" id="${element.id}">
-                                        <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
+                                        <a href="${siteUrl}/wp-admin/admin.php?page=Client&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
                                         <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                     </div>
@@ -197,11 +197,11 @@ jQuery(document).ready(function($) {
         const val = $('#show').val() ? $('#show').val() : 10;
         const value = Number(val);
         $.ajax({
-			url: lead_ajax_object.ajaxUrl+'?pageNum='+pageNum,
+			url: client_ajax_object.ajaxUrl+'?pageNum='+pageNum,
 			type: 'post',
             dataType : "json",
 			data: { 
-                action: 'ajax_lead',
+                action: 'ajax_client',
                 value : value,
             },
             beforeSend: function() {		
@@ -213,7 +213,7 @@ jQuery(document).ready(function($) {
                     $( '.filter_result tr').remove();
                     $( '.pagina ul' ).remove();
                     $( '.filter_result' ).find( '#loading' ).remove();
-                    const siteUrl = lead_ajax_object.getSiteUrl;
+                    const siteUrl = client_ajax_object.getSiteUrl;
                     const data = response.data?.body;
                     const obj = JSON.parse(data);
                     const arr = obj.data;
@@ -230,21 +230,21 @@ jQuery(document).ready(function($) {
                     var start = (pageNum -1) * value;
                     for(element of arr){
                         start++;
+                        const d = new Date(element.created_at);
                         $('.filter_result' ).append(`
                         <tr id ="id-${element.id}">		
                             <td>${start}</td>
-                            <td>${element.client_name}</td>
-                            <td>${element.company_name} </td>
-                            <td>${element.value} </td>
-                            <td>${d.toLocaleDateString()}</td>
-                            <td>${element.next_follow_up} </td>
-                            <td>${element.client_email} </td>
+                            <td>${element.name}</td>
+                            <td>${element.client_details != null ? element.client_details.company_name : ""} </td>
+                            <td>${element.email} </td>
+                            <td>${element.mobile} </td>
+                            <td>${d.toLocaleDateString("en-GB")}</td>
                             <td>
                                 <div class="btn-action" data="${element.id}" >
                                     <i class="fa-solid fa-ellipsis-vertical icon-action"></i>
                                     <div class="wraper">
                                         <div class="show-action" id="${element.id}">
-                                        <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
+                                        <a href="${siteUrl}/wp-admin/admin.php?page=Client&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
                                         <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                     </div>
@@ -277,7 +277,7 @@ jQuery(document).ready(function($) {
                     </ul>`);
                     if((arr.length) <= 0){
                         swal({
-                            title: "lead empty!",
+                            title: "Client empty!",
                             text: "You clicked the button!",
                             icon: "success",
                         })
