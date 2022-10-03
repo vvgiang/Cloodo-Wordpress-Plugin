@@ -1,10 +1,10 @@
 === Cloodo Work Suite ===
 Contributors: cloodoteam
 Donate link: https://cloodo.com/
-Tags: cloodo, work suite, work, suite, cloodo worksuite, cloodo work suite
+Tags: review, cloodo, work suite, work, suite, cloodo worksuite, cloodo work suite
 Requires at least: 4.7
 Tested up to: 6.0
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -31,7 +31,10 @@ Yes. Plugin will register an account automatic after you click register button o
 
 == Changelog ==
 
-= 1.0 =
+= 1.1.0 =
+* Add Client feature
+
+= 1.0.0 =
 * Init
 
 == Upgrade Notice ==
