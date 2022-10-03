@@ -3,9 +3,9 @@
         <a href="https://erp.cloodo.com/">
             <img src="<?php echo plugins_url( 'admin/image/worksuite-logo.png', __DIR__ )?>" class="worksuite-logo">
         </a>
-        <h4>Hello: <b><?php echo esc_attr(strtoupper($user_login)); ?></b>, welcome to Worksuite</h4>
+        <h4 class="title">Hello: <b><?php echo esc_attr(strtoupper($user_login)); ?></b>, welcome to Worksuite</h4>
         <?php if(!empty(get_option('token'))){ ?>
-                <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;">Have a nice day ! today is : <?php date_default_timezone_set('Asia/Ho_Chi_Minh'); echo date('d/m/Y - H:i:s'); ?></p>
+                <p class="content" style="color:#3e3e3e;font-size: 16px;font-weight: 400;">Have a nice day ! today is : <?php date_default_timezone_set('Asia/Ho_Chi_Minh'); echo date('d/m/Y - H:i:s'); ?></p>
             <div class="accountselect">
                 <select name="accountselect" class="swap">
                     <?php 
