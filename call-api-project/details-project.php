@@ -1,6 +1,6 @@
 <div class="container">
 	<?php if(isset($arr['data'])){ ?>
-		<h2 class="projecttitle">LIST PROJECT</h2>
+		<h2 class="projecttitle">LIST PROJECTS</h2>
 		<div class="addlead">
 					<label for="show" class="show">
 						Show
@@ -12,7 +12,7 @@
 					</label>
 					<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=project_list&view=post&pageSum=<?php echo isset($nextpage)? esc_attr( $nextpage ) : $pageSum ?>" class="btn btn-info btn-addlist">Add project <i class="fa-solid fa-plus"></i></a>
 				</div>
-		<div id="wraper">
+		<div class="table-parent">
 			<table class="table table-hover">
 				<thead class="tablehead">
 					<tr>

@@ -748,10 +748,10 @@ function clws_ajax_lead() {
 add_action( 'wp_ajax_ajax_lead','clws_ajax_lead' );
 add_action( 'wp_ajax_nopriv_ajax_lead','clws_ajax_lead' );
 function clws_ajax_client() {
-    if(isset($_GET['iddel'])){////////////////////////////////////////delete client////////////////////////////////////
-        $id = sanitize_text_field($_GET['iddel']);
+    if(isset($_GET['idGet'])){////////////////////////////////////////Get one client////////////////////////////////////
+        $id = sanitize_text_field($_GET['idGet']);
         $arr =[
-            'method'=>'DELETE',
+            'method'=>'GET',
             'headers'=>[
                 'X-requested-Width'=>'XMLHttpRequest',
                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
@@ -763,9 +763,27 @@ function clws_ajax_client() {
             'blocking'=>true,
             'cookie'=>[],
         ];
-        $res = wp_remote_request('https://erp.cloodo.com/api/v1/client/'.$id,$arr);             
-    } 
-    if(!isset($_GET['pageNum'])){//////////////////////////////////show all client pageNum=null///////////////////////////
+        $res = wp_remote_request('https://erp.cloodo.com/api/v1/client/'.$id.'/?fields=id,name,email,mobile,status,created_at,client_details{company_name,website,address,office_phone,city,state,country_id,postal_code,skype,linkedin,twitter,facebook,gst_number,shipping_address,note,email_notifications,category_id,sub_category_id,image}',$arr);             
+    }elseif(isset($_GET['oders']) && $_GET['oders'] == 'detail'){
+        $orders = wc_get_orders([
+            'limit'=> -1
+        ]);
+        $tokenId = sanitize_text_field(get_option( 'token' ));
+        $res = [];
+        foreach ($orders as $valuenew) {
+            $data = ($valuenew->get_data());
+            $key = $data['billing']['email'];
+            if (!isset($res[$key]['oders']) && !isset($res[$key]['F'])) {
+                $res[$key] = $data;
+                $res[$key]['oders'] = 1;
+                $res[$key]['sumtotal'] = $data['total'];
+                $randPass = substr(md5(rand(0, 99999)), 0, 6);
+            } elseif (array_key_exists($key, $res)) {
+                $res[$key]['oders'] += 1;
+                $res[$key]['sumtotal'] += $data['total'];
+            }
+        }
+    }elseif(!isset($_GET['pageNum'])){/////////////////////////////show all client pageNum=null///////////////////////////
         $start = 0;
         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                   
         $pageNum = 1;
@@ -876,14 +894,14 @@ function clws_access_getall_client() {
         ]);
         $tokenId = sanitize_text_field(get_option( 'token' ));
         $args = [];
-        $flag = true;
         foreach( $orders as $valuenew) {
             $data = ($valuenew->get_data());
-            $key = $data['billing']['email'];
-            if(!isset( $args[$key]['oders']) && !isset( $args[$key]['sumtotal'])){
+            $key = sanitize_text_field($data['billing']['email']);
+            if(!isset( $args[$key]['oders']) && !isset( $args[$key]['sumtotal'])&& !array_key_exists($key, $args)){
                 $args[$key] = $data;
                 $args[$key]['oders'] = 1;
                 $args[$key]['sumtotal'] = $data['total'];
+                echo 'running';
                 $randPass = substr(md5(rand(0,99999)),0,6);
                 $arrs = [
                     'method' => 'POST',
@@ -898,20 +916,24 @@ function clws_access_getall_client() {
                     'body' => [
                         'name' => sanitize_text_field($args[$key]['billing']['first_name'].' '.$args[$key]['billing']['last_name']) ,
                         'email' => sanitize_email($args[$key]['billing']['email'])  ,
-                        'password' => $randPass,
-                        'mobile' => $args[$key]['billing']['phone'] ,
+                        'password' => sanitize_text_field($randPass),
+                        'mobile' => sanitize_text_field($args[$key]['billing']['phone']) ,
                         'client_detail' => [
-                            'company_name'=> $args[$key]['billing']['company'],
-                            
+                            'company_name'=> sanitize_text_field($args[$key]['billing']['company']),
+                            'address'=> sanitize_text_field($args[$key]['billing']['address_1']),
+                            'city'=> sanitize_text_field($args[$key]['billing']['city']),
+                            'postal_code'=> sanitize_text_field($args[$key]['billing']['postcode']),
+                            'shipping_address'=> sanitize_text_field($args[$key]['billing']['address_2']),
                         ]
                     ],
                 ];
                 $res = wp_remote_request('https://erp.cloodo.com/api/v1/client', $arrs);
-            }elseif (array_key_exists($key, $args)) {
-                $args[$key]['oders'] += 1;
-                $args[$key]['sumtotal'] += $data['total'];
+            }else{
+                    $args[$key]['oders'] += 1;
+                    $args[$key]['sumtotal'] += $data['total'];
             }
         }
+        
         if(!isset($_GET['pageNum'])){  //////////////////////show all Client pageNum=null/////////////////////////////
             $start = 0;
             $pageSize = 10;                   
@@ -943,10 +965,6 @@ function clws_access_getall_client() {
                 $_SESSION['token']= $tokenId;
                 $arr = json_decode($res['body'],true);
                 $totalSum = $arr['meta']['paging']['total'];
-                if($totalSum == '0'){ /// add new form client empty 
-                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/add-lead.php'));
-                    return;
-                }
                 $pageSum = (ceil($totalSum/$pageSize)) > 0 ? ceil($totalSum/$pageSize): 1;
                 $ofsetPageMax = ($pageSum-1) * $pageSize;
                 $resPageMax = wp_remote_get("https://erp.cloodo.com/api/v1/client?fields=id,name,email,mobile,status,created_at,client_details{company_name,website,address,office_phone,city,state,country_id,postal_code,skype,linkedin,twitter,facebook,gst_number,shipping_address,note,email_notifications,category_id,sub_category_id,image}&offset=".$ofsetPageMax, $arrs);
@@ -966,10 +984,6 @@ function clws_access_getall_client() {
                 $pre = $pageNum - $around;
                 if ($pre <= 1) $pre = 1;
             }
-            // echo '<pre>';
-            // print_r($arr['data']);
-            // print_r($args);
-            // echo '</pre>';
             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));      
             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Client/show-client.php'));
             return;

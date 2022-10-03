@@ -1,56 +1,246 @@
 jQuery(document).ready(function($) {
-    $(document).on('click','button.gethref',function(){
-        const iddel = $(this).attr('data-id') ? $(this).attr('data-id'): '';
+    //////////////////close////////////////////
+    $(document).on('click','.close',function(e){
+        $(".table-details").removeClass("activedetails");
+        $(document).find('.loading').remove();
+        $('.content').remove();
+    });
+    ///////////////////profile client//////////////
+    $(document).on('click','#profile',function(e){
+        e.preventDefault();
+        const loadEl =$(document).find( '.loadingshow' );
+        if(loadEl.length != 0){
+            return;
+        }
+        const ele = $(".active-menu").removeClass('active-menu');
+        $(this).addClass("active-menu");
+    })
+    ///////////////////project client//////////////
+    $(document).on('click','#project',function(e){
+        e.preventDefault();
+        const loadEl =$(document).find( '.loadingshow' );
+        if(loadEl.length != 0){
+            return;
+        }
+        const ele = $(".active-menu").removeClass('active-menu');
+        $(this).addClass("active-menu");
+    })
+    ///////////////////invoice client//////////////
+    $(document).on('click','#invoices',function(e){
+        e.preventDefault();
+        const loadEl =$(document).find( '.loadingshow' );
+        if(loadEl.length != 0){
+            return;
+        }
+        const ele = $(".active-menu").removeClass('active-menu');
+        $(this).addClass("active-menu");
+        const keyEmail = $(this).attr('data-user') ? $(this).attr('data-user'): '';
+        $.ajax({
+            url:client_ajax_object.ajaxUrl+'?oders=detail',
+            dataType:'json',
+            data:{ 
+                action:'ajax_client',
+                value:keyEmail
+            },
+            beforeSend:function(){
+                $('.content').remove();
+                $('.table-details' ).append( '<div style="display:block;" class="loadingshow" id="loading"></div>' );
+            },
+            success:function(response){
+                if(response.success){
+                    $('.table-details').find('#loading').remove();
+                    console.log(response);
+                    let data = response.data;
+                    console.log(data);
+                    console.log(Object.entries(data));
+                    // const objE = obj.data;
+                    // var start = 0;
+                    // const d = new Date(objE.created_at);
+                    //     $('.table-details' ).append(`
+                    //         <div class="content">
+                    //             <div class="menu-info">
+                    //                 <ul class="nav3" >
+                    //                     <li><a class="active-menu" href="#" id="profile">Profile</a></li>
+                    //                     <li><a href="#" id="project">Project</a></li>
+                    //                     <li><a href="#" id="invoices" data-user="${objE.email}">Invoices</a></li>
+                    //                     <li><a href="#" id="contact">Contact us</a></li>
+                    //                 </ul>
+                    //             </div>
+                    //             <hr>
+                    //             <div class="content-child">
+                    //                 <div class="row">
+                    //                     <div class="col-xs-12">
+                    //                         <div class="row">
+                    //                             <div class="col-md-4 col-xs-6 b-r"> <strong class="tablehead">Full Name</strong> <br>
+                    //                                 <p class="text-muted">${objE.name}</p>
+                    //                             </div>
+                    //                             <div class="col-md-4 col-xs-6 b-r"> <strong class="tablehead">Email</strong> <br>
+                    //                                 <p class="text-muted">${objE.email}</p>
+                    //                             </div>
+                    //                             <div class="col-md-4 col-xs-6"> <strong class="tablehead">Mobile</strong> <br>
+                    //                                 <p class="text-muted">${objE.mobile != null ? objE.mobile : ""} </p>
+                    //                             </div>
+                    //                         </div>
+                    //                         <hr>
+                    //                         <div class="row">
+                    //                             <div class="col-md-4 col-xs-6 b-r"> <strong class="tablehead">Company Name</strong> <br>
+                    //                                 <p class="text-muted">${objE.client_details.company_name != null? objE.client_details.company_name : "" }</p>
+                    //                             </div>
+                    //                             <div class="col-md-4 col-xs-6 b-r"> <strong class="tablehead">Website</strong> <br>
+                    //                                 <p class="text-muted">${objE.client_details.website != null? objE.client_details.website : ""}</p>
+                    //                             </div>
+                    //                             <div class="col-md-4 col-xs-6"> <strong class="tablehead">Created at</strong> <br>
+                    //                                 <p class="text-muted">${d.toLocaleDateString("en-GB")}</p>
+                    //                             </div>
+                    //                         </div>
+                    //                         <hr>
+                    //                         <div class="row">
+                    //                             <div class="col-md-6 col-xs-6 b-r"> <strong class="tablehead">Address</strong> 
+                    //                                 <p class="text-muted">${objE.client_details.address != null? objE.client_details.address : ""}</p>
+                    //                             </div>
+                    //                             <div class="col-md-6 col-xs-6"> <strong class="tablehead">Shipping Address</strong>
+                    //                                 <p class="text-muted">${objE.client_details.shipping_address != null? objE.client_details.shipping_address : ""}</p>
+                    //                             </div>
+                    //                         </div>
+                    //                             <hr>
+                    //                         <div class="row">
+                    //                             <div class="col-xs-6 b-r"> <strong class="tablehead">Address</strong>
+                    //                                 <p class="text-muted">${objE.client_details.address != null? objE.client_details.address : ""}</p>
+                    //                             </div>
+                    //                             <div class="col-xs-6"> <strong class="tablehead">Shipping Address</strong>
+                    //                                 <p class="text-muted">${objE.client_details.shipping_address != null? objE.client_details.shipping_address : ""}</p>
+                    //                             </div>
+                    //                         </div>
+                    //                         <hr>
+                    //                         <div class="row">
+                    //                             <div class="col-xs-12"> <strong class="tablehead">Note</strong> <br>
+                    //                                 <p class="text-muted">${objE.client_details.note != null? objE.client_details.note : ""}</p>
+                    //                             </div>
+                    //                         </div>
+                    //                     </div>
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //     `);
+                }else {
+                    alert("LOI~")
+                }
+            },
+        });
+    })
+    ///////////////////contact client//////////////
+    $(document).on('click','#contact',function(e){
+        e.preventDefault();
+        const loadEl =$(document).find( '.loadingshow' );
+        if(loadEl.length != 0){
+            return;
+        }
+        const ele = $(".active-menu").removeClass('active-menu');
+        $(this).addClass("active-menu");
+    })
+    ////////////// view one client/////////////
+    $(document).on('click','.js-view',function(e){
+        e.preventDefault();
+        const loadEl =$(document).find( '.loadingshow' );
+        if(loadEl.length != 0){
+            return;
+        }
+        $(".table-details").addClass("activedetails");
+        const idGet = $(this).attr('data-id') ? $(this).attr('data-id'): '';
         const val = $('#show').val() ? $('#show').val() : 10;
         const value = Number(val);
-        swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this imaginary file!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {
-                $.ajax({
-                    url:client_ajax_object.ajaxUrl+'?iddel='+iddel,
-                    dataType:'json',
-                    data:{ 
-                        action: 'ajax_client',
-                        value:value
-                    },
-                    beforeSend:function(){
-                        $('.filter_result' ).append( '<div style="display:block;" id="loading"></div>' );
-                    },
-                    success:function(response){
-                        if(response.success){
-                            $('.filter_result').find('#loading').remove();
-                            $('#id-'+iddel).remove();
-                            let data = response.data.body;
-                            let obj =JSON.parse(data);
-                            const total = obj.meta.paging.total;
-                            swal("Poof! Your imaginary file has been deleted!", {
-                                icon: "success",
-                            });
-                            $(document).on('click','.swal-button--confirm',function() {
-                                if(total == 0){
-                                    window.location.reload();
-                                }
-                            })
-                        }else {
-                            swal({
-                                title: "Delete fail !",
-                                text: "You clicked the button!",
-                                icon: "warning",
-                            });
-                        }
-                    },
-                });
-            } else {
-                swal("Your imaginary file is safe!");
-            }
+        $.ajax({
+            url:client_ajax_object.ajaxUrl+'?idGet='+idGet,
+            dataType:'json',
+            data:{ 
+                action: 'ajax_client',
+                value:value
+            },
+            beforeSend:function(){
+                $('.content').remove();
+                $('.table-details' ).append( '<div style="display:block;" class="loadingshow" id="loading"></div>' );
+            },
+            success:function(response){
+                if(response.success){
+                    $('.table-details').find('#loading').remove();
+                    let data = response.data.body;
+                    let obj =JSON.parse(data);
+                    const objE = obj.data;
+                    var start = 0;
+                    const d = new Date(objE.created_at);
+                        $('.table-details' ).append(`
+                            <div class="content">
+                                <div class="menu-info">
+                                    <ul class="nav3" >
+                                        <li><a class="active-menu" href="#" id="profile">Profile</a></li>
+                                        <li><a href="#" id="project">Project</a></li>
+                                        <li><a href="#" id="invoices" data-user="${objE.email}">Invoices</a></li>
+                                        <li><a href="#" id="contact">Contact us</a></li>
+                                    </ul>
+                                </div>
+                                <hr>
+                                <div class="content-child">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <div class="col-md-4 col-xs-6 b-r"> <strong class="tablehead">Full Name</strong> <br>
+                                                    <p class="text-muted">${objE.name}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xs-6 b-r"> <strong class="tablehead">Email</strong> <br>
+                                                    <p class="text-muted">${objE.email}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xs-6"> <strong class="tablehead">Mobile</strong> <br>
+                                                    <p class="text-muted">${objE.mobile != null ? objE.mobile : ""} </p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-4 col-xs-6 b-r"> <strong class="tablehead">Company Name</strong> <br>
+                                                    <p class="text-muted">${objE.client_details.company_name != null? objE.client_details.company_name : "" }</p>
+                                                </div>
+                                                <div class="col-md-4 col-xs-6 b-r"> <strong class="tablehead">Website</strong> <br>
+                                                    <p class="text-muted">${objE.client_details.website != null? objE.client_details.website : ""}</p>
+                                                </div>
+                                                <div class="col-md-4 col-xs-6"> <strong class="tablehead">Created at</strong> <br>
+                                                    <p class="text-muted">${d.toLocaleDateString("en-GB")}</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6 col-xs-6 b-r"> <strong class="tablehead">Address</strong> 
+                                                    <p class="text-muted">${objE.client_details.address != null? objE.client_details.address : ""}</p>
+                                                </div>
+                                                <div class="col-md-6 col-xs-6"> <strong class="tablehead">Shipping Address</strong>
+                                                    <p class="text-muted">${objE.client_details.shipping_address != null? objE.client_details.shipping_address : ""}</p>
+                                                </div>
+                                            </div>
+                                                <hr>
+                                            <div class="row">
+                                                <div class="col-xs-6 b-r"> <strong class="tablehead">Address</strong>
+                                                    <p class="text-muted">${objE.client_details.address != null? objE.client_details.address : ""}</p>
+                                                </div>
+                                                <div class="col-xs-6"> <strong class="tablehead">Shipping Address</strong>
+                                                    <p class="text-muted">${objE.client_details.shipping_address != null? objE.client_details.shipping_address : ""}</p>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-xs-12"> <strong class="tablehead">Note</strong> <br>
+                                                    <p class="text-muted">${objE.client_details.note != null? objE.client_details.note : ""}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                }else {
+                    alert("LOI~")
+                }
+            },
         });
     });
+    /////////////filler client//////////
     $('#show').change(function(){
         flag = false;
         const val = $(this).val() ? $(this).val() : 10;
@@ -69,7 +259,7 @@ jQuery(document).ready(function($) {
 				$( '.filter_result tr').remove();
 				$( '.filter_result' ).scrollTop(0);
                 $( '.pagina ul' ).remove();
-				$( '.filter_result' ).append( '<div style="display:block;" id="loading"></div>' );
+				$( '.filter_result' ).append( '<div style="display:block;" class="loadingshow" id="loading"></div>' );
 			},
 			success: function( response ) 
             {
@@ -107,16 +297,17 @@ jQuery(document).ready(function($) {
                         <tr id ="id-${element.id}">		
                             <td>${start}</td>
                             <td>${element.name}</td>
-                            <td>${element.client_details != null ? element.client_details.company_name : ""} </td>
-                            <td>${element.email} </td>
-                            <td>${element.mobile} </td>
+                            <td>${element.client_details.company_name != null ? element.client_details.company_name : ""} </td>
+                            <td>${element.email != null ? element.email :""} </td>
+                            <td>${element.mobile != null ? element.mobile :""} </td>
                             <td>${d.toLocaleDateString("en-GB")}</td>
                             <td>
                                 <div class="btn-action" data="${element.id}" >
-                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    <i class="fa-solid fa-ellipsis-vertical icon-action"></i>
                                     <div class="wraper">
                                         <div class="show-action" id="${element.id}">
-                                        <a href="${siteUrl}/wp-admin/admin.php?page=Client&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
+                                        <a href="${siteUrl}/wp-admin/admin.php?page=Client&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="js-edit btn-addlist"><i class="icon-edit fa-solid fa-pencil"></i></a>
+                                        <a href="${siteUrl}/wp-admin/admin.php?page=Client&view=details&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="js-view btn-addlist"><i class="icon-view fa-solid fa-magnifying-glass"></i></a>
                                         <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                     </div>
@@ -184,10 +375,11 @@ jQuery(document).ready(function($) {
             }
         }
     });
+    ///////////////// page link ///////////////
     $(document).on('click','.page-link',function(e)
     {
         e.preventDefault();
-        const loadEl =$(document).find( '.loadingshow' );
+        const loadEl = $(document).find( '.loadingshow' );
         if(loadEl.length != 0){
             return;
         }
@@ -217,6 +409,7 @@ jQuery(document).ready(function($) {
                     const data = response.data?.body;
                     const obj = JSON.parse(data);
                     const arr = obj.data;
+                    console.log(arr);
                     const totalSum = obj.meta.paging.total;
                     const pageSum = Math.ceil(totalSum/value);
                     const around = 3;
@@ -235,16 +428,17 @@ jQuery(document).ready(function($) {
                         <tr id ="id-${element.id}">		
                             <td>${start}</td>
                             <td>${element.name}</td>
-                            <td>${element.client_details != null ? element.client_details.company_name : ""} </td>
-                            <td>${element.email} </td>
-                            <td>${element.mobile} </td>
+                            <td>${element.client_details.company_name != null ? element.client_details.company_name : ""} </td>
+                            <td>${element.email != null ? element.email:""} </td>
+                            <td>${element.mobile != null ? element.mobile:""} </td>
                             <td>${d.toLocaleDateString("en-GB")}</td>
                             <td>
                                 <div class="btn-action" data="${element.id}" >
                                     <i class="fa-solid fa-ellipsis-vertical icon-action"></i>
                                     <div class="wraper">
                                         <div class="show-action" id="${element.id}">
-                                        <a href="${siteUrl}/wp-admin/admin.php?page=Client&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
+                                        <a href="${siteUrl}/wp-admin/admin.php?page=Client&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="js-edit btn-addlist"><i class="icon-edit fa-solid fa-pencil"></i></a>
+                                        <a href="${siteUrl}/wp-admin/admin.php?page=Client&view=details&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="js-view btn-addlist"><i class="icon-view fa-solid fa-magnifying-glass"></i></a>
                                         <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
                                         </div>
                                     </div>

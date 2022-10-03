@@ -1,5 +1,5 @@
 <div class="container">
-	<?php if(isset($data)){ 
+	<?php if(isset($arr['data'])){ 
 		$countries = WC()->countries->get_countries();
 		// $array=[];
 		// if (($open = fopen(str_replace('\\','/', plugin_dir_path( __DIR__ ).'includes/countrycode.csv'), "r")) !== FALSE) 
@@ -11,11 +11,12 @@
 		// 	fclose($open);
 		// }
 		// echo "<pre>";
-		// print_r($array);
-		// print_r($countries);
+		// print_r($arr['data']);
+		// // print_r($countries);
 		// echo "</pre>";
+
 		?>
-		<h2 class="projecttitle"> Views Client</h2>
+		<h2 class="projecttitle"> LIST CLIENTS</h2>
 		<div class="addlead">
 					<label for="show" class="show">
 						Show
@@ -59,7 +60,8 @@
 									<i class="fa-solid fa-ellipsis-vertical icon-action"></i>
 									<div class="wraper">
 										<div class="show-action" id="<?php echo esc_attr($row['id']) ?>">
-											<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=Client&view=edit&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" data-id="<?php echo esc_attr($row['id']) ?>" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
+											<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=Client&view=edit&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" data-id="<?php echo esc_attr($row['id']) ?>" class="js-edit btn-addlist"><i class="icon-edit fa-solid fa-pencil"></i></a>
+											<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=Client&view=details&id=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" data-id="<?php echo esc_attr($row['id']) ?>" class="js-view btn-addlist"><i class="icon-view fa-solid fa-magnifying-glass"></i></a>
 											<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="<?php echo esc_attr($row['id']) ?>"  data-href="<?php echo esc_url(admin_url('admin.php?')) ?>page=Client&iddel=<?php echo esc_attr($row['id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
 										</div>
 									</div>
@@ -70,48 +72,11 @@
 				</tbody>
 			</table>
 		</div>
-		<div id="table-details">
-			<table class="table table-hover">
-				<thead class="tablehead">
-					<tr>
-						<th>Stt</th>
-						<th>Name</th>
-						<th>Date created</th>
-						<th>Email</th>
-						<th>Oders</th>
-						<th>Total Spend</th>
-						<th>AOV</th>
-						<th>Contry/Region</th>
-						<th>City</th>
-						<th>Poscode</th>
-						<!-- <th>Action</th> -->
-					</tr>
-				</thead>
-				<tbody class="filter_result">
-					<?php $count = $start; foreach($args as $row) { 
-						$count++;
-						$AOV = $row['sumtotal'] / $row['oders'];
-						$date_created = date('d F, Y',$row['date_created']->getTimestamp());
-						?>
-						<tr id ="id-<?php echo esc_attr($row['customer_id']) ?>">
-							<td><?php echo esc_attr($count);  ?></td>	
-							<td><?php echo (isset($row['customer_id']) && $row['customer_id'] != 0) ? '<a href="'.esc_url(admin_url('user-edit.php?user_id=')). esc_attr( $row['customer_id'] ).'">'. esc_attr($row['billing']['first_name'].' '. $row['billing']['last_name']).'</a>' :  esc_attr($row['billing']['first_name'].' '. $row['billing']['last_name']) ?></td>
-							<td><?php echo esc_attr($date_created) ?> </td>
-							<td><a href="mailto:<?php echo esc_attr(sanitize_email($row['billing']['email']))?>"><?php echo esc_attr(sanitize_email($row['billing']['email']))?></a>  </td>
-							<td><?php echo esc_attr($row['oders'])?> </td>
-							<td><?php echo esc_attr(number_format($row['sumtotal'],0,'.','.')) ?><span> &#x20ab;</span></td>
-							<td><?php echo esc_attr(number_format($AOV,0,'.','.')) ?><span> &#x20ab;</span></td>
-							<td><?php echo esc_attr($countries[$row['billing']['country']]) ?></td>
-							<td><?php echo esc_attr($row['billing']['city']) ?></td>
-							<td><?php echo esc_attr($row['billing']['postcode']) ?></td>
-							<!-- <td>
-								<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=Client&view=edit&id=<?php echo esc_attr($row['customer_id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>" data-id="<?php echo esc_attr($row['customer_id']) ?>" class="edit btn-addlist p-2"><i class="fa-solid fa-eye-dropper"></i></a>
-								<button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="<?php echo esc_attr($row['customer_id']) ?>"  data-href="<?php echo esc_url(admin_url('admin.php?')) ?>page=Client&iddel=<?php echo esc_attr($row['customer_id']) ?>&pageNum=<?php echo esc_attr($pageNum) ?>"><i class="fa-solid fa-trash-can"></i></button>
-							</td> -->
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
+		<div class="table-details">
+			<div class="title">
+				<h2 class="projecttitle">VIEW CLIENTS</h2>
+				<img src="<?php echo plugins_url( 'admin/image/close.png', __DIR__ )?>" class="close" alt="">
+			</div>
 		</div>			
 	<?php }elseif(!class_exists( 'WooCommerce' )){ ?>
 		<div id="error">

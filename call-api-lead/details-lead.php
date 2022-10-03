@@ -12,7 +12,7 @@
 					</label>
 					<a href="<?php echo esc_url(admin_url('admin.php?')) ?>page=lead&view=post&pageSum=<?php echo isset($nextpage) && $nextpage >0 ? esc_attr( $nextpage ) : 1 ?>" class="btn btn-info btn-addlist">Add lead <i class="fa-solid fa-plus"></i></a>
 				</div>
-		<div id="wraper">
+		<div class="table-parent">
 			<table class="table table-hover ">
 				<thead class="tablehead">
 					<tr>
