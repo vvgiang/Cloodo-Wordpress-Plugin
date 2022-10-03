@@ -14,7 +14,6 @@
 		// print_r($arr['data']);
 		// // print_r($countries);
 		// echo "</pre>";
-
 		?>
 		<h2 class="projecttitle"> LIST CLIENTS</h2>
 		<div class="addlead">
