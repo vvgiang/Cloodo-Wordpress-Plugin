@@ -16,15 +16,16 @@
                         <option value="<?php echo $row['token'] ? esc_attr($row['token']) :"" ?>"<?php echo ($tokenId == $row['token'])? 'selected' : '' ?>><?php echo isset($row['email']) ?  esc_attr($row['email']) : '-------------- Select Account -----------' ?></option>
                     <?php } ?>
                 </select>
-                    <button type="submit"  name="Custom_registration" class="btn btn-primary">Account Switch</button>
+                    <!-- <button type="submit"  name="Custom_registration" class="js-getoken btn btn-primary">Account Switch</button> -->
+                    <button type="button" name="Custom_registration" class="js-getoken btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3">Account Switch</button>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Account</button>
             </div>
     </form>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header projecttitle">
-                                <h4>LOGIN LEAD FORM</h4>
+                                <h4>LOGIN FORM</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <form class="temple" method="post" action="">
@@ -40,7 +41,7 @@
                                         <p data-bs-toggle="modal" data-bs-target="#exampleModal1">Don't have an account? <a href="#" class="text-primary m-l-5 signup"><b>Sign Up</b></a> !</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="submit"  name="save" class="btn btn-primary">LOGIN</button>
                                 </div>
                             </form>
@@ -48,10 +49,10 @@
                     </div>
                 </div>
                 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header projecttitle">
-                            <h4>REGISTER LEAD FORM</h4>
+                            <h4>REGISTER FORM</h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                             <form class="temple" method="post" action="">
@@ -74,9 +75,30 @@
                                     </div>  
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="submit"  name="register" class="btn btn-primary">Register</button>
                                 </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header projecttitle">
+                                <h4>Login to WorkSuite</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form class="temple" method="post" action="">
+                                <div class="modal-body">
+                                    <div class="clws_iframe">
+                                        <iframe id="iframeclws" src="https://worksuite.cloodo.com/app-login" width="100%" height="100%" frameborder="0"></iframe>
+                                    </div>
+                                </div>
+                                <!-- <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit"  name="save" class="btn btn-primary">LOGIN</button>
+                                </div> -->
                             </form>
                         </div>
                     </div>

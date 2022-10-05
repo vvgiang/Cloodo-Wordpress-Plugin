@@ -10,4 +10,18 @@ jQuery(document).ready(function($) {
             element.classList.toggle("showHide");
         }
     });
+    $(document).on('click',".js-getoken",sendData);
+        function sendData(e) {
+            try {
+                        // e.preventDefault();
+                        var valselect = $('select[name=accountselect] option').filter(':selected').val();
+                        var myIfr = window.frames['iframeclws'].contentWindow;
+                        // popup = window.open("http://localhost/scroll-parallax/", 'window-2');
+                        var val = myIfr.postMessage(valselect,'https://worksuite.cloodo.com/app-login');
+                        
+            } catch (e) {
+                console.log('Error: ' + e.message);
+            }
+        }
+    
 });

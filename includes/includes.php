@@ -56,7 +56,7 @@ function clws_addstyle()
                     array( 
                         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
                         'getSiteUrl' => get_site_url(),
-                        'pageNum'=> isset($_GET['pageNum']) ? sanitize_text_field($_GET['pageNum']) : 1,
+                        'token'=> get_option('token'),
                         
                     )   
                 );

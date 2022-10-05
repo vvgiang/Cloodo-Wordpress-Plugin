@@ -73,7 +73,7 @@ function clws_access_getall_project() {
     session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/details-project.php'));
-    return;    
+    return; 
 }
 ///////////////////////////////////////////// process Lead////////////////////////////////////////////
 function clws_access_getall_leads() {
@@ -83,216 +83,10 @@ function clws_access_getall_leads() {
     return;
 }
 ////////////////////////////////////////////////ajax/////////////////////////////////////////////////////////////////
-// function clws_ajax_lead() {
-//     if(isset($_GET['iddel'])){////////////////////////////////////////delete lead////////////////////////////////////
-//         $id = sanitize_text_field($_GET['iddel']);
-//         $arr =[
-//             'method'=>'DELETE',
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json'
-//             ],
-//             'body'=>[],
-//             'timeout'=>'5',
-//             'redirection'=>'5',
-//             'blocking'=>true,
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_request('https://erp.cloodo.com/api/v1/lead/'.$id,$arr);             
-//     } 
-//     if(!isset($_GET['pageNum'])){//////////////////////////////////show all lead pageNum=null///////////////////////////
-//         $start = 0;
-//         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                   
-//         $pageNum = 1;
-//         $arrs =[
-//             'method'=> 'GET',
-//             'body'=>[],
-//             'timeout'=>5,
-//             'redirection'=>5,
-//             'blocking'=>true,
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json',
-//             ],
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset='.$start.'&limit='.$pageSize, $arrs);
-//     }else{//////////////show all lead pageNum=$_GET///////////////////////////////////////////////
-//         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                      
-//         $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : 1;
-//         $start = ($pageNum -1) * $pageSize;
-//         $arrs =[
-//             'method'=> 'GET',
-//             'body'=>[],
-//             'timeout'=>5,
-//             'redirection'=>5,
-//             'blocking'=>true,
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json',
-//             ],
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_get('https://erp.cloodo.com/api/v1/lead/?fields=id,company_name,client_name,value,next_follow_up,client_email,client{id,name}&offset='.$start.'&limit='.$pageSize, $arrs);
-//     }
-//     wp_send_json_success($res); // response json
-//     die();// required   
-// }
-// add_action( 'wp_ajax_ajax_lead','clws_ajax_lead' );
-// add_action( 'wp_ajax_nopriv_ajax_lead','clws_ajax_lead' );
-// function clws_ajax_client() {
-//     if(isset($_GET['idGet'])){////////////////////////////////////////Get one client////////////////////////////////////
-//         $id = sanitize_text_field($_GET['idGet']);
-//         $arr =[
-//             'method'=>'GET',
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json'
-//             ],
-//             'body'=>[],
-//             'timeout'=>'5',
-//             'redirection'=>'5',
-//             'blocking'=>true,
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_request('https://erp.cloodo.com/api/v1/client/'.$id.'/?fields=id,name,email,mobile,status,created_at,client_details{company_name,website,address,office_phone,city,state,country_id,postal_code,skype,linkedin,twitter,facebook,gst_number,shipping_address,note,email_notifications,category_id,sub_category_id,image}',$arr);             
-//     }elseif(isset($_GET['oders']) && $_GET['oders'] == 'detail'){
-//         $orders = wc_get_orders([
-//             'limit'=> -1
-//         ]);
-//         $tokenId = sanitize_text_field(get_option( 'token' ));
-//         $res = [];
-//         foreach ($orders as $valuenew) {
-//             $data = ($valuenew->get_data());
-//             $key = $data['billing']['email'];
-//             if (!isset($res[$key]['oders']) && !isset($res[$key]['F'])) {
-//                 $res[$key] = $data;
-//                 $res[$key]['oders'] = 1;
-//                 $res[$key]['sumtotal'] = $data['total'];
-//                 $randPass = substr(md5(rand(0, 99999)), 0, 6);
-//             } elseif (array_key_exists($key, $res)) {
-//                 $res[$key]['oders'] += 1;
-//                 $res[$key]['sumtotal'] += $data['total'];
-//             }
-//         }
-//     }elseif(!isset($_GET['pageNum'])){/////////////////////////////show all client pageNum=null///////////////////////////
-//         $start = 0;
-//         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                   
-//         $pageNum = 1;
-//         $arrs =[
-//             'method'=> 'GET',
-//             'body'=>[],
-//             'timeout'=>5,
-//             'redirection'=>5,
-//             'blocking'=>true,
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json',
-//             ],
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_get('https://erp.cloodo.com/api/v1/client?fields=id,name,email,mobile,status,created_at,client_details{company_name,website,address,office_phone,city,state,country_id,postal_code,skype,linkedin,twitter,facebook,gst_number,shipping_address,note,email_notifications,category_id,sub_category_id,image}&offset='.$start.'&limit='.$pageSize, $arrs);
-//     }else{//////////////show all lead pageNum=$_GET///////////////////////////////////////////////
-//         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                      
-//         $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : 1;
-//         $start = ($pageNum -1) * $pageSize;
-//         $arrs =[
-//             'method'=> 'GET',
-//             'body'=>[],
-//             'timeout'=>5,
-//             'redirection'=>5,
-//             'blocking'=>true,
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json',
-//             ],
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_get('https://erp.cloodo.com/api/v1/client?fields=id,name,email,mobile,status,created_at,client_details{company_name,website,address,office_phone,city,state,country_id,postal_code,skype,linkedin,twitter,facebook,gst_number,shipping_address,note,email_notifications,category_id,sub_category_id,image}&offset='.$start.'&limit='.$pageSize, $arrs);
-//     }
-//     wp_send_json_success($res); // response json
-//     die();// required   
-// }
-// add_action( 'wp_ajax_ajax_client','clws_ajax_client' );
-// add_action( 'wp_ajax_nopriv_ajax_client','clws_ajax_client' );
-// function clws_ajax_project() {
-//     if(isset($_GET['iddel'])){////////////////////////////////////////delete project////////////////////////////////////
-//         $id = sanitize_text_field($_GET['iddel']);
-//         $arr =[
-//             'method'=>'DELETE',
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json'
-//             ],
-//             'body'=>[],
-//             'timeout'=>'5',
-//             'redirection'=>'5',
-//             'blocking'=>true,
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_request('https://erp.cloodo.com/api/v1/project/'.$id,$arr);             
-//     } 
-//     if(!isset($_GET['pageNum'])){//////////////////////////////////show all project pageNum=null///////////////////////////
-//         $start = 0;
-//         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                   
-//         $pageNum = 1;
-//         $arrs =[
-//             'method'=> 'GET',
-//             'body'=>[],
-//             'timeout'=>5,
-//             'redirection'=>5,
-//             'blocking'=>true,
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json',
-//             ],
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}&offset='.$start.'&limit='.$pageSize, $arrs);
-//     }else{//////////////show all lead pageNum=$_GET///////////////////////////////////////////////
-//         $pageSize = (isset($_POST['value'])? sanitize_text_field($_POST['value']) : 10);                      
-//         $pageNum = isset($_GET['pageNum'])? sanitize_text_field($_GET['pageNum']) : 1;
-//         $start = ($pageNum -1) * $pageSize;
-//         $arrs =[
-//             'method'=> 'GET',
-//             'body'=>[],
-//             'timeout'=>5,
-//             'redirection'=>5,
-//             'blocking'=>true,
-//             'headers'=>[
-//                 'X-requested-Width'=>'XMLHttpRequest',
-//                 'Authorization'=>'Bearer '.sanitize_text_field(get_option('token')),
-//                 'Content-Type'=>'application/json',
-//             ],
-//             'cookie'=>[],
-//         ];
-//         $res = wp_remote_get('https://erp.cloodo.com/api/v1/project?fields=id,project_name,project_summary,notes,start_date,deadline,status,category,client{id,name}&offset='.$start.'&limit='.$pageSize, $arrs);
-//     }
-//     wp_send_json_success($res); // response json
-//     die();// required   
-// }
-// add_action( 'wp_ajax_ajax_project','clws_ajax_project' );
-// add_action( 'wp_ajax_nopriv_ajax_project','clws_ajax_project' );
+
 ///////////////////////////////////////////////// Client //////////////////////////////////////////////////////
 function clws_access_getall_client() {
     session_start();
-    // if ( class_exists( 'WooCommerce' ) ) { /////////////////////////////////data all oders - woocommerce///////////////////////////////////////////////
-    // } else {
-    //     echo'<style>
-    //                 #loading {
-    //                 display: none;}
-    //                 </style>';
-    //     $_SESSION['error'] = 'Please active woocommerce and come back !';
-    
-    // }
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Client/show-client.php'));
 
@@ -304,9 +98,10 @@ function clws_setting_loggin_access() {///////////switch accout////////////
         $tokennew = sanitize_text_field($_POST['accountselect']);
         $_SESSION['token']= $tokennew;
         update_option('token',$tokennew);
-        // echo '<script>
-        //     localStorage.accessToken = '.sanitize_text_field(get_option('token')).';
-        // </script>';
+        // echo "<script>
+        // alert('ok');
+        //     localStorage.test ='".$tokennew."';
+        // </script>";
         wp_redirect(esc_url(admin_url('admin.php?page=lead')));
         exit;
     }
@@ -314,7 +109,7 @@ function clws_setting_loggin_access() {///////////switch accout////////////
 add_action('init', 'clws_setting_loggin_access');
 function clws_access_properties_loggin() {///////////login and register//////////
     session_start();
-    $emailtest = sanitize_text_field(get_option( 'admin_email'));
+    $emailadm = sanitize_text_field(get_option( 'admin_email'));
     $id = get_current_user_id();
     $user = get_userdata($id);
     $namesite = get_bloginfo();
@@ -492,7 +287,7 @@ function clws_access_properties_loggin() {///////////login and register/////////
             'method'=> 'POST',
             'body'=>[
             'company_name'=>$company_name,
-            'email'=> $emailtest,
+            'email'=> $emailadm,
             'password'=>$pw,
             'password_confirmation'=>$pw
             ],
@@ -511,7 +306,7 @@ function clws_access_properties_loggin() {///////////login and register/////////
                 //////////////////// demo////////////// register and login get token !
                 $arrs = [
                     'method'=> 'POST',
-                    'body'=>['email'=>$emailtest,'password'=> $pw],
+                    'body'=>['email'=>$emailadm,'password'=> $pw],
                     'timeout'=>5,
                     'redirection'=>5,
                     'blocking'=>true,
@@ -522,7 +317,7 @@ function clws_access_properties_loggin() {///////////login and register/////////
                 if (isset($res['response']['code']) != 200) {
                     $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'];
                 } else {
-                    $to = $emailtest;
+                    $to = $emailadm;
                     $subject ='Thư Cám ơn và gửi Mật Khẩu cho bạn !';
                     $message =  "Chào bạn <b>{$user_login}</b><br> Mật khẩu của bạn là : {$pw}";
                     $headers = 'From:hoanle161996@gmail.com' . "\r\n" .
@@ -535,7 +330,7 @@ function clws_access_properties_loggin() {///////////login and register/////////
                     $result = sanitize_text_field(get_option('info'));
                     $dataoption = maybe_unserialize($result);
                     $dataoption[] = ["token"=> $id_token,
-                    "email"=> $emailtest];
+                    "email"=> $emailadm];
                     if(count($dataoption) == 1){
                         $dataoption = maybe_serialize($dataoption);
                         update_option('info', $dataoption);
