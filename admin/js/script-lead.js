@@ -13,10 +13,10 @@ jQuery(document).ready(function($) {
         .then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    url:filter_ajax_object.ajaxUrl+'?iddel='+iddel,
+                    url:lead_ajax_object.ajaxUrl+'?iddel='+iddel,
                     dataType:'json',
                     data:{ 
-                        action: 'ajax_demo',
+                        action: 'ajax_lead',
                         value:value
                     },
                     beforeSend:function(){
@@ -57,11 +57,11 @@ jQuery(document).ready(function($) {
         const pageN = $('bg-warning').attr('data-num') ? $('bg-warning').attr('data-num'): 1;
         const pageNum = Number(pageN);
         $.ajax({
-			url: filter_ajax_object.ajaxUrl+'?pageNum='+pageNum,
+			url: lead_ajax_object.ajaxUrl+'?pageNum='+pageNum,
 			type: 'post',
             dataType : "json",
 			data: { 
-                action: 'ajax_demo',
+                action: 'ajax_lead',
                 value : val,
             },
             beforeSend: function() 
@@ -75,7 +75,7 @@ jQuery(document).ready(function($) {
             {
                 if(response.success) {
                     $( '.filter_result' ).find( '#loading' ).remove();
-                    const siteUrl = filter_ajax_object.getSiteUrl;
+                    const siteUrl = lead_ajax_object.getSiteUrl;
                     const data = response.data?.body;
                     const obj = JSON.parse(data);
                     const arr = obj.data;
@@ -88,17 +88,17 @@ jQuery(document).ready(function($) {
                     }
                     let pre = pageNum - around;
                     if (pre <= 1) pre = 1;
-                    const dn = new Date(2022,8,10,16,00,00);
-                    const d = new Date();
-                    var dayset =(dn.getTime());
-                    var currentday = (d.getTime());
-                    var khoangcach =  dayset - currentday;
-                    console.log(dn);
-                    console.log(d);
-                    console.log(Math.floor(khoangcach / (1000 * 60 * 60 * 24))+'d');
-                    console.log(Math.floor((khoangcach % (1000 * 60 * 60 * 24))/(1000*60*60))+'h');
-                    console.log(Math.floor((khoangcach % (1000 * 60 * 60))/(1000*60))+'m');
-                    console.log(Math.floor((khoangcach % (1000 * 60 ))/1000)+'s');
+                    // const dn = new Date(2022,8,10,16,00,00);
+                    // const d = new Date();
+                    // var dayset =(dn.getTime());
+                    // var currentday = (d.getTime());
+                    // var khoangcach =  dayset - currentday;
+                    // console.log(dn);
+                    // console.log(d);
+                    // console.log(Math.floor(khoangcach / (1000 * 60 * 60 * 24))+'d');
+                    // console.log(Math.floor((khoangcach % (1000 * 60 * 60 * 24))/(1000*60*60))+'h');
+                    // console.log(Math.floor((khoangcach % (1000 * 60 * 60))/(1000*60))+'m');
+                    // console.log(Math.floor((khoangcach % (1000 * 60 ))/1000)+'s');
                     var start = (pageNum -1) * val;
                     for(element of arr){
                         start++;
@@ -112,8 +112,15 @@ jQuery(document).ready(function($) {
                             <td>${element.next_follow_up} </td>
                             <td>${element.client_email} </td>
                             <td>
-                                <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
+                                <div class="btn-action" data="${element.id}" >
+                                    <i class="fa-solid fa-ellipsis-vertical icon-action"></i>
+                                    <div class="wraper">
+                                        <div class="show-action" id="${element.id}">
+                                        <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
+                                        <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         `);
@@ -122,7 +129,7 @@ jQuery(document).ready(function($) {
                         let output ='';
                         for(let i=pre; i <= next; i++){
                             output += `${i == pageNum ? 
-                                (`<li class="page-item"><a class="page-link bg-warning" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`):
+                                (`<li class="page-item"><a class="page-link bg-warning active" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`):
                                 (`<li class="page-item"><a class="page-link" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`)
                             }`
                         }
@@ -190,11 +197,11 @@ jQuery(document).ready(function($) {
         const val = $('#show').val() ? $('#show').val() : 10;
         const value = Number(val);
         $.ajax({
-			url: filter_ajax_object.ajaxUrl+'?pageNum='+pageNum,
+			url: lead_ajax_object.ajaxUrl+'?pageNum='+pageNum,
 			type: 'post',
             dataType : "json",
 			data: { 
-                action: 'ajax_demo',
+                action: 'ajax_lead',
                 value : value,
             },
             beforeSend: function() {		
@@ -206,7 +213,7 @@ jQuery(document).ready(function($) {
                     $( '.filter_result tr').remove();
                     $( '.pagina ul' ).remove();
                     $( '.filter_result' ).find( '#loading' ).remove();
-                    const siteUrl = filter_ajax_object.getSiteUrl;
+                    const siteUrl = lead_ajax_object.getSiteUrl;
                     const data = response.data?.body;
                     const obj = JSON.parse(data);
                     const arr = obj.data;
@@ -233,8 +240,15 @@ jQuery(document).ready(function($) {
                             <td>${element.next_follow_up} </td>
                             <td>${element.client_email} </td>
                             <td>
-                                <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn btn-success p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn btn-danger p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
+                                <div class="btn-action" data="${element.id}" >
+                                    <i class="fa-solid fa-ellipsis-vertical icon-action"></i>
+                                    <div class="wraper">
+                                        <div class="show-action" id="${element.id}">
+                                        <a href="${siteUrl}/wp-admin/admin.php?page=lead&view=edit&id=${element.id}&pageNum=${pageNum}" data-id="${element.id}" class="btn-addlist"><i class="icon-edit fa-solid fa-magnifying-glass"></i></a>
+                                        <button type="submit" data-toggle="modal" data-target="#exampleModal" class="delete btn-addlist p-2 gethref" data-id="${element.id}" data-href="${siteUrl}wp-admin/admin.php?page=lead&iddel=${element.id}&pageNum=${pageNum}"><i class="fa-solid fa-trash-can"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         `);
@@ -243,7 +257,7 @@ jQuery(document).ready(function($) {
                         let output ='';
                         for(let i=pre; i <= next; i++){
                             output += `${i == pageNum ? 
-                                (`<li class="page-item"><a class="page-link bg-warning" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`):
+                                (`<li class="page-item"><a class="page-link bg-warning active" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`):
                                 (`<li class="page-item"><a class="page-link" data-Num="${i}" href="${siteUrl}/wp-admin/admin.php?page=lead&pageNum=${i}">${i}</a></li>`)
                             }`
                         }

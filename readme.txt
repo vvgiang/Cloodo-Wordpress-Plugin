@@ -1,10 +1,10 @@
 === Cloodo Work Suite ===
 Contributors: cloodoteam
 Donate link: https://cloodo.com/
-Tags: cloodo, work suite, work, suite, cloodo worksuite, cloodo work suite
+Tags: review, cloodo, work suite, work, suite, cloodo worksuite, cloodo work suite
 Requires at least: 4.7
 Tested up to: 6.0
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,9 +13,7 @@ Manage your leads, projects, tasks
 
 == Description ==
 
-You can add shortcode [cloodo-badge] to where you want to show a review badge.
-
-Other Features:
+Features:
 * Manage customers and leads. Track client projects, invoices, proposals/estimates.
 * Add your company’s employees, track their attendance and manage their leaves.
 * Create contracts with clients with e-signatures.
@@ -29,14 +27,14 @@ Yes. Plugin will register an account automatic after you click register button o
 
 == Screenshots ==
 
-1. Add Project
-2. List Projects
-3. Add Lead
-4. List Leads
+1. Main screenshot
 
 == Changelog ==
 
-= 1.0 =
+= 1.1.0 =
+* Add Client feature
+
+= 1.0.0 =
 * Init
 
 == Upgrade Notice ==
