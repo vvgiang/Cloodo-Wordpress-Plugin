@@ -27,9 +27,9 @@ jQuery(document).ready(function($) {
         }
     window.addEventListener("message", (e) => {
         if (typeof e.data === "object") return;
-            if (e.data == "send successfuly") {
+            if (e.data == "send successfully") {
                 console.log(e.data);
-                window.location.href = siteUrl +'/wp-admin/admin.php?page=lead';
+                window.location.href = siteUrl +'/wp-admin/admin.php?page=leads';
             }
     }, false);
 });

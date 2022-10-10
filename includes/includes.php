@@ -4,7 +4,7 @@ function clws_addstyle()
 {
     if (isset($_GET['page'])) {
         switch ($_GET['page']) {
-            case 'project_list':
+            case 'Work':
                 wp_register_style('clws-boostrap', plugins_url('admin/css/bootstrap.css', __DIR__));
                 wp_enqueue_style('clws-boostrap');
                 wp_register_style('clws-awesome-font', plugins_url('admin/css/fontawesome.min.css', __DIR__));
@@ -45,7 +45,7 @@ function clws_addstyle()
                 );
                 wp_enqueue_script('project-ajax');
                 break;
-            case 'lead':
+            case 'Leads':
             case 'Setting':
                 wp_register_style('clws-boostrap', plugins_url('admin/css/bootstrap.css', __DIR__));
                 wp_enqueue_style('clws-boostrap');
@@ -87,7 +87,7 @@ function clws_addstyle()
                 );
                 wp_enqueue_script('lead-ajax');
                 break;
-            case 'Client':
+            case 'Clients':
                 wp_register_style('clws-boostrap', plugins_url('admin/css/bootstrap.css', __DIR__));
                 wp_enqueue_style('clws-boostrap');
                 wp_register_style('clws-awesome-font', plugins_url('admin/css/fontawesome.min.css', __DIR__));
