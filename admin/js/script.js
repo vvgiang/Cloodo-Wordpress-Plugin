@@ -16,11 +16,8 @@ jQuery(document).ready(function($) {
             try {
                         // e.preventDefault();
                         var valselect = $('select[name=accountselect] option').filter(':selected').val();
-                        // console.log(valselect);
                         var myIfr = window.frames['iframeclws'].contentWindow;
-                        // popup = window.open("http://localhost/scroll-parallax/", 'window-2');
                         var val = myIfr.postMessage(valselect,'http://localhost:3006/check-login');
-                        // window.location.href = 'http://localhost/svtest/wp-admin/admin.php?page=lead';
             } catch (e) {
                 console.log('Error: ' + e.message);
             }
@@ -28,8 +25,7 @@ jQuery(document).ready(function($) {
     window.addEventListener("message", (e) => {
         if (typeof e.data === "object") return;
             if (e.data == "send successfully") {
-                console.log(e.data);
-                window.location.href = siteUrl +'/wp-admin/admin.php?page=leads';
+                window.location.href = siteUrl +'/wp-admin/admin.php?page=Dashboard';
             }
     }, false);
 });

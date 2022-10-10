@@ -107,7 +107,7 @@
             </div>
         <?php } else { ?>
             <form class="create_form" method="POST" action="">
-                <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;" class="card-text">We are helping you to connect your website <b><?php echo esc_url(get_bloginfo());?></b> with your Account in Wordpress to sign up for WorkSuite and send Email for You!</p>
+                <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;" class="card-text">We are helping you to connect your website <b><?php echo esc_attr($namesite);?></b> with your Account in Wordpress to sign up for WorkSuite and send Email for You!</p>
                 <button type="submit"  name="Register_quickly" class="btn btn-primary">Register quickly !</button>
             </form>
         <?php } ?>

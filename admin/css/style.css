@@ -11,7 +11,9 @@ select.swap {
 .accountselect {
     display: flex;
     gap: 10px;
-    
+}
+.clws_iframe{
+    height: 100vh;
 }
 .login_element {
     display: flex;
@@ -120,4 +122,7 @@ input {
 input.form-group , select.form-control{
     padding: 5px;
 
+}
+ul.navbar-nav.d-xl-none {
+    display: none;
 }

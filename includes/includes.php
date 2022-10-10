@@ -47,6 +47,9 @@ function clws_addstyle()
                 break;
             case 'Leads':
             case 'Setting':
+            case 'Dashboard':
+            case 'Notice':
+            case 'Messages':
                 wp_register_style('clws-boostrap', plugins_url('admin/css/bootstrap.css', __DIR__));
                 wp_enqueue_style('clws-boostrap');
                 wp_register_style('clws-awesome-font', plugins_url('admin/css/fontawesome.min.css', __DIR__));
