@@ -59,6 +59,7 @@ function cw_add_menu_projects()
         'Setting', // Slug menu
         'cw_access_propretie_loggin', // display function 
     );
+<<<<<<< Updated upstream
 }
 add_action('admin_menu', 'cw_add_menu_projects');
 function cw_crud_project()
@@ -70,6 +71,104 @@ function cw_crud_project()
             if(isset($_GET['view']) && $_GET['view']=='post'){////////////add view project/////////////////////////
                 $pageSum = sanitize_text_field($_GET['pageSum']); 
                 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/add-project.php'));
+=======
+    // if(!empty($_SESSION['token'])){
+        add_submenu_page( 
+            'Setting', // Slug menu parent
+            'Crud Lead', // title page
+            'Leads', // name menu
+            'manage_options',// area supper admin and admin 
+            'Lead', // Slug menu
+            'clws_access_getall_leads', // display function 
+        );
+        add_submenu_page( 
+            'Setting', // Slug menu parent
+            'Work', // title page
+            'Works', // name menu
+            'manage_options',// area supper admin and admin 
+            'work_list', // Slug menu
+            'clws_access_getall_works', // display function 
+        );
+        add_submenu_page( 
+            'Setting', // Slug menu parent
+            'Clients', // title page
+            'Clients', // name menu
+            'manage_options',// area supper admin and admin 
+            'Client', // Slug menu
+            'clws_access_getall_clients', // display function 
+        );
+    // }
+    if ( !wp_doing_ajax() ) {
+        $extension = isset($_GET['page'])? sanitize_text_field($_GET['page']) : "";
+        $allows = ['Setting', 'lead', 'project_list','Client'];
+        if(in_array($extension, $allows)) {
+            echo '<div id="loading"></div>';             
+        }
+    }
+}
+add_action('admin_menu', 'clws_add_menu_projects');
+////////////////////////////////////////////process project///////////////////////////////////////////////////
+function clws_access_getall_works() {
+    session_start();
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/show-results.php'));
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/details-project.php'));
+    return; 
+}
+///////////////////////////////////////////// process Lead////////////////////////////////////////////
+function clws_access_getall_leads() {
+    session_start();
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/show-results.php'));      
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/details-lead.php'));
+    return;
+}
+////////////////////////////////////////////////ajax/////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////// Client //////////////////////////////////////////////////////
+function clws_access_getall_clients() {
+    session_start();
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/show-results.php'));
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/details-client.php'));
+
+}
+/////////////////////////////////////////////////setting - swap account//////////////////////////////////////////////////////
+function clws_setting_loggin_access() {///////////switch accout////////////
+    session_start();
+    if(isset($_POST['Custom_registration'])){
+        $tokennew = sanitize_text_field($_POST['accountselect']);
+        $_SESSION['token']= $tokennew;
+        update_option('token',$tokennew);
+        // echo "<script>
+        // alert('ok');
+        // echo 'run';
+        // exit;
+        //     localStorage.test ='".$tokennew."';
+        // </script>";
+        wp_redirect(esc_url(admin_url('admin.php?page=lead')));
+        exit;
+    }
+}
+add_action('init', 'clws_setting_loggin_access');
+function clws_access_properties_loggin() {///////////login and register//////////
+    session_start();
+    $emailadm = sanitize_text_field(get_option( 'admin_email'));
+    $id = get_current_user_id();
+    $user = get_userdata($id);
+    $namesite = get_bloginfo();
+    $user_login = sanitize_text_field($user->user_login);
+    $user_email = sanitize_email($user->user_email);
+    $company_name = (explode('.',$namesite))[0];
+    if(isset($_POST['save'])){
+        $email = sanitize_email($_POST['email']);
+        $password = sanitize_text_field($_POST['password']);
+        $tokenId = sanitize_text_field(get_option( 'token' ));
+        $result = sanitize_text_field(get_option( 'info' ));
+        $dataoption = maybe_unserialize( $result );
+        foreach($dataoption as $arr){
+            if($email == $arr['email']){
+                $_SESSION['error'] = 'This account has been there !';
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/show-results.php'));
+                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/setting.php'));
+>>>>>>> Stashed changes
                 return;
             }
             if(isset($_GET['idadd'])){/////////////add project////////////////////////
@@ -285,6 +384,7 @@ function cw_crud_project()
                     }
                     $pre = $pageNum - $around;
                     if ($pre <= 1) $pre = 1;
+<<<<<<< Updated upstream
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/show-results.php'));
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-project/details-project.php'));
                 }    
@@ -479,6 +579,35 @@ function cw_crud_lead()
                         $_SESSION['success'] = 'update successfuly ! ';
                     }
                     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
+=======
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/show-results.php'));
+                    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/details-lead.php'));
+                    return;
+                }
+            } 
+        }else{
+            $_SESSION['error'] = 'User and Password do not empty !';
+        }    
+        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/show-results.php'));
+    }
+    if(isset($_POST['register'])) {
+        $company_name = sanitize_text_field($_POST['company_name']);
+        $email = sanitize_email($_POST['email']);
+        $password = sanitize_text_field($_POST['password']);
+        if(empty(trim($company_name))|| empty(trim($email))|| empty(trim($password))) {
+            $_SESSION['error'] = " Email or Password do not empty !";
+            $error = sanitize_text_field($_SESSION['error']);
+        }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['error'] = 'Incorrect email format !';
+            $error = sanitize_text_field($_SESSION['error']);
+        }else{
+            $result = sanitize_text_field(get_option('info'));
+            $dataoption = maybe_unserialize($result);
+            foreach ($dataoption as $arr) {
+                if ($email == $arr['email']) {
+                    $_SESSION['error'] = 'This account has been there !';
+                    $error = sanitize_text_field($_SESSION['error']);
+>>>>>>> Stashed changes
                 }
             }
             if(isset($_GET['iddel'])){////////////////delete lead///////////////////////
@@ -667,6 +796,7 @@ function cw_crud_lead()
                     $_SESSION['error'] = 'User and Password do not empty !';
                 }    
             }
+<<<<<<< Updated upstream
             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/show-results.php'));
             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'call-api-lead/login-lead.php'));
         }     
@@ -676,6 +806,10 @@ function cw_crud_lead()
         $_SESSION['success'] = 'Logout successfuly ! ';
         wp_redirect(get_site_url().'/wp-admin/admin.php?page=lead');
         exit;
+=======
+        }
+        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/show-results.php'));
+>>>>>>> Stashed changes
     }
 } 
 add_action('init','cw_crud_lead');
@@ -746,5 +880,10 @@ function wp_setting_loggin_access(){
     function cw_access_propretie_loggin(){
         
     }
+<<<<<<< Updated upstream
+=======
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/show-results.php'));
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'Page/setting.php'));
+>>>>>>> Stashed changes
 }
 add_action('init', 'wp_setting_loggin_access');
