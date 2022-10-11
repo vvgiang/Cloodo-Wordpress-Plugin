@@ -14,7 +14,7 @@
  * Domain Path:       /languages
  */
 /////////////////test site /////////////////
-define("SITE_URL", "http://localhost:3006/");
+define("CLWS_IFRAME_URL", "http://localhost:3006/");
 //////////////////////////////////////////////////require////////////////////////////////////////////////////
 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes.php'));
 // //////////////////////////////////////////////////add_iframe///////////////////////////////////////////////// 
@@ -25,7 +25,6 @@ function clws_add_iframe() {
 }
 add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
 
-///////////////////////////////////////////////////
 ////////////////////////////////////////////////add menu page///////////////////////////////////////////////////
 function clws_add_menu_page() {
     add_menu_page(
@@ -165,7 +164,7 @@ function clws_access_dashboard() {
                                     window.onload = function(){
                                         jQuery(document).find( '#login' ).remove();
                                         var myIfr = window.frames['iframeclws'].contentWindow;
-                                        var val = myIfr.postMessage('".$id_token."','".esc_url(SITE_URL)."check-login');
+                                        var val = myIfr.postMessage('".$id_token."','".esc_url(CLWS_IFRAME_URL)."check-login');
                                     }
                                 </script>";
                     }
@@ -219,24 +218,7 @@ function clws_access_getall_messages() {
 }
 ////////////////////////////////////////////////ajax/////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////setting - swap account//////////////////////////////////////////////////////
-// function clws_setting_loggin_access() {///////////switch accout////////////
-//     session_start();
-//     if(isset($_POST['Custom_registration'])){
-//         $tokennew = sanitize_text_field($_POST['accountselect']);
-//         $_SESSION['token']= $tokennew;
-//         update_option('token',$tokennew);
-//         // echo "<script>
-//         // alert('ok');
-//         // echo 'run';
-//         // exit;
-//         //     localStorage.test ='".$tokennew."';
-//         // </script>";
-//         wp_redirect(esc_url(admin_url('admin.php?page=lead')));
-//         exit;
-//     }
-// }
-// add_action('init', 'clws_setting_loggin_access');
+///////////////////////////////////////////////// setting - swap account //////////////////////////////////////////////////////
 function clws_access_properties_loggin() {///////////login and register//////////
     session_start();
     $emailadm = sanitize_text_field(get_option( 'admin_email'));
@@ -294,7 +276,7 @@ function clws_access_properties_loggin() {///////////login and register/////////
                     window.onload = function(){
                         jQuery(document).find( '#login' ).remove();
                         var myIfr = window.frames['iframeclws'].contentWindow;
-                        var val = myIfr.postMessage('".$id_token."','".esc_url(SITE_URL)."check-login');
+                        var val = myIfr.postMessage('".$id_token."','".esc_url(CLWS_IFRAME_URL)."check-login');
                     }
                 </script>";
             } 
@@ -377,7 +359,7 @@ function clws_access_properties_loggin() {///////////login and register/////////
                                         jQuery(document).find( '#login' ).remove();
                                         var valselect = jQuery('select[name=accountselect] option').filter(':selected').val();
                                         var myIfr = window.frames['iframeclws'].contentWindow;
-                                        var val = myIfr.postMessage(valselect,'".esc_url(SITE_URL)."check-login');
+                                        var val = myIfr.postMessage(valselect,'".esc_url(CLWS_IFRAME_URL)."check-login');
                                     }
                                 </script>";
                         }

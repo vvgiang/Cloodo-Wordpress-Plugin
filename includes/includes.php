@@ -34,7 +34,7 @@ function clws_addstyle()
                         'ajaxUrl' => admin_url('admin-ajax.php'),
                         'getSiteUrl' => get_site_url(),
                         'token'=> get_option('token'),
-                        'urlIframe' => esc_url(SITE_URL)
+                        'urlIframe' => esc_url(CLWS_IFRAME_URL)
 
                     )
                 );

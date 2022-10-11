@@ -93,7 +93,7 @@
                             <form class="temple" method="post" action="">
                                 <div class="modal-body">
                                     <div class="clws_iframe">
-                                        <iframe id="iframeclws" src="<?php echo esc_url(SITE_URL)?>check-login" width="100%" height="100%" frameborder="0"></iframe>
+                                        <iframe id="iframeclws" src="<?php echo esc_url(CLWS_IFRAME_URL)?>check-login" width="100%" height="100%" frameborder="0"></iframe>
                                     </div>
                                 </div>
                             </form>
