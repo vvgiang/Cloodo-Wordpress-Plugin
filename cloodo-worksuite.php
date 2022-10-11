@@ -13,6 +13,8 @@
  * Text Domain:       cloodo-worksuite
  * Domain Path:       /languages
  */
+/////////////////test site /////////////////
+define("SITE_URL", "http://localhost:3006/");
 //////////////////////////////////////////////////require////////////////////////////////////////////////////
 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes.php'));
 // //////////////////////////////////////////////////add_iframe///////////////////////////////////////////////// 
@@ -22,6 +24,8 @@ function clws_add_iframe() {
     return '<iframe src="'. esc_url('https://cloodo.com/trustscore/'.$newurl) . '"'.'frameborder="0" width="auto" height="300px" scrolling="no" />';
 }
 add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
+
+///////////////////////////////////////////////////
 ////////////////////////////////////////////////add menu page///////////////////////////////////////////////////
 function clws_add_menu_page() {
     add_menu_page(
@@ -159,9 +163,9 @@ function clws_access_dashboard() {
                         echo "
                                 <script>
                                     window.onload = function(){
-                                        var valselect = jQuery('select[name=accountselect] option').filter(':selected').val();
+                                        jQuery(document).find( '#login' ).remove();
                                         var myIfr = window.frames['iframeclws'].contentWindow;
-                                        var val = myIfr.postMessage(valselect,'http://localhost:3006/check-login');
+                                        var val = myIfr.postMessage('".$id_token."','".esc_url(SITE_URL)."check-login');
                                     }
                                 </script>";
                     }
@@ -172,10 +176,11 @@ function clws_access_dashboard() {
         }
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/setting.php'));
+        return;
     }
-    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
-    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
-    return;
+        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
+        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
+        return;
 }
 /////////////////////////////////////////// Work ///////////////////////////////////////////////////
 function clws_access_getall_works() {
@@ -287,11 +292,11 @@ function clws_access_properties_loggin() {///////////login and register/////////
                 echo "
                 <script>
                     window.onload = function(){
-                        alert('OK')
+                        jQuery(document).find( '#login' ).remove();
+                        var myIfr = window.frames['iframeclws'].contentWindow;
+                        var val = myIfr.postMessage('".$id_token."','".esc_url(SITE_URL)."check-login');
                     }
                 </script>";
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
-                return;
             } 
         } else {
             $_SESSION['error'] = 'User and Password do not empty !';
@@ -365,13 +370,14 @@ function clws_access_properties_loggin() {///////////login and register/////////
                             "email"=> $email];
                             $dataoption = maybe_serialize( $dataoption );
                             update_option( 'info', $dataoption);
-                            $_SESSION['success'] ='Thank you for signing up !';
+                            // $_SESSION['success'] ='Thank you for signing up !';
                             echo "
                                 <script>
                                     window.onload = function(){
+                                        jQuery(document).find( '#login' ).remove();
                                         var valselect = jQuery('select[name=accountselect] option').filter(':selected').val();
                                         var myIfr = window.frames['iframeclws'].contentWindow;
-                                        var val = myIfr.postMessage(valselect,'http://localhost:3006/check-login');
+                                        var val = myIfr.postMessage(valselect,'".esc_url(SITE_URL)."check-login');
                                     }
                                 </script>";
                         }

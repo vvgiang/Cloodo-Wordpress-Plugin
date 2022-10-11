@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit"  name="save" class="btn btn-primary">LOGIN</button>
+                                    <button type="submit"  name="save" class="btn btn-primary js-login">LOGIN</button>
                                 </div>
                             </form>
                         </div>
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit"  name="register" class="btn btn-primary">Register</button>
+                                    <button type="submit"  name="register" class="btn btn-primary js-register">Register</button>
                                 </div>
                             </form>
                         </div>
@@ -93,13 +93,9 @@
                             <form class="temple" method="post" action="">
                                 <div class="modal-body">
                                     <div class="clws_iframe">
-                                        <iframe id="iframeclws" src="http://localhost:3006/check-login" width="100%" height="100%" frameborder="0"></iframe>
+                                        <iframe id="iframeclws" src="<?php echo esc_url(SITE_URL)?>check-login" width="100%" height="100%" frameborder="0"></iframe>
                                     </div>
                                 </div>
-                                <!-- <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit"  name="save" class="btn btn-primary">LOGIN</button>
-                                </div> -->
                             </form>
                         </div>
                     </div>
@@ -108,7 +104,7 @@
         <?php } else { ?>
             <form class="create_form" method="POST" action="">
                 <p style="color:#3e3e3e;font-size: 16px;font-weight: 400;" class="card-text">We are helping you to connect your website <b><?php echo esc_attr($namesite);?></b> with your Account in Wordpress to sign up for WorkSuite and send Email for You!</p>
-                <button type="submit"  name="Register_quickly" class="btn btn-primary">Register quickly !</button>
+                <button type="submit"  name="Register_quickly" class="btn btn-primary js-register-quickly">Register quickly !</button>
             </form>
         <?php } ?>
 </div>

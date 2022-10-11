@@ -54,7 +54,8 @@ p:hover .signup{
 .table td, .table th {
     padding: 0.4rem !important;
     vertical-align: none !important;
-}#loading {
+}
+#loading {
     display: block;
     margin: auto;
     width: 5rem;
