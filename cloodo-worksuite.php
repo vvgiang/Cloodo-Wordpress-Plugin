@@ -98,7 +98,19 @@ add_action('admin_menu', 'clws_add_menu_page');
 //////////////////////////////////////////////dashboard//////////////////////////////////////////
 function clws_access_dashboard() {
     session_start();
-    if (empty(get_option('token'))) {
+    if (!empty(get_option('token'))) {
+            echo "
+                <script>
+                    window.onload = function(){
+                        jQuery(document).find( '#login' ).remove();
+                        var myIfr = window.frames['iframeclws'].contentWindow;
+                        var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+                    }
+                </script>";
+        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
+        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
+        return;
+    } else {
         session_start();
         $emailadm = sanitize_text_field(get_option( 'admin_email'));
         $id = get_current_user_id();
@@ -106,7 +118,7 @@ function clws_access_dashboard() {
         $namesite = get_bloginfo();
         $user_login = sanitize_text_field($user->user_login);
         $user_email = sanitize_email($user->user_email);
-        $company_name = (explode('.',$namesite))[0];
+        $company_name = (explode('.', $namesite))[0];
         if (isset($_POST['Register_quickly'])) {
             $pw = substr(md5(rand(0, 99999)), 0, 6);
             $arrs =[
@@ -160,13 +172,15 @@ function clws_access_dashboard() {
                         $dataoption = maybe_serialize($dataoption);
                         update_option('info', $dataoption);
                         echo "
-                                <script>
-                                    window.onload = function(){
-                                        jQuery(document).find( '#login' ).remove();
-                                        var myIfr = window.frames['iframeclws'].contentWindow;
-                                        var val = myIfr.postMessage('".$id_token."','".esc_url(CLWS_IFRAME_URL)."check-login');
-                                    }
-                                </script>";
+                            <script>
+                                window.onload = function(){
+                                    jQuery(document).find( '#login' ).remove();
+                                    var myIfr = window.frames['iframeclws'].contentWindow;
+                                    var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+                                }
+                            </script>";
+                        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
+                        return;
                     }
                 } else {
                     $_SESSION['error'] = 'The Accounts already exists or has not activated email, please try again !';
@@ -174,12 +188,9 @@ function clws_access_dashboard() {
             }
         }
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
-        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/setting.php'));
-        return;
-    }
-        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
         return;
+    }
 }
 /////////////////////////////////////////// Work ///////////////////////////////////////////////////
 function clws_access_getall_works() {

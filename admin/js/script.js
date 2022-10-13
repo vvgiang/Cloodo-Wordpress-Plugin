@@ -25,9 +25,9 @@ jQuery(document).ready(function($) {
             try {
                         // e.preventDefault();
                         var valselect = $('select[name=accountselect] option').filter(':selected').val();
+                        alert(valselect);
                         var myIfr = window.frames['iframeclws'].contentWindow;
                         var val = myIfr.postMessage(valselect,`${urlIframe}check-login`);
-                        console.log(val);
             } catch (e) {
                 console.log('Error: ' + e.message);
             }
