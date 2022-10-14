@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Cloodo Work Suite
+ * Plugin Name:       Cloodo work Suite
  * Plugin URI:        https://worksuite.cloodo.com/
  * Description:       Project management, trusted badge review
  * Version:           1.1.0
@@ -28,90 +28,89 @@ add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
 ////////////////////////////////////////////////add menu page///////////////////////////////////////////////////
 function clws_add_menu_page() {
     add_menu_page(
-        'Dashboard', // title menu
+        'dashboard', // title menu
         'Worksuite', // name menu
         'manage_options',// area supper admin and admin 
-        'Dashboard', // Slug menu
+        'dashboard', // Slug menu
         'clws_access_dashboard', // display function 
         'dashicons-businessman', // icon menu
         '7'
     );
     if (!empty(get_option('token'))) {
         add_submenu_page(
-            'Dashboard', // Slug menu parent
+            'dashboard', // Slug menu parent
             'work', // title page
             'Work', // name menu
             'manage_options', // area supper admin and admin
-            'Work', // Slug menu
+            'work', // Slug menu
             'clws_access_getall_works', // display function
         );
         add_submenu_page(
-            'Dashboard', // Slug menu parent
+            'dashboard', // Slug menu parent
             'lead curd', // title page
             'Leads', // name menu
             'manage_options', // area supper admin and admin
-            'Leads', // Slug menu
+            'leads', // Slug menu
             'clws_access_getall_leads', // display function
         );
         add_submenu_page(
-            'Dashboard', // Slug menu parent
-            'Clients', // title page
+            'dashboard', // Slug menu parent
+            'clients', // title page
             'Clients', // name menu
             'manage_options', // area supper admin and admin
-            'Clients', // Slug menu
+            'clients', // Slug menu
             'clws_access_getall_clients', // display function
         );
         add_submenu_page(
-            'Dashboard', // Slug menu parent
-            'Notice', // title page
+            'dashboard', // Slug menu parent
+            'notice', // title page
             'Notice', // name menu
             'manage_options', // area supper admin and admin
-            'Notice', // Slug menu
+            'notice', // Slug menu
             'clws_access_getall_notice', // display function
         );
         add_submenu_page(
-            'Dashboard', // Slug menu parent
-            'Messages', // title page
+            'dashboard', // Slug menu parent
+            'messages', // title page
             'Messages', // name menu
             'manage_options', // area supper admin and admin
-            'Messages', // Slug menu
+            'messages', // Slug menu
             'clws_access_getall_messages', // display function
         );
         add_submenu_page(
-            'Dashboard', // Slug menu parent
-            'Setting', // title page
+            'dashboard', // Slug menu parent
+            'setting', // title page
             'Setting', // name menu
             'manage_options', // area supper admin and admin
-            'Setting', // Slug menu
+            'setting', // Slug menu
             'clws_access_properties_loggin', // display function
         );
     }
     // if ( !wp_doing_ajax() ) {
     //     $extension = isset($_GET['page'])? sanitize_text_field($_GET['page']) : "";
-    //     $allows = ['Dashboard', 'Leads', 'Work','Clients'];
+    //     $allows = ['dashboard', 'leads', 'work','clients'];
     //     if(in_array($extension, $allows)) {
     //         echo '<div id="loading"></div>';             
     //     }
     // }
 }
 add_action('admin_menu', 'clws_add_menu_page');
-//////////////////////////////////////////////dashboard//////////////////////////////////////////
+////////////////////////////////////////////// dashboard //////////////////////////////////////////
 function clws_access_dashboard() {
     session_start();
     if (!empty(get_option('token'))) {
-            echo "
-                <script>
-                    window.onload = function(){
-                        jQuery(document).find( '#login' ).remove();
-                        var myIfr = window.frames['iframeclws'].contentWindow;
-                        var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
-                    }
-                </script>";
+        echo "
+            <script>
+                setTimeout(window.onload = function() {
+                    jQuery(document).find( '#login' ).remove();
+                    var myIfr = window.frames['iframeclws'].contentWindow;
+                    var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+                },3000)
+            </script>";
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
         return;
     } else {
-        session_start();
         $emailadm = sanitize_text_field(get_option( 'admin_email'));
         $id = get_current_user_id();
         $user = get_userdata($id);
@@ -173,11 +172,11 @@ function clws_access_dashboard() {
                         update_option('info', $dataoption);
                         echo "
                             <script>
-                                window.onload = function(){
+                                setTimeout(window.onload = function() {
                                     jQuery(document).find( '#login' ).remove();
                                     var myIfr = window.frames['iframeclws'].contentWindow;
                                     var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
-                                }
+                                },3000)
                             </script>";
                         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
                         return;
@@ -192,28 +191,28 @@ function clws_access_dashboard() {
         return;
     }
 }
-/////////////////////////////////////////// Work ///////////////////////////////////////////////////
+/////////////////////////////////////////// work ///////////////////////////////////////////////////
 function clws_access_getall_works() {
     session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-project.php'));
     return; 
 }
-///////////////////////////////////////////// Leads ////////////////////////////////////////////
+///////////////////////////////////////////// leads ////////////////////////////////////////////
 function clws_access_getall_leads() {
     session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));      
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-lead.php'));
     return;
 }
-///////////////////////////////////////////////// Clients //////////////////////////////////////////////////////
+///////////////////////////////////////////////// clients //////////////////////////////////////////////////////
 function clws_access_getall_clients() {
     session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-client.php'));
 
 }
-////////////////////////////////////////////////// Notice //////////////////////////////////////////////////
+////////////////////////////////////////////////// notice //////////////////////////////////////////////////
 function clws_access_getall_notice() {
     session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));      
@@ -279,17 +278,18 @@ function clws_access_properties_loggin() {///////////login and register/////////
                 $dataoption = maybe_unserialize( $result );
                 $dataoption[] = [
                     "token"=> $id_token,
-                    "email"=> $email];
+                    "email"=> $email
+                ];
                 $dataoption = maybe_serialize( $dataoption );
                 update_option( 'info', $dataoption);
                 echo "
-                <script>
-                    window.onload = function(){
-                        jQuery(document).find( '#login' ).remove();
-                        var myIfr = window.frames['iframeclws'].contentWindow;
-                        var val = myIfr.postMessage('".$id_token."','".esc_url(CLWS_IFRAME_URL)."check-login');
-                    }
-                </script>";
+                    <script>
+                        setTimeout(window.onload = function() {
+                            jQuery(document).find( '#login' ).remove();
+                            var myIfr = window.frames['iframeclws'].contentWindow;
+                            var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+                        },3000)
+                    </script>";
             } 
         } else {
             $_SESSION['error'] = 'User and Password do not empty !';
@@ -366,12 +366,12 @@ function clws_access_properties_loggin() {///////////login and register/////////
                             // $_SESSION['success'] ='Thank you for signing up !';
                             echo "
                                 <script>
-                                    window.onload = function(){
+                                    setTimeout(window.onload = function() {
                                         jQuery(document).find( '#login' ).remove();
                                         var valselect = jQuery('select[name=accountselect] option').filter(':selected').val();
                                         var myIfr = window.frames['iframeclws'].contentWindow;
                                         var val = myIfr.postMessage(valselect,'".esc_url(CLWS_IFRAME_URL)."check-login');
-                                    }
+                                    },3000)
                                 </script>";
                         }
                     } else {

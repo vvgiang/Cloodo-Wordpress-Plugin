@@ -4,13 +4,13 @@ function clws_addstyle()
 {
     if (isset($_GET['page'])) {
         switch ($_GET['page']) {
-            case 'Dashboard':
-            case 'Work':
-            case 'Leads':
-            case 'Clients':
-            case 'Notice':
-            case 'Messages':
-            case 'Setting':
+            case 'dashboard':
+            case 'work':
+            case 'leads':
+            case 'clients':
+            case 'notice':
+            case 'messages':
+            case 'setting':
                 wp_register_style('clws-boostrap', plugins_url('admin/css/bootstrap.css', __DIR__));
                 wp_enqueue_style('clws-boostrap');
                 wp_register_style('clws-awesome-font', plugins_url('admin/css/fontawesome.min.css', __DIR__));

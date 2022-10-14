@@ -16,7 +16,7 @@
                     <?php } ?>
                 </select>
                 <!-- <button type="submit"  name="Custom_registration" class="js-getoken btn btn-primary">Account Switch</button> -->
-                <button type="button" name="Custom_registration" class="js-getoken btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3">Account Switch</button>
+                <button type="button" name="Custom_registration" class="js-getoken btn btn-primary" disabled data-bs-toggle="modal" data-bs-target="#exampleModal3">Account Switch</button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Account</button>
         </div>
     </form>

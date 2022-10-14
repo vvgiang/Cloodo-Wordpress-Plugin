@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    $('.js-getoken').removeAttr('disabled')
     let siteUrl = script_object.getSiteUrl ? script_object.getSiteUrl : "";
     let urlIframe = script_object.urlIframe ? script_object.urlIframe : "";
     window.addEventListener('click', function(e){
@@ -25,7 +26,6 @@ jQuery(document).ready(function($) {
             try {
                         // e.preventDefault();
                         var valselect = $('select[name=accountselect] option').filter(':selected').val();
-                        alert(valselect);
                         var myIfr = window.frames['iframeclws'].contentWindow;
                         var val = myIfr.postMessage(valselect,`${urlIframe}check-login`);
             } catch (e) {
@@ -40,7 +40,7 @@ jQuery(document).ready(function($) {
                     text: "Wellcome to worksuite !",
                     icon: "success",
                 });
-                window.location.href = siteUrl +'/wp-admin/admin.php?page=Dashboard';
+                window.location.href = siteUrl +'/wp-admin/admin.php?page=dashboard';
             }
     });
 });

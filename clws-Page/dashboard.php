@@ -1,8 +1,7 @@
 <?php 
-    // update_option('admin_email','hoanle09119ztest@gmail.test.com');
+    // update_option('admin_email','hoanl1a121test@gmail.test.com');
     // delete_option( 'token' );
     // delete_option( 'info' );
-    // unset($_SESSION['token']);
     if (!empty(get_option('token'))) { ?>
     <div class="clws_iframe">
         <iframe id="iframeclws" src="<?php echo esc_url(CLWS_IFRAME_URL)?>check-login" width="100%" height="100%" frameborder="0"></iframe>
