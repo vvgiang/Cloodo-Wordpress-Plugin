@@ -3,7 +3,7 @@
  * Plugin Name:       Cloodo work Suite
  * Plugin URI:        https://worksuite.cloodo.com/
  * Description:       Project management, trusted badge review
- * Version:           1.1.0
+ * Version:           2.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Cloodo
@@ -14,7 +14,7 @@
  * Domain Path:       /languages
  */
 /////////////////test site /////////////////
-define("CLWS_IFRAME_URL", "http://localhost:3006/");
+define("CLWS_IFRAME_URL", "https://worksuite.cloodo.com/");
 //////////////////////////////////////////////////require////////////////////////////////////////////////////
 require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'includes/includes.php'));
 // //////////////////////////////////////////////////add_iframe///////////////////////////////////////////////// 
