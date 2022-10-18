@@ -1,5 +1,7 @@
 jQuery(document).ready(function($) {
+    $('.js-getoken').removeAttr('disabled')
     let siteUrl = script_object.getSiteUrl ? script_object.getSiteUrl : "";
+    let urlIframe = script_object.urlIframe ? script_object.urlIframe : "";
     window.addEventListener('click', function(e){
         const ele = document.querySelectorAll(".show-action");
         for (const value of ele) {
@@ -11,25 +13,34 @@ jQuery(document).ready(function($) {
             element.classList.toggle("showHide");
         }
     });
+    $(document).on('click',".js-register-quickly, .js-register, .js-login",(e)=>{
+        const loadEl =$(document).find( '.loadingshow' );
+        if(loadEl.length != 0){
+            return;
+        }
+        $('body').append('<div  class="loadingshow" id="loading"></div>');
+        $('#loading').fadeIn(300);
+    });
     $(document).on('click',".js-getoken",sendData);
         function sendData(e) {
             try {
                         // e.preventDefault();
                         var valselect = $('select[name=accountselect] option').filter(':selected').val();
-                        // console.log(valselect);
                         var myIfr = window.frames['iframeclws'].contentWindow;
-                        // popup = window.open("http://localhost/scroll-parallax/", 'window-2');
-                        var val = myIfr.postMessage(valselect,'http://localhost:3006/check-login');
-                        // window.location.href = 'http://localhost/svtest/wp-admin/admin.php?page=lead';
+                        var val = myIfr.postMessage(valselect,`${urlIframe}check-login`);
             } catch (e) {
                 console.log('Error: ' + e.message);
             }
         }
     window.addEventListener("message", (e) => {
         if (typeof e.data === "object") return;
-            if (e.data == "send successfuly") {
-                console.log(e.data);
-                window.location.href = siteUrl +'/wp-admin/admin.php?page=lead';
+            if (e.data == "send successfully") {
+                swal({
+                    title: "Successfully !",
+                    text: "Wellcome to worksuite !",
+                    icon: "success",
+                });
+                window.location.href = siteUrl +'/wp-admin/admin.php?page=dashboard';
             }
-    }, false);
+    });
 });
