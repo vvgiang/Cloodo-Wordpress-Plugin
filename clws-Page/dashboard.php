@@ -1,8 +1,8 @@
 <?php 
-    // update_option('admin_email','hoanl1a121test@gmail.test.com');
-    // delete_option( 'token' );
-    // delete_option( 'info' );
-    if (!empty(get_option('token'))) { ?>
+    // update_option('admin_email','hoehefa3235test@gmail.test.com');
+    // delete_option( 'clws_token' );
+    // delete_option( 'clws_info' );
+    if (!empty(get_option('clws_token'))) { ?>
     <div class="clws_iframe">
         <iframe id="iframeclws" src="<?php echo esc_url(CLWS_IFRAME_URL)?>check-login" width="100%" height="100%" frameborder="0"></iframe>
     </div>

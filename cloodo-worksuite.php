@@ -36,7 +36,7 @@ function clws_add_menu_page() {
         'dashicons-businessman', // icon menu
         '7'
     );
-    if (!empty(get_option('token'))) {
+    if (!empty(get_option('clws_token'))) {
         add_submenu_page(
             'dashboard', // Slug menu parent
             'work', // title page
@@ -95,18 +95,28 @@ function clws_add_menu_page() {
     // }
 }
 add_action('admin_menu', 'clws_add_menu_page');
+function clws_add_session() {
+    session_start();
+}
+add_action('init','clws_add_session');
 ////////////////////////////////////////////// dashboard //////////////////////////////////////////
 function clws_access_dashboard() {
-    session_start();
-    if (!empty(get_option('token'))) {
+    if (!empty(get_option('clws_token'))) {
         echo "
             <script>
                 setTimeout(window.onload = function() {
                     jQuery(document).find( '#login' ).remove();
                     var myIfr = window.frames['iframeclws'].contentWindow;
-                    var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+                    var val = myIfr.postMessage('".get_option('clws_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
                 },3000)
             </script>";
+        // echo "
+        //     <script>
+        //         window.onload = function() {
+        //             jQuery(document).find( '#login' ).remove();
+        //             var val = window.parent.postMessage('".get_option('token')."','http://localhost/svtest/');
+        //         }
+        //     </script>";
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
         return;
@@ -163,19 +173,19 @@ function clws_access_dashboard() {
                         $res = json_decode($res['body'], true);
                         $id_token = $res['data']['token'];
                         $_SESSION['token'] = $id_token;
-                        update_option('token', $id_token);
+                        update_option('clws_token', $id_token);
                         $dataoption[] = [
                             "token"=> $id_token,
                             "email"=> $emailadm,
                         ];
                         $dataoption = maybe_serialize($dataoption);
-                        update_option('info', $dataoption);
+                        update_option('clws_info', $dataoption);
                         echo "
                             <script>
                                 setTimeout(window.onload = function() {
                                     jQuery(document).find( '#login' ).remove();
                                     var myIfr = window.frames['iframeclws'].contentWindow;
-                                    var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+                                    var val = myIfr.postMessage('".get_option('clws_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
                                 },3000)
                             </script>";
                         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
@@ -193,35 +203,83 @@ function clws_access_dashboard() {
 }
 /////////////////////////////////////////// work ///////////////////////////////////////////////////
 function clws_access_getall_works() {
-    session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-project.php'));
     return; 
 }
 ///////////////////////////////////////////// leads ////////////////////////////////////////////
 function clws_access_getall_leads() {
-    session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));      
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-lead.php'));
     return;
 }
 ///////////////////////////////////////////////// clients //////////////////////////////////////////////////////
 function clws_access_getall_clients() {
-    session_start();
+    if ( class_exists( 'WooCommerce' ) ) { /////////////////////////////////data all oders - woocommerce///////////////////////////////////////////////
+        $orders = wc_get_orders([
+            'limit'=> -1
+        ]);
+        $tokenId = sanitize_text_field(get_option('clws_token'));
+        $args = [];
+        foreach ($orders as $valuenew) {
+            $data = ($valuenew->get_data());
+            $key = sanitize_text_field($data['billing']['email']);
+            if (!isset($args[$key]['oders']) && !isset($args[$key]['sumtotal']) && !array_key_exists($key, $args)) {
+                $args[$key] = $data;
+                $args[$key]['oders'] = 1;
+                $args[$key]['sumtotal'] = $data['total'];
+                $randPass = substr(md5(rand(0, 99999)), 0, 6);
+            } else {
+                $args[$key]['oders'] += 1;
+                $args[$key]['sumtotal'] += $data['total'];
+            }
+        }
+        foreach ($args as $key => $clwsvalue) {
+            // echo 'runn~';
+            // echo '<pre>';
+            // var_dump($key,$clwsvalue);
+            // echo '</pre>';
+            $arrs = [
+                'method' => 'POST',
+                'timeout' => 10,
+                'redirection' => 5,
+                'blocking' => true,
+                'cookie' => [],
+                'headers' => [
+                    'X-requested-Width'=>'XMLHttpRequest',
+                    'Authorization'=>'Bearer '.$tokenId,
+                ],
+                'body' => [
+                    'name' => sanitize_text_field($clwsvalue['billing']['first_name'].' '.$clwsvalue['billing']['last_name']) ,
+                    'email' => sanitize_email($key)  ,
+                    'password' => sanitize_text_field($randPass),
+                    'mobile' => sanitize_text_field($clwsvalue['billing']['phone']) ,
+                    'client_detail' => [
+                        'company_name'=> sanitize_text_field($clwsvalue['billing']['company']),
+                        'address'=> sanitize_text_field($clwsvalue['billing']['address_1']),
+                        'city'=> sanitize_text_field($clwsvalue['billing']['city']),
+                        'postal_code'=> sanitize_text_field($clwsvalue['billing']['postcode']),
+                        'shipping_address'=> sanitize_text_field($clwsvalue['billing']['address_2']),
+                    ]
+                ],
+            ];
+            $res = wp_remote_request('https://erp.cloodo.com/api/v1/client', $arrs);
+
+        }
+    }
+    
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-client.php'));
 
 }
 ////////////////////////////////////////////////// notice //////////////////////////////////////////////////
 function clws_access_getall_notice() {
-    session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));      
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-notice.php'));
     return;
 }
 ////////////////////////////////////////////////// messages //////////////////////////////////////////////////
 function clws_access_getall_messages() {
-    session_start();
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));      
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-mesages.php'));
     return;
@@ -230,7 +288,6 @@ function clws_access_getall_messages() {
 
 ///////////////////////////////////////////////// setting - swap account //////////////////////////////////////////////////////
 function clws_access_properties_loggin() {///////////login and register//////////
-    session_start();
     $emailadm = sanitize_text_field(get_option( 'admin_email'));
     $id = get_current_user_id();
     $user = get_userdata($id);
@@ -238,151 +295,151 @@ function clws_access_properties_loggin() {///////////login and register/////////
     $user_login = sanitize_text_field($user->user_login);
     $user_email = sanitize_email($user->user_email);
     $company_name = (explode('.',$namesite))[0];
-    if (isset($_POST['save'])) {
-        $email = sanitize_email($_POST['email']);
-        $password = sanitize_text_field($_POST['password']);
-        $tokenId = sanitize_text_field(get_option( 'token' ));
-        $result = sanitize_text_field(get_option( 'info' ));
-        $dataoption = maybe_unserialize( $result );
-        foreach($dataoption as $arr){
-            if ($email == $arr['email']) {
-                $_SESSION['error'] = 'This account has been there !';
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
-                require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/setting.php'));
-                return;
-            }
-        }
-        if ($email && $password != '') {
-            $arrs =[
-                'method'=> 'POST',
-                'body'=> [
-                    'email'=> $email,
-                    'password'=> $password
-                ],
-                'timeout'=> 10,
-                'redirection'=> 5,
-                'blocking'=> true,
-                'headers'=> [],
-                'cookie'=> [],
-            ];
-            $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
-            if ($res['response']['code'] != 200) {
-                $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' - Incorrect account or password !';
-            } else {
-                $res = json_decode($res['body'],true);
-                $id_token = $res['data']['token'];
-                update_option( 'token', $id_token);                              
-                $token = sanitize_text_field(get_option('token'));
-                $_SESSION['token'] = $token;
-                $result = sanitize_text_field(get_option( 'info' ));
-                $dataoption = maybe_unserialize( $result );
-                $dataoption[] = [
-                    "token"=> $id_token,
-                    "email"=> $email
-                ];
-                $dataoption = maybe_serialize( $dataoption );
-                update_option( 'info', $dataoption);
-                echo "
-                    <script>
-                        setTimeout(window.onload = function() {
-                            jQuery(document).find( '#login' ).remove();
-                            var myIfr = window.frames['iframeclws'].contentWindow;
-                            var val = myIfr.postMessage('".get_option('token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
-                        },3000)
-                    </script>";
-            } 
-        } else {
-            $_SESSION['error'] = 'User and Password do not empty !';
-        }    
-        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
-        require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/setting.php'));
-        return;
-    }
-    if (isset($_POST['register'])) {
-        $company_name = sanitize_text_field($_POST['company_name']);
-        $email = sanitize_email($_POST['email']);
-        $password = sanitize_text_field($_POST['password']);
-        if (empty(trim($company_name))|| empty(trim($email))|| empty(trim($password))) {
-            $_SESSION['error'] = " Email or Password do not empty !";
-            $error = sanitize_text_field($_SESSION['error']);
-        } elseif (!filter_var($email,FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['error'] = 'Incorrect email format !';
-            $error = sanitize_text_field($_SESSION['error']);
-        } else {
-            $result = sanitize_text_field(get_option('info'));
-            $dataoption = maybe_unserialize($result);
-            foreach ($dataoption as $arr) {
-                if ($email == $arr['email']) {
-                    $_SESSION['error'] = 'This account has been there !';
-                    $error = sanitize_text_field($_SESSION['error']);
-                }
-            }
-        }
-        if (empty($error)) {
-            if (isset($_POST['checkbox'])) {
-                $arrs =[
-                    'method'=> 'POST',
-                    'body'=> [
-                    'company_name'=> $company_name,
-                    'email'=> $email,
-                    'password'=> $password,
-                    'password_confirmation'=> $password
-                    ],
-                    'timeout'=> 10,
-                    'redirection'=> 5,
-                    'blocking'=> true,
-                    'headers'=> [],
-                    'cookie'=> [],
-                ];
-                $res = wp_remote_request('https://erp.cloodo.com/api/v1/create-user',$arrs);
-                if ( is_wp_error( $res ) ) {
-                    $_SESSION['error'] = $res->get_error_message();
-                } else {
-                    $result = isset($res['body'])? json_decode($res['body'],true) : 0;
-                    if (isset($result['status']) == 'success') {
-                        $arrs = [
-                            'method'=> 'POST',
-                            'body'=>['email'=> $email,'password'=> $password],
-                            'timeout'=> 10,
-                            'redirection'=> 5,
-                            'blocking'=> true,
-                            'headers'=> [],
-                            'cookie'=> [],
-                        ];
-                        $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
-                        if ($res['response']['code'] != 200) {
-                        $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].'- The Accounts already exists or has not activated email, please try again !';
-                        } else {
-                            $res = json_decode($res['body'],true);
-                            $id_token = $res['data']['token'];
-                            $_SESSION['token'] = $id_token;
-                            update_option( 'token', $id_token);
-                            $result = sanitize_text_field(get_option( 'info' ));
-                            $dataoption = maybe_unserialize( $result );
-                            $dataoption[] = ["token"=> $id_token,
-                            "email"=> $email];
-                            $dataoption = maybe_serialize( $dataoption );
-                            update_option( 'info', $dataoption);
-                            // $_SESSION['success'] ='Thank you for signing up !';
-                            echo "
-                                <script>
-                                    setTimeout(window.onload = function() {
-                                        jQuery(document).find( '#login' ).remove();
-                                        var valselect = jQuery('select[name=accountselect] option').filter(':selected').val();
-                                        var myIfr = window.frames['iframeclws'].contentWindow;
-                                        var val = myIfr.postMessage(valselect,'".esc_url(CLWS_IFRAME_URL)."check-login');
-                                    },3000)
-                                </script>";
-                        }
-                    } else {
-                        $_SESSION['error'] = ' Undefined error, Please try again !';
-                    }
-                }
-            } else {
-                $_SESSION['error'] = 'Check Box do not empty ! ';
-            }
-        }
-    }
+    // if (isset($_POST['save'])) {
+    //     $email = sanitize_email($_POST['email']);
+    //     $password = sanitize_text_field($_POST['password']);
+    //     $tokenId = sanitize_text_field(get_option( 'clws_token' ));
+    //     $result = sanitize_text_field(get_option( 'clws_info' ));
+    //     $dataoption = maybe_unserialize( $result );
+    //     foreach($dataoption as $arr){
+    //         if ($email == $arr['email']) {
+    //             $_SESSION['error'] = 'This account has been there !';
+    //             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
+    //             require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/setting.php'));
+    //             return;
+    //         }
+    //     }
+    //     if ($email && $password != '') {
+    //         $arrs =[
+    //             'method'=> 'POST',
+    //             'body'=> [
+    //                 'email'=> $email,
+    //                 'password'=> $password
+    //             ],
+    //             'timeout'=> 10,
+    //             'redirection'=> 5,
+    //             'blocking'=> true,
+    //             'headers'=> [],
+    //             'cookie'=> [],
+    //         ];
+    //         $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
+    //         if ($res['response']['code'] != 200) {
+    //             $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].' - Incorrect account or password !';
+    //         } else {
+    //             $res = json_decode($res['body'],true);
+    //             $id_token = $res['data']['token'];
+    //             update_option( 'clws_token', $id_token);                              
+    //             $token = sanitize_text_field(get_option('clws_token'));
+    //             $_SESSION['token'] = $token;
+    //             $result = sanitize_text_field(get_option( 'clws_info' ));
+    //             $dataoption = maybe_unserialize( $result );
+    //             $dataoption[] = [
+    //                 "token"=> $id_token,
+    //                 "email"=> $email
+    //             ];
+    //             $dataoption = maybe_serialize( $dataoption );
+    //             update_option( 'clws_info', $dataoption);
+    //             echo "
+    //                 <script>
+    //                     setTimeout(window.onload = function() {
+    //                         jQuery(document).find( '#login' ).remove();
+    //                         var myIfr = window.frames['iframeclws'].contentWindow;
+    //                         var val = myIfr.postMessage('".get_option('clws_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+    //                     },3000)
+    //                 </script>";
+    //         } 
+    //     } else {
+    //         $_SESSION['error'] = 'User and Password do not empty !';
+    //     }    
+    //     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
+    //     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/setting.php'));
+    //     return;
+    // }
+    // if (isset($_POST['register'])) {
+    //     $company_name = sanitize_text_field($_POST['company_name']);
+    //     $email = sanitize_email($_POST['email']);
+    //     $password = sanitize_text_field($_POST['password']);
+    //     if (empty(trim($company_name))|| empty(trim($email))|| empty(trim($password))) {
+    //         $_SESSION['error'] = " Email or Password do not empty !";
+    //         $error = sanitize_text_field($_SESSION['error']);
+    //     } elseif (!filter_var($email,FILTER_VALIDATE_EMAIL)) {
+    //         $_SESSION['error'] = 'Incorrect email format !';
+    //         $error = sanitize_text_field($_SESSION['error']);
+    //     } else {
+    //         $result = sanitize_text_field(get_option('clws_info'));
+    //         $dataoption = maybe_unserialize($result);
+    //         foreach ($dataoption as $arr) {
+    //             if ($email == $arr['email']) {
+    //                 $_SESSION['error'] = 'This account has been there !';
+    //                 $error = sanitize_text_field($_SESSION['error']);
+    //             }
+    //         }
+    //     }
+    //     if (empty($error)) {
+    //         if (isset($_POST['checkbox'])) {
+    //             $arrs =[
+    //                 'method'=> 'POST',
+    //                 'body'=> [
+    //                 'company_name'=> $company_name,
+    //                 'email'=> $email,
+    //                 'password'=> $password,
+    //                 'password_confirmation'=> $password
+    //                 ],
+    //                 'timeout'=> 10,
+    //                 'redirection'=> 5,
+    //                 'blocking'=> true,
+    //                 'headers'=> [],
+    //                 'cookie'=> [],
+    //             ];
+    //             $res = wp_remote_request('https://erp.cloodo.com/api/v1/create-user',$arrs);
+    //             if ( is_wp_error( $res ) ) {
+    //                 $_SESSION['error'] = $res->get_error_message();
+    //             } else {
+    //                 $result = isset($res['body'])? json_decode($res['body'],true) : 0;
+    //                 if (isset($result['status']) == 'success') {
+    //                     $arrs = [
+    //                         'method'=> 'POST',
+    //                         'body'=>['email'=> $email,'password'=> $password],
+    //                         'timeout'=> 10,
+    //                         'redirection'=> 5,
+    //                         'blocking'=> true,
+    //                         'headers'=> [],
+    //                         'cookie'=> [],
+    //                     ];
+    //                     $res = wp_remote_request('https://erp.cloodo.com/api/v1/auth/login',$arrs);
+    //                     if ($res['response']['code'] != 200) {
+    //                     $_SESSION['error'] = $res['response']['code'].' '.$res['response']['message'].'- The Accounts already exists or has not activated email, please try again !';
+    //                     } else {
+    //                         $res = json_decode($res['body'],true);
+    //                         $id_token = $res['data']['token'];
+    //                         $_SESSION['token'] = $id_token;
+    //                         update_option( 'clws_token', $id_token);
+    //                         $result = sanitize_text_field(get_option( 'clws_info' ));
+    //                         $dataoption = maybe_unserialize( $result );
+    //                         $dataoption[] = ["token"=> $id_token,
+    //                         "email"=> $email];
+    //                         $dataoption = maybe_serialize( $dataoption );
+    //                         update_option( 'clws_info', $dataoption);
+    //                         // $_SESSION['success'] ='Thank you for signing up !';
+    //                         echo "
+    //                             <script>
+    //                                 setTimeout(window.onload = function() {
+    //                                     jQuery(document).find( '#login' ).remove();
+    //                                     var valselect = jQuery('select[name=accountselect] option').filter(':selected').val();
+    //                                     var myIfr = window.frames['iframeclws'].contentWindow;
+    //                                     var val = myIfr.postMessage(valselect,'".esc_url(CLWS_IFRAME_URL)."check-login');
+    //                                 },3000)
+    //                             </script>";
+    //                     }
+    //                 } else {
+    //                     $_SESSION['error'] = ' Undefined error, Please try again !';
+    //                 }
+    //             }
+    //         } else {
+    //             $_SESSION['error'] = 'Check Box do not empty ! ';
+    //         }
+    //     }
+    // }
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/setting.php'));
 }

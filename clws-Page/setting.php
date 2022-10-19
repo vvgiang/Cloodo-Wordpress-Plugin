@@ -1,5 +1,7 @@
 <div class="login_element">
-    <form class="create_form" method="POST" action="">
+    <b>updating 
+Please come back ...</b>
+    <!-- <form class="create_form" method="POST" action="">
         <a href="https://erp.cloodo.com/">
             <img src="<?php echo plugins_url('admin/image/worksuite-logo.png', __DIR__)?>" class="worksuite-logo">
         </a>
@@ -8,14 +10,13 @@
             <div class="accountselect">
                 <select name="accountselect" class="swap">
                     <?php
-                    $result = get_option('info');
-                    $tokenId = get_option('token');
+                    $result = get_option('clws_info');
+                    $tokenId = get_option('clws_token');
                     $dataoption = maybe_unserialize($result);
                     foreach ($dataoption as $row) { ?>
                         <option value="<?php echo $row['token'] ? esc_attr($row['token']) : "" ?>"<?php echo ($tokenId == $row['token']) ? 'selected' : '' ?>><?php echo isset($row['email']) ? esc_attr($row['email']) : '-------------- Select Account -----------' ?></option>
                     <?php } ?>
                 </select>
-                <!-- <button type="submit"  name="Custom_registration" class="js-getoken btn btn-primary">Account Switch</button> -->
                 <button type="button" name="Custom_registration" class="js-getoken btn btn-primary" disabled data-bs-toggle="modal" data-bs-target="#exampleModal3">Account Switch</button>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Account</button>
         </div>
@@ -97,5 +98,5 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

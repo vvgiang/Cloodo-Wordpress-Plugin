@@ -1,4 +1,15 @@
 jQuery(document).ready(function($) {
+    $('iframe').load(function() {
+        // alert("OK");
+        // var iframe = document.getElementById("iframeclws");
+        // var elmnt = iframe.contentWindow.document.querySelector("ul.navbar-nav.d-xl-none")[position];
+        // elmnt.style.display = "none";
+        // $('#iframeclws').contents().find('.navbar-nav d-xl-none').hide();
+        // var myIframe = document.getElementById("iframeclws");
+        // var divElement = myIframe.contentWindow.document.querySelector(".navbar-nav");
+        // divElement.style.display = "none";
+    });
+    $('#iframeclws').contents().find('.navbar-nav d-xl-none').hide();
     $('.js-getoken').removeAttr('disabled')
     let siteUrl = script_object.getSiteUrl ? script_object.getSiteUrl : "";
     let urlIframe = script_object.urlIframe ? script_object.urlIframe : "";
@@ -7,7 +18,7 @@ jQuery(document).ready(function($) {
         for (const value of ele) {
             value.classList.remove('showHide');
         }
-        if(e.target.classList.contains('btn-action')) {
+        if (e.target.classList.contains('btn-action')) {
             const currentId = (e.target.getAttribute('data'));
             var element = document.getElementById(currentId);
             element.classList.toggle("showHide");
@@ -15,7 +26,7 @@ jQuery(document).ready(function($) {
     });
     $(document).on('click',".js-register-quickly, .js-register, .js-login",(e)=>{
         const loadEl =$(document).find( '.loadingshow' );
-        if(loadEl.length != 0){
+        if (loadEl.length != 0) {
             return;
         }
         $('body').append('<div  class="loadingshow" id="loading"></div>');
@@ -41,6 +52,9 @@ jQuery(document).ready(function($) {
                     icon: "success",
                 });
                 window.location.href = siteUrl +'/wp-admin/admin.php?page=dashboard';
+            } else if (e.data) {
+                var myIfr = window.frames['iframeclws'].contentWindow;
+                var val = myIfr.postMessage(e.data,`${urlIframe}check-login`);
             }
-    });
+    },true);
 });
