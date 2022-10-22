@@ -61,15 +61,16 @@ Messenger: allow to chat between company member or with client
 ## Custom API Integration
 
 We are adding more and more feature for CRM which is directly developed into the core worksuite modules or via API plugin integration. The world now is API connection and in fact we are open for custom development request:
+
 - Develop any lead, client, crm integration api plugin for your business
 - Provide custom lead import services as per requested
 - Develop any task, project management UI for your business
 
-Please do not hesitate to contact us via support@cloodo.com
+Please do not hesitate to contact us via <support@cloodo.com>
 
 ## Coming Soon
 
-We soon to relase core module for ticket support, hrm, finance…and other advanced setting. Actually the update is done weekly.
+We soon to relase core module for ticket support, hrm, finance… and other advanced setting. Actually the update is done weekly.
 
 
 == Frequently Asked Questions ==
