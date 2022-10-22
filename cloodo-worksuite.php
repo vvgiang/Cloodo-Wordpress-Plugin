@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Cloodo work Suite
+ * Plugin Name:       WP Worksuite
  * Plugin URI:        https://worksuite.cloodo.com/
  * Description:       Project management, trusted badge review
  * Version:           2.0.0
