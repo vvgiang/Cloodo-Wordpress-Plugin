@@ -10,6 +10,7 @@ function clws_addstyle()
             case 'clients':
             case 'notice':
             case 'messages':
+            case 'product':
             case 'setting':
                 wp_register_style('clws-boostrap', plugins_url('admin/css/bootstrap.css', __DIR__));
                 wp_enqueue_style('clws-boostrap');

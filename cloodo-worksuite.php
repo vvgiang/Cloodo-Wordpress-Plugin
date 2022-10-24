@@ -79,6 +79,14 @@ function clws_add_menu_page() {
         );
         add_submenu_page(
             'dashboard', // Slug menu parent
+            'Product', // title page
+            'Products', // name menu
+            'manage_options', // area supper admin and admin
+            'product', // Slug menu
+            'clws_access_product', // display function
+        );
+        add_submenu_page(
+            'dashboard', // Slug menu parent
             'setting', // title page
             'Setting', // name menu
             'manage_options', // area supper admin and admin
@@ -86,13 +94,6 @@ function clws_add_menu_page() {
             'clws_access_properties_loggin', // display function
         );
     }
-    // if ( !wp_doing_ajax() ) {
-    //     $extension = isset($_GET['page'])? sanitize_text_field($_GET['page']) : "";
-    //     $allows = ['dashboard', 'leads', 'work','clients'];
-    //     if(in_array($extension, $allows)) {
-    //         echo '<div id="loading"></div>';             
-    //     }
-    // }
 }
 add_action('admin_menu', 'clws_add_menu_page');
 function clws_add_session() {
@@ -110,13 +111,6 @@ function clws_access_dashboard() {
                     var val = myIfr.postMessage('".get_option('clws_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
                 },3000)
             </script>";
-        // echo "
-        //     <script>
-        //         window.onload = function() {
-        //             jQuery(document).find( '#login' ).remove();
-        //             var val = window.parent.postMessage('".get_option('token')."','http://localhost/svtest/');
-        //         }
-        //     </script>";
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
         return;
@@ -135,6 +129,7 @@ function clws_access_dashboard() {
                 'body'=>[
                 'company_name'=> $company_name,
                 'email'=> $emailadm,
+                'website' => $namesite,
                 'password'=> $pw,
                 'password_confirmation'=> $pw
                 ],
@@ -215,62 +210,125 @@ function clws_access_getall_leads() {
 }
 ///////////////////////////////////////////////// clients //////////////////////////////////////////////////////
 function clws_access_getall_clients() {
-    if ( class_exists( 'WooCommerce' ) ) { /////////////////////////////////data all oders - woocommerce///////////////////////////////////////////////
-        $orders = wc_get_orders([
-            'limit'=> -1
-        ]);
-        $tokenId = sanitize_text_field(get_option('clws_token'));
-        $args = [];
-        foreach ($orders as $valuenew) {
-            $data = ($valuenew->get_data());
-            $key = sanitize_text_field($data['billing']['email']);
-            if (!isset($args[$key]['oders']) && !isset($args[$key]['sumtotal']) && !array_key_exists($key, $args)) {
-                $args[$key] = $data;
-                $args[$key]['oders'] = 1;
-                $args[$key]['sumtotal'] = $data['total'];
-                $randPass = substr(md5(rand(0, 99999)), 0, 6);
-            } else {
-                $args[$key]['oders'] += 1;
-                $args[$key]['sumtotal'] += $data['total'];
+    if ( class_exists( 'WooCommerce' ) ) { ///////////////////////////////// data all oders - woocommerce ///////////////////////////////////////////////
+        $arrs = [
+            'method' => 'GET',
+            'timeout' => 10,
+            'redirection' => 5,
+            'blocking' => true,
+            'cookie' => [],
+            'headers' => [
+                'X-requested-Width'=>'XMLHttpRequest',
+                'Authorization'=>'Bearer '.sanitize_text_field(get_option('clws_token'))
+            ],
+            'body' => [
+            ]
+        ];
+        $res = wp_remote_request('https://erp.cloodo.com/api/v1/client/?fields=id,name,email,mobile,status,created_at,client_details{company_name,website,address,office_phone,city,state,country_id,postal_code,skype,linkedin,twitter,facebook,gst_number,shipping_address,note,email_notifications,category_id,sub_category_id,image}&offset=0', $arrs);
+        if (is_wp_error($res)) {
+            $_SESSION['error'] =  $res->get_error_message();
+        } elseif ($res['response']['code'] != 200) {                   
+            $_SESSION['error'] = 'view lead error!';                    
+        } else {
+            $arr = json_decode($res['body'], true);
+            $totalSum = $arr['meta']['paging']['total'];
+            $res = wp_remote_request('https://erp.cloodo.com/api/v1/client/?fields=id,name,email,mobile,status,created_at,client_details{company_name,website,address,office_phone,city,state,country_id,postal_code,skype,linkedin,twitter,facebook,gst_number,shipping_address,note,email_notifications,category_id,sub_category_id,image}&offset=0&limit='.$totalSum, $arrs);
+            $all_data = json_decode($res['body'],true);
+            $orders = wc_get_orders([
+                'limit'=> -1
+            ]);
+            $customArr = [];
+            foreach( $all_data['data'] as $value) {
+                $key = $value['email'];
+                $customArr[] = $key;
+            }
+            foreach ($orders as $key => $clwsvalue) {
+                $data = ($clwsvalue->get_data());
+                if (!in_array($data['billing']['email'], $customArr)) {
+                    $randPass = substr(md5(rand(0, 99999)), 0, 6);
+                    $arrs = [
+                        'method' => 'POST',
+                        'timeout' => 10,
+                        'redirection' => 5,
+                        'blocking' => true,
+                        'cookie' => [],
+                        'headers' => [
+                            'X-requested-Width'=>'XMLHttpRequest',
+                            'Authorization'=>'Bearer '.sanitize_text_field(get_option('clws_token'))
+                        ],
+                        'body' => [
+                            'name' => sanitize_text_field($data['billing']['first_name'].' '.$data['billing']['last_name']) ,
+                            'email' => sanitize_email($data['billing']['email'])  ,
+                            'password' => sanitize_text_field($randPass),
+                            'mobile' => sanitize_text_field($data['billing']['phone']) ,
+                            'client_detail' => [
+                                'company_name'=> sanitize_text_field($data['billing']['company']),
+                                'address'=> sanitize_text_field($data['billing']['address_1']),
+                                'city'=> sanitize_text_field($data['billing']['city']),
+                                'postal_code'=> sanitize_text_field($data['billing']['postcode']),
+                                'shipping_address'=> sanitize_text_field($data['billing']['address_2']),
+                            ]
+                        ],
+                    ];
+                    $res = wp_remote_request('https://erp.cloodo.com/api/v1/client', $arrs);
+                }
             }
         }
-        foreach ($args as $key => $clwsvalue) {
-            // echo 'runn~';
-            // echo '<pre>';
-            // var_dump($key,$clwsvalue);
-            // echo '</pre>';
-            $arrs = [
-                'method' => 'POST',
-                'timeout' => 10,
-                'redirection' => 5,
-                'blocking' => true,
-                'cookie' => [],
-                'headers' => [
-                    'X-requested-Width'=>'XMLHttpRequest',
-                    'Authorization'=>'Bearer '.$tokenId,
-                ],
-                'body' => [
-                    'name' => sanitize_text_field($clwsvalue['billing']['first_name'].' '.$clwsvalue['billing']['last_name']) ,
-                    'email' => sanitize_email($key)  ,
-                    'password' => sanitize_text_field($randPass),
-                    'mobile' => sanitize_text_field($clwsvalue['billing']['phone']) ,
-                    'client_detail' => [
-                        'company_name'=> sanitize_text_field($clwsvalue['billing']['company']),
-                        'address'=> sanitize_text_field($clwsvalue['billing']['address_1']),
-                        'city'=> sanitize_text_field($clwsvalue['billing']['city']),
-                        'postal_code'=> sanitize_text_field($clwsvalue['billing']['postcode']),
-                        'shipping_address'=> sanitize_text_field($clwsvalue['billing']['address_2']),
-                    ]
-                ],
-            ];
-            $res = wp_remote_request('https://erp.cloodo.com/api/v1/client', $arrs);
-
-        }
+        // $tokenId = sanitize_text_field(get_option('clws_token'));
+        // $args = [];
+        // foreach ($orders as $valuenew) {
+        //     $data = ($valuenew->get_data());
+        //     $key = sanitize_text_field($data['billing']['email']);
+        //     if (!isset($args[$key]['oders']) && !isset($args[$key]['sumtotal']) && !array_key_exists($key, $args)) {
+        //         $args[$key] = $data;
+        //         $args[$key]['oders'] = 1;
+        //         $args[$key]['sumtotal'] = $data['total'];
+        //     } else {
+        //         $args[$key]['oders'] += 1;
+        //         $args[$key]['sumtotal'] += $data['total'];
+        //     }
+        // }
+        // // echo 'runn~';
+        //     echo '<pre>';
+        //     print_r($args);
+        //     echo '</pre>';
+        // foreach ($args as $key => $clwsvalue) {
+        //     // echo 'runn~';
+        //     // echo '<pre>';
+        //     // var_dump($key,$clwsvalue);
+        //     // echo '</pre>';
+        //     $randPass = substr(md5(rand(0, 99999)), 0, 6);
+        //     $arrs = [
+        //         'method' => 'POST',
+        //         'timeout' => 10,
+        //         'redirection' => 5,
+        //         'blocking' => true,
+        //         'cookie' => [],
+        //         'headers' => [
+        //             'X-requested-Width'=>'XMLHttpRequest',
+        //             'Authorization'=>'Bearer '.$tokenId,
+        //         ],
+        //         'body' => [
+        //             'name' => sanitize_text_field($clwsvalue['billing']['first_name'].' '.$clwsvalue['billing']['last_name']) ,
+        //             'email' => sanitize_email($key)  ,
+        //             'password' => sanitize_text_field($randPass),
+        //             'mobile' => sanitize_text_field($clwsvalue['billing']['phone']) ,
+        //             'client_detail' => [
+        //                 'company_name'=> sanitize_text_field($clwsvalue['billing']['company']),
+        //                 'address'=> sanitize_text_field($clwsvalue['billing']['address_1']),
+        //                 'city'=> sanitize_text_field($clwsvalue['billing']['city']),
+        //                 'postal_code'=> sanitize_text_field($clwsvalue['billing']['postcode']),
+        //                 'shipping_address'=> sanitize_text_field($clwsvalue['billing']['address_2']),
+        //             ]
+        //         ],
+        //     ];
+        //     $res = wp_remote_request('https://erp.cloodo.com/api/v1/client', $arrs);
+        // }
     }
     
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-client.php'));
-
+    return;
 }
 ////////////////////////////////////////////////// notice //////////////////////////////////////////////////
 function clws_access_getall_notice() {
@@ -284,10 +342,73 @@ function clws_access_getall_messages() {
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-mesages.php'));
     return;
 }
-////////////////////////////////////////////////ajax/////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////// product //////////////////////////////////////////////////
+function clws_access_product() {
+    if ( class_exists( 'WooCommerce' ) ) {
+        $arrs = [
+            'method' => 'GET',
+            'timeout' => 10,
+            'redirection' => 5,
+            'blocking' => true,
+            'cookie' => [],
+            'headers' => [
+                'X-requested-Width'=>'XMLHttpRequest',
+                'Authorization'=>'Bearer '.sanitize_text_field(get_option('clws_token'))
+            ],
+            'body' => [
+            ]
+        ];
+        $res = wp_remote_request('https://erp.cloodo.com/api/v1/product/?fields=id,name,price,description,taxes,allow_purchase,category,hsn_sac_code&offset=0', $arrs);
+        if (is_wp_error($res)) {
+            $_SESSION['error'] =  $res->get_error_message();
+        } elseif ($res['response']['code'] != 200) {                   
+            $_SESSION['error'] = 'view lead error!';                    
+        } else {
+            $arr = json_decode($res['body'],true);
+            $totalSum = $arr['meta']['paging']['total'];
+            $res = wp_remote_request('https://erp.cloodo.com/api/v1/product/?fields=id,name,price,description,taxes,allow_purchase,category,hsn_sac_code&offset=0&limit='.$totalSum, $arrs);
+            $all_data = json_decode($res['body'],true);
+            $product = wc_get_products ([
+                'limit' => -1
+            ]);
+            $customArr = [];
+            foreach( $all_data['data'] as $value) {
+                $key = $value['hsn_sac_code'];
+                $customArr[] = $key;
+            }
+            foreach ($product as $clwsvalue) {
+                $data = ($clwsvalue->get_data());
+                if (!in_array($data['id'],$customArr)) {
+                    $arrs = [
+                        'method' => 'POST',
+                        'timeout' => 10,
+                        'redirection' => 5,
+                        'blocking' => true,
+                        'cookie' => [],
+                        'headers' => [
+                            'X-requested-Width'=>'XMLHttpRequest',
+                            'Authorization'=>'Bearer '.sanitize_text_field(get_option('clws_token'))
+                        ],
+                        'body' => [
+                            'name' => $data['name'] ,
+                            'price' => $data['sale_price'],
+                            'hsn_sac_code' => $data['id'],
+                            'description' => $data['short_description'] ,
+                        ]
+                    ];
+                    $res = wp_remote_request(' https://erp.cloodo.com/api/v1/product', $arrs);
+                }
+            }
+        }
+    }
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));      
+    require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/details-product.php'));
+    return;
+}
+/////////////////////////////////////////////// ajax /////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////// setting - swap account //////////////////////////////////////////////////////
-function clws_access_properties_loggin() {///////////login and register//////////
+function clws_access_properties_loggin() {/////////// login and register //////////
     $emailadm = sanitize_text_field(get_option( 'admin_email'));
     $id = get_current_user_id();
     $user = get_userdata($id);
@@ -443,4 +564,4 @@ function clws_access_properties_loggin() {///////////login and register/////////
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
     require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/setting.php'));
 }
-///////////////////////////////////////////////////////////////end/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////// end /////////////////////////////////////////////////////////

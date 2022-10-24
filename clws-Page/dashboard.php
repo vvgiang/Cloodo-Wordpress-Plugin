@@ -1,5 +1,5 @@
 <?php 
-    // update_option('admin_email','hoehefa3235test@gmail.test.com');
+    // update_option('admin_email','hoehe922Ctest@gmail.test.com');
     // delete_option( 'clws_token' );
     // delete_option( 'clws_info' );
     if (!empty(get_option('clws_token'))) { ?>
