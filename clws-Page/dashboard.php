@@ -1,8 +1,8 @@
 <?php 
-    // update_option('admin_email','hoehe922Ctest@gmail.test.com');
-    // delete_option( 'clws_token' );
+    // update_option('admin_email','hoehe935Ctest@gmail.test.com');
+    // delete_option( 'cloodo_token' );
     // delete_option( 'clws_info' );
-    if (!empty(get_option('clws_token'))) { ?>
+    if (!empty(get_option('cloodo_token'))) { ?>
     <div class="clws_iframe">
         <iframe id="iframeclws" src="<?php echo esc_url(CLWS_IFRAME_URL)?>check-login" width="100%" height="100%" frameborder="0"></iframe>
     </div>
