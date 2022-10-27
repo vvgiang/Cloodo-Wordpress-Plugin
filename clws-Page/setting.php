@@ -1,6 +1,7 @@
-<div class="login_element">
-    <b>updating 
-Please come back ...</b>
+<!-- <div class="login_element"> -->
+<div class="clws_iframe">
+	<iframe src="<?php echo esc_url(CLWS_IFRAME_URL)?>apps/settings/custom-fields" width="100%" height="100%" frameborder="0"></iframe>
+</div>
     <!-- <form class="create_form" method="POST" action="">
         <a href="https://erp.cloodo.com/">
             <img src="<?php echo plugins_url('admin/image/worksuite-logo.png', __DIR__)?>" class="worksuite-logo">
@@ -99,4 +100,4 @@ Please come back ...</b>
             </div>
         </div>
     </div> -->
-</div>
+<!-- </div> -->

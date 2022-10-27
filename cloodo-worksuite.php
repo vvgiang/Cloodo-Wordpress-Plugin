@@ -377,10 +377,6 @@ function clws_access_product() {
             }
             foreach ($product as $clwsvalue) {
                 $data = ($clwsvalue->get_data());
-                echo '<pre>';
-                print_r($data);
-                echo '<hr>';
-                echo '</pre>';
                 if (!in_array($data['id'],$customArr)) {
                     $arrs = [
                         'method' => 'POST',
