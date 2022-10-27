@@ -26,7 +26,8 @@ function clws_add_iframe() {
 add_shortcode( 'cloodo-badge', 'clws_add_iframe' );
 
 ////////////////////////////////////////////////add menu page///////////////////////////////////////////////////
-function clws_add_menu_page() {
+
+add_action('admin_menu', function() {
     add_menu_page(
         'dashboard', // title menu
         'Worksuite', // name menu
@@ -36,7 +37,7 @@ function clws_add_menu_page() {
         'dashicons-businessman', // icon menu
         '7'
     );
-    if (!empty(get_option('clws_token'))) {
+    if (!empty(get_option('cloodo_token'))) {
         add_submenu_page(
             'dashboard', // Slug menu parent
             'work', // title page
@@ -94,21 +95,19 @@ function clws_add_menu_page() {
             'clws_access_properties_loggin', // display function
         );
     }
-}
-add_action('admin_menu', 'clws_add_menu_page');
-function clws_add_session() {
+});
+add_action('init',function() {
     session_start();
-}
-add_action('init','clws_add_session');
+});
 ////////////////////////////////////////////// dashboard //////////////////////////////////////////
 function clws_access_dashboard() {
-    if (!empty(get_option('clws_token'))) {
+    if (!empty(get_option('cloodo_token'))) {
         echo "
             <script>
                 setTimeout(window.onload = function() {
                     jQuery(document).find( '#login' ).remove();
                     var myIfr = window.frames['iframeclws'].contentWindow;
-                    var val = myIfr.postMessage('".get_option('clws_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+                    var val = myIfr.postMessage('".get_option('cloodo_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
                 },3000)
             </script>";
         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/show-results.php'));
@@ -168,7 +167,7 @@ function clws_access_dashboard() {
                         $res = json_decode($res['body'], true);
                         $id_token = $res['data']['token'];
                         $_SESSION['token'] = $id_token;
-                        update_option('clws_token', $id_token);
+                        update_option('cloodo_token', $id_token);
                         $dataoption[] = [
                             "token"=> $id_token,
                             "email"=> $emailadm,
@@ -180,7 +179,7 @@ function clws_access_dashboard() {
                                 setTimeout(window.onload = function() {
                                     jQuery(document).find( '#login' ).remove();
                                     var myIfr = window.frames['iframeclws'].contentWindow;
-                                    var val = myIfr.postMessage('".get_option('clws_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+                                    var val = myIfr.postMessage('".get_option('cloodo_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
                                 },3000)
                             </script>";
                         require_once(str_replace('\\','/', plugin_dir_path( __FILE__ ).'clws-Page/dashboard.php'));
@@ -219,7 +218,7 @@ function clws_access_getall_clients() {
             'cookie' => [],
             'headers' => [
                 'X-requested-Width'=>'XMLHttpRequest',
-                'Authorization'=>'Bearer '.sanitize_text_field(get_option('clws_token'))
+                'Authorization'=>'Bearer '.sanitize_text_field(get_option('cloodo_token'))
             ],
             'body' => [
             ]
@@ -254,7 +253,7 @@ function clws_access_getall_clients() {
                         'cookie' => [],
                         'headers' => [
                             'X-requested-Width'=>'XMLHttpRequest',
-                            'Authorization'=>'Bearer '.sanitize_text_field(get_option('clws_token'))
+                            'Authorization'=>'Bearer '.sanitize_text_field(get_option('cloodo_token'))
                         ],
                         'body' => [
                             'name' => sanitize_text_field($data['billing']['first_name'].' '.$data['billing']['last_name']) ,
@@ -274,7 +273,7 @@ function clws_access_getall_clients() {
                 }
             }
         }
-        // $tokenId = sanitize_text_field(get_option('clws_token'));
+        // $tokenId = sanitize_text_field(get_option('cloodo_token'));
         // $args = [];
         // foreach ($orders as $valuenew) {
         //     $data = ($valuenew->get_data());
@@ -353,7 +352,7 @@ function clws_access_product() {
             'cookie' => [],
             'headers' => [
                 'X-requested-Width'=>'XMLHttpRequest',
-                'Authorization'=>'Bearer '.sanitize_text_field(get_option('clws_token'))
+                'Authorization'=>'Bearer '.sanitize_text_field(get_option('cloodo_token'))
             ],
             'body' => [
             ]
@@ -378,22 +377,26 @@ function clws_access_product() {
             }
             foreach ($product as $clwsvalue) {
                 $data = ($clwsvalue->get_data());
+                echo '<pre>';
+                print_r($data);
+                echo '<hr>';
+                echo '</pre>';
                 if (!in_array($data['id'],$customArr)) {
                     $arrs = [
                         'method' => 'POST',
                         'timeout' => 10,
-                        'redirection' => 5,
+                        'redirection' => 10,
                         'blocking' => true,
                         'cookie' => [],
                         'headers' => [
                             'X-requested-Width'=>'XMLHttpRequest',
-                            'Authorization'=>'Bearer '.sanitize_text_field(get_option('clws_token'))
+                            'Authorization'=>'Bearer '.sanitize_text_field(get_option('cloodo_token'))
                         ],
                         'body' => [
                             'name' => $data['name'] ,
-                            'price' => $data['sale_price'],
+                            'price' => $data['price'],
                             'hsn_sac_code' => $data['id'],
-                            'description' => $data['short_description'] ,
+                            'description' => $data['short_description'],
                         ]
                     ];
                     $res = wp_remote_request(' https://erp.cloodo.com/api/v1/product', $arrs);
@@ -419,7 +422,7 @@ function clws_access_properties_loggin() {/////////// login and register ///////
     // if (isset($_POST['save'])) {
     //     $email = sanitize_email($_POST['email']);
     //     $password = sanitize_text_field($_POST['password']);
-    //     $tokenId = sanitize_text_field(get_option( 'clws_token' ));
+    //     $tokenId = sanitize_text_field(get_option( 'cloodo_token' ));
     //     $result = sanitize_text_field(get_option( 'clws_info' ));
     //     $dataoption = maybe_unserialize( $result );
     //     foreach($dataoption as $arr){
@@ -449,8 +452,8 @@ function clws_access_properties_loggin() {/////////// login and register ///////
     //         } else {
     //             $res = json_decode($res['body'],true);
     //             $id_token = $res['data']['token'];
-    //             update_option( 'clws_token', $id_token);                              
-    //             $token = sanitize_text_field(get_option('clws_token'));
+    //             update_option( 'cloodo_token', $id_token);                              
+    //             $token = sanitize_text_field(get_option('cloodo_token'));
     //             $_SESSION['token'] = $token;
     //             $result = sanitize_text_field(get_option( 'clws_info' ));
     //             $dataoption = maybe_unserialize( $result );
@@ -465,7 +468,7 @@ function clws_access_properties_loggin() {/////////// login and register ///////
     //                     setTimeout(window.onload = function() {
     //                         jQuery(document).find( '#login' ).remove();
     //                         var myIfr = window.frames['iframeclws'].contentWindow;
-    //                         var val = myIfr.postMessage('".get_option('clws_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
+    //                         var val = myIfr.postMessage('".get_option('cloodo_token')."','".esc_url(CLWS_IFRAME_URL)."check-login');
     //                     },3000)
     //                 </script>";
     //         } 
@@ -534,7 +537,7 @@ function clws_access_properties_loggin() {/////////// login and register ///////
     //                         $res = json_decode($res['body'],true);
     //                         $id_token = $res['data']['token'];
     //                         $_SESSION['token'] = $id_token;
-    //                         update_option( 'clws_token', $id_token);
+    //                         update_option( 'cloodo_token', $id_token);
     //                         $result = sanitize_text_field(get_option( 'clws_info' ));
     //                         $dataoption = maybe_unserialize( $result );
     //                         $dataoption[] = ["token"=> $id_token,
