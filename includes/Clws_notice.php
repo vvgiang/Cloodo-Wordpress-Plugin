@@ -8,6 +8,6 @@ class Clws_notice extends Clws_API {
         if ( class_exists( 'WooCommerce' ) ) {
             
         }
-        Clws_views::view('views/notice.php');
+        Clws_resource::view('notice.php');
     }
 }

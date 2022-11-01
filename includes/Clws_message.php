@@ -8,6 +8,6 @@ class Clws_messages extends Clws_API {
         if ( class_exists( 'WooCommerce' ) ) {
             
         }
-        Clws_views::view('views/messages.php');
+        Clws_resource::view('messages.php');
     }
 }

@@ -1,5 +1,5 @@
 <?php 
-    // update_option('admin_email','nminaheo_h220C.test@gmail.test.com');
+    // update_option('admin_email','nmi12_220C.test@gmail.test.com');
     // delete_option( 'cloodo_token' );
     // delete_option( 'cloodo_user' );
             if (!empty(get_option('cloodo_token'))) { ?>

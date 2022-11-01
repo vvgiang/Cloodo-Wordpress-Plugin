@@ -1,9 +1,10 @@
-<?php 
+<?php
     if ( !function_exists( 'add_action' ) ) {
         echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
         exit;
     }
 class Clws_add_menu {
+    // use demo, hello;
     public static $email_adm;
     public static $user_id;
     public static $user_data;
@@ -12,13 +13,13 @@ class Clws_add_menu {
     public static $user_email;
     public static $company_name;
     public function __construct() {
-        self::$email_adm = sanitize_text_field(get_option( 'admin_email'));
+        self::$email_adm = sanitize_text_field( get_option( 'admin_email'));
         self::$user_id = get_current_user_id();
-        self::$user_data = get_userdata(self::$user_id);
+        self::$user_data = get_userdata( self::$user_id );
         self::$name_site = get_bloginfo();
-        self::$user_login = sanitize_text_field(self::$user_data->user_login);
-        self::$user_email = sanitize_email(self::$user_data->user_email);
-        self::$company_name = (explode('.', self::$name_site))[0];
+        self::$user_login = sanitize_text_field( self::$user_data->user_login );
+        self::$user_email = sanitize_email( self::$user_data->user_email );
+        self::$company_name = ( explode('.', self::$name_site) )[0];
         add_action('admin_menu', function() {
             $dashboard = new Clws_dashboard;
             new Clws_loading;
@@ -31,7 +32,7 @@ class Clws_add_menu {
                 'dashicons-businessman', // icon menu
                 '7'
             );
-            if (!empty(get_option('cloodo_token'))) {
+            if (!empty(get_option( 'cloodo_token' ))) {
                 $work = new Clws_works;
                 add_submenu_page(
                     'dashboard', // Slug menu parent

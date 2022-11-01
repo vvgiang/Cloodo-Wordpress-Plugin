@@ -8,7 +8,7 @@ class Clws_product extends Clws_API {
         if ( class_exists( 'WooCommerce' ) ) {
             $this-> clws_product_sync();
         }
-        Clws_views::view('views/products.php');
+        Clws_resource::view('products.php');
     }
     public function clws_product_sync() {
         $res = Clws_client::call_api_get(CLWS_API_GET_PRODUCT_URL);

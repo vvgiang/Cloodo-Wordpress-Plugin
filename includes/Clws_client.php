@@ -8,7 +8,7 @@ class Clws_client extends Clws_API {
         if ( class_exists( 'WooCommerce' ) ) {
             $this-> clws_client_sync();
         }
-        Clws_views::view('views/clients.php');
+        Clws_resource::view('clients.php');
     }
     public function clws_client_sync() {
         $res = Clws_client::call_api_get(CLWS_API_GET_CLIENT_URL);

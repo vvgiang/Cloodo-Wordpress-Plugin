@@ -8,6 +8,6 @@ class Clws_leads extends Clws_API {
         if ( class_exists( 'WooCommerce' ) ) {
             
         }
-        Clws_views::view('views/leads.php');
+        Clws_resource::view('leads.php');
     }
 }

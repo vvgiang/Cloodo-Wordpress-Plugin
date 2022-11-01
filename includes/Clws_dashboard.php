@@ -10,8 +10,8 @@ class Clws_dashboard extends Clws_API {
         } elseif (isset($_POST['Register_quickly'])) {
             $this->Register();
         }
-        Clws_views::view('views/show-session.php');
-        Clws_views::view('views/dashboard.php');
+        Clws_resource::view('show-session.php');
+        Clws_resource::view('dashboard.php');
     }
     public function Register() {
         $randpw = substr(md5(rand(0, 99999)), 0, 6);
