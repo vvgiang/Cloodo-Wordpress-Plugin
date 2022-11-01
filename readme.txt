@@ -4,7 +4,7 @@ Donate link: https://cloodo.com/
 Tags: crm, live chat, clients, leads, project manager, notice board
 Requires at least: 4.7
 Tested up to: 6.0
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -94,6 +94,10 @@ Yes. Plugin will register an account automatic after you click register button o
 1. Chat Logs
 
 == Changelog ==
+
+= 2.1.0 =
+* Add new feature: Products Management
+* Sync Woocommerce Customers to Clients
 
 = 2.0.0 =
 * Update New UI

@@ -1,9 +1,9 @@
 <?php 
 /**
- * Plugin Name:       demo Worksuite-OBJ
+ * Plugin Name:       WP Worksuite
  * Plugin URI:        https://worksuite.cloodo.com/
- * Description:       Project management, trusted badge review
- * Version:           2.0.0
+ * Description:       CRM, Live Chat, Clients, Leads, Project Manager & Notice Board
+ * Version:           2.1.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Cloodo
@@ -21,7 +21,7 @@ add_action('init', function() {
 	if ( is_user_logged_in() ) {
 		define( 'CLWS_VERSION', '1.0.0' );
 		define( 'CLWS_IFRAME_URL', 'https://worksuite.cloodo.com/' );
-		define( 'CLWS_IFRAME_URL2', 'http://localhost:8222/login-app/' );
+		// define( 'CLWS_IFRAME_URL', 'http://localhost:8222/login-app/' );
 		//API user
 		define( 'CLWS_API_LOGIN_URL', 'https://erp.cloodo.com/api/v1/auth/login' );
 		define( 'CLWS_API_CREATE_URL', 'https://erp.cloodo.com/api/v1/create-user' );
