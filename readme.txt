@@ -122,6 +122,7 @@ HR Management is all about people, not the paperwork. So, why waste your time on
 ### CUSTOM API INTEGRATION
 
 We are adding more and more feature for CRM which is directly developed into the core worksuite modules or via API plugin integration. The world now is API connection and in fact we are open for custom development request:
+
 - Develop any lead, client, crm integration api plugin for your business
 - Provide custom lead import services as per requested
 - Develop any task, project management UI for your business
