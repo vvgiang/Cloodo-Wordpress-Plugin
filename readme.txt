@@ -21,76 +21,76 @@ The WP Worksuite plugin is so beginner-friendly that all you need is a one-click
 
 ### WHO CAN USE WORDPRESS WORKSUITE
 
-Any business of any type  and any size of team
-From Startup to Multi Sub-Business Devision Corporation
-From Ecommerce Store to Services Agency of all kinds
-Muti Languges support soons...
+- Any business of any type  and any size of team
+- From Startup to Multi Sub-Business Devision Corporation
+- From Ecommerce Store to Services Agency of all kinds
+- Muti Languges support soons...
 
 ### Benefit of wordpress worksuite 
 
-_ Meet Your Business Needs _
-Manage your projects and your talent in a single system, resulting in empowered teams, satisfied clients, and increased profitability.
-Keep a track of all your projects in most simple way.
-Assign tasks to project members and track the status.
-Add members to your projects and keep them in sync with the progress.
+#### Meet Your Business Needs
+- Manage your projects and your talent in a single system, resulting in empowered teams, satisfied clients, and increased profitability.
+- Keep a track of all your projects in most simple way.
+- Assign tasks to project members and track the status.
+- Add members to your projects and keep them in sync with the progress.
 
-_ HR, CRM & Project Management System _
-The most powerful and simple way to collaborate with your team.
-Create invoices & Estimates
-Tracks time and expenses
-Add company’s employees, track their attendance and manage leaves
+#### HR, CRM & Project Management System
+- The most powerful and simple way to collaborate with your team.
+- Create invoices & Estimates
+- Tracks time and expenses
+- Add company’s employees, track their attendance and manage leaves
 
-_ Analyse Your Workflow _
-Reports section to analyse what's working and what's not for your business
-It Shows how much you earned and how much you spent.
-Tiket report shows you Open vs Closed tickets.
-It creates task report to track completed vs pending tasks.
+#### Analyse Your Workflow
+- Reports section to analyse what's working and what's not for your business
+- It Shows how much you earned and how much you spent.
+- Tiket report shows you Open vs Closed tickets.
+- It creates task report to track completed vs pending tasks.
 
-_ Manage your support tickets efficiently _
-Whether someone's internet is not working, someone is facing issue with housekeeping or need something regarding their work they can raise a ticket for all their problems.
-Admin can assign the tickets to respective department agents.
+#### Manage your support tickets efficiently
+- Whether someone's internet is not working, someone is facing issue with housekeeping or need something regarding their work they can raise a ticket for all their problems.
+- Admin can assign the tickets to respective department agents.
 
-_ Meet Your Business Needs _
-Manage your projects and your talent in a single system, resulting in empowered teams, satisfied clients, and increased profitability.
-Keep a track of all your projects in most simple way.
-Assign tasks to project members and track the status.
-Add members to your projects and keep them in sync with the progress.
+#### Meet Your Business Needs
+- Manage your projects and your talent in a single system, resulting in empowered teams, satisfied clients, and increased profitability.
+- Keep a track of all your projects in most simple way.
+- Assign tasks to project members and track the status.
+- Add members to your projects and keep them in sync with the progress.
 
-_ Analyse Your Workflow _
-Reports section to analyse what's working and what's not for your business
-It Shows how much you earned and how much you spent.
-Tiket report shows you Open vs Closed tickets.
-It creates task report to track completed vs pending tasks.
+#### Analyse Your Workflow
+- Reports section to analyse what's working and what's not for your business
+- It Shows how much you earned and how much you spent.
+- Tiket report shows you Open vs Closed tickets.
+- It creates task report to track completed vs pending tasks.
 
 ### WP WORKSUITE CRM - LEAD, FOWLLOW UP, CLIENT, PROPOSAL,
 
 WP Worksuite gives you ultimate visibility into customer interactions across every team in your organization. That means that everyone will be on the same page from marketing to sales to customer service and operation or client deployment project team, all able to help your customers more effectively. In fact this is a universial workspace for any clients’s orientation ogranization.
 
-Lead Management helps you to manage lead database, lead category, lead sources. Lead is any type of contact which is not yet made any kind of purchase.
-Add unlimited lead with lead information like name, email, mobile, country, website, company
-Assign the company sales agent who will have to take the the lead follow up
-Create custom lead category, add unlimietd any lead custom information for your own organization
-Add unlimited lead campaign to manage and plan your lead development projects of your company
-Add unlimited lead follow up activities which is assign to sales agent or any other member inside your company.
-Client Management helps to manage client who did made a purchase even if it is just a pending order.
-Add unlimited client with client information like name, email, mobile, country, website, company
-Assign the company sales agent who will have to take care client customer care of follow up for any cross selling, post selling.
-Create custom client category, add unlimited any client custom information for your own organization with our advanced custome field in each account setting
-Add unlimited client’s project to manage and plan the development projects of your company.
-Add unlimited client follow up activities which is assign to sales agent or any other member inside your company.
-Create unlimited proposal which can be sent to client to accept. The proposal can be visiple via web browser or download pdf and client can sign their digital signature.
-Proposal then can be converted to officially contract and linked with invoicing module and project milestone to centralize the financial relationship of your clients.
+- Lead Management helps you to manage lead database, lead category, lead sources. Lead is any type of contact which is not yet made any kind of purchase.
+- Add unlimited lead with lead information like name, email, mobile, country, website, company
+- Assign the company sales agent who will have to take the the lead follow up
+- Create custom lead category, add unlimietd any lead custom information for your own organization
+- Add unlimited lead campaign to manage and plan your lead development projects of your company
+- Add unlimited lead follow up activities which is assign to sales agent or any other member inside your company.
+- Client Management helps to manage client who did made a purchase even if it is just a pending order.
+- Add unlimited client with client information like name, email, mobile, country, website, company
+- Assign the company sales agent who will have to take care client customer care of follow up for any cross selling, post selling.
+- Create custom client category, add unlimited any client custom information for your own organization with our advanced custome field in each account setting
+- Add unlimited client’s project to manage and plan the development projects of your company.
+- Add unlimited client follow up activities which is assign to sales agent or any other member inside your company.
+- Create unlimited proposal which can be sent to client to accept. The proposal can be visiple via web browser or download pdf and client can sign their digital signature.
+- Proposal then can be converted to officially contract and linked with invoicing module and project milestone to centralize the financial relationship of your clients.
 
 ### WP WORKSUITE TEAM WORK AND PROJECT MANAGEMENT:
 
-Manage your company projects, your client support in a single system, resulting in empowered teams, satisfied clients, and increased profitability.
-Keep a track of all your projects in most simple way.
-Assign tasks to project members and track the status.
-Add members to your projects and keep them in sync with the progress.
-Using Task Kanban board and filter project task with different criteria
-Creat unlimited Project Milestone with deadline and Cost
-Add unlimited project Documentation, Files, Comment to store and share bewteen project member and client.
-Create various custom field for your own project to suite with your team/company operation
+- Manage your company projects, your client support in a single system, resulting in empowered teams, satisfied clients, and increased profitability.
+- Keep a track of all your projects in most simple way.
+- Assign tasks to project members and track the status.
+- Add members to your projects and keep them in sync with the progress.
+- Using Task Kanban board and filter project task with different criteria
+- Creat unlimited Project Milestone with deadline and Cost
+- Add unlimited project Documentation, Files, Comment to store and share bewteen project member and client.
+- Create various custom field for your own project to suite with your team/company operation
 
 ### WP WORKSUITE HRM - Release on December 2022
 
@@ -100,32 +100,32 @@ HR Management is all about people, not the paperwork. So, why waste your time on
 
 ### Powerful HR Admin Dashboard
 
-A Complete Leave Management System . Each of your employee has their own personal account where they can manage 
-Personal information, work experience, education, skill and language.
-Get organization information that is included in the admin panel (Added by the Admin)
-Monitor their current, outstanding and completed task. Apply for leaves.
-Attendance & Time Management
+- A Complete Leave Management System . Each of your employee has their own personal account where they can manage 
+- Personal information, work experience, education, skill and language.
+- Get organization information that is included in the admin panel (Added by the Admin)
+- Monitor their current, outstanding and completed task. Apply for leaves.
+- Attendance & Time Management
 
-WP HRM has built-in leave management system for your employees. 
-Add multiple leave types
-Specify work days
-Create holiday list
-Manage your employee leaves easily
-Individual Profiles & Features for Each Employee
+- WP HRM has built-in leave management system for your employees. 
+- Add multiple leave types
+- Specify work days
+- Create holiday list
+- Manage your employee leaves easily
+- Individual Profiles & Features for Each Employee
 
 ### WP WORKSUITE COMMUNICATION:
 
-Notice: allow to post company annoucement to company member or client
-Messenger: allow to chat between company member or with client
-Ticket Support: allow to set up a centrel ticket support system for your company
+- Notice: allow to post company annoucement to company member or client
+- Messenger: allow to chat between company member or with client
+- Ticket Support: allow to set up a centrel ticket support system for your company
 
 ### CUSTOM API INTEGRATION
 
 We are adding more and more feature for CRM which is directly developed into the core worksuite modules or via API plugin integration. The world now is API connection and in fact we are open for custom development request:
-Develop any lead, client, crm integration api plugin for your business
-Provide custom lead import services as per requested
-Develop any task, project management UI for your business
-Please do not hesitate to contact us via support@cloodo.com
+- Develop any lead, client, crm integration api plugin for your business
+- Provide custom lead import services as per requested
+- Develop any task, project management UI for your business
+- Please do not hesitate to contact us via support@cloodo.com
 
 ### COMING SOON
 
