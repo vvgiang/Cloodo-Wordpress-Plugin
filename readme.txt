@@ -1,7 +1,7 @@
 === WP Worksuite – ERP, Workplace, CRM, HRM, Project Manager & Company Board ===
 Contributors: cloodoteam
 Donate link: https://cloodo.com/
-Tags: crm, live chat, clients, leads, project manager, notice board, Company, Workplace, CRM, HRM, ERP
+Tags: Company, Workplace, CRM, HRM, ERP
 Requires at least: 4.7
 Tested up to: 6.0
 Stable tag: 2.1.0
