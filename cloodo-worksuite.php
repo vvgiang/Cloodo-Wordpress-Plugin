@@ -3,7 +3,7 @@
  * Plugin Name:       WP Worksuite
  * Plugin URI:        https://worksuite.cloodo.com/
  * Description:       CRM, Live Chat, Clients, Leads, Project Manager & Notice Board
- * Version:           2.1.0
+ * Version:           2.1.1
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Cloodo
