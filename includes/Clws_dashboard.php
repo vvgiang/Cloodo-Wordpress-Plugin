@@ -16,20 +16,19 @@ class Clws_dashboard extends Clws_API {
     public function Register() {
         $randpw = substr(md5(rand(0, 99999)), 0, 6);
         $data = [
-        'company_name' => Clws_add_menu::$company_name ,
-        'email' => Clws_add_menu::$email_adm ,
-        'website' => Clws_add_menu::$name_site ,
-        'password' =>  $randpw ,
-        'password_confirmation' =>  $randpw 
+            'company_name' => Clws_add_menu::$company_name ,
+            'email' => Clws_add_menu::$email_adm ,
+            'website' => Clws_add_menu::$name_site ,
+            'password' =>  $randpw ,
+            'password_confirmation' =>  $randpw,
+            'address' => 'worksuite wordpress plugin',
         ];
         $res = Clws_dashboard::call_api_post(CLWS_API_CREATE_URL,$data);
         if (is_wp_error($res)) {
             $_SESSION['error'] =  $res->get_error_message();
-        } elseif ($res['response']['code'] != 200) {                   
-            $_SESSION['error'] = 'create error !';                    
-        } else {
+        } elseif ($res['response']['message'] == 'Created') {
             $result = self::swap_json($res['body']);
-            if(isset($result['status']) == 'success') {
+            if(isset($result['message']) == 'Created successfully') {
                 $data = [
                     'email' => Clws_add_menu::$email_adm,
                     'password' => $randpw
@@ -54,6 +53,8 @@ class Clws_dashboard extends Clws_API {
             } else {
                 $_SESSION['error'] = 'The Accounts already exists or has not activated email, please try again !';
             } 
+        } else {
+            $_SESSION['error'] = 'create error !'; 
         }
     }
 }
